@@ -29,7 +29,7 @@ Source0:	%{name}-pld-%{version}.tar.gz
 # Source0-md5:	4b29593010687d432d5e7a77a4a047c5
 Source1:	system-auth.pamd
 Patch0:		%{name}-selinux-1.patch
-URL:		http://parc.power.net/morgan/Linux-PAM/index.html
+URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
