@@ -196,9 +196,9 @@ rm -rf $RPM_BUILD_ROOT
 - fixed makin ps documentation,
 - added static and devel subpackages,
 - added ignore errors during "make install" (-i swhich),
-- added striping shared libraries,
-- added striping /sbin/pwdb_chkpwd,
-- added striping debug info on all modules,
+- added stripping shared libraries,
+- added stripping /sbin/pwdb_chkpwd,
+- added stripping debug info on all modules,
 - added "Obsoletes: pamconfig" (now it is not neccessary),
 - added %attr and %defattr macros in %files (allow build package from
   non-root account).
