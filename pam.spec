@@ -12,14 +12,15 @@ Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
-Version:	0.77.2
-Release:	2
+Version:	0.77.3
+Release:	1
 Epoch:		0
 License:	GPL/BSD
 Group:		Base
 #Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 Source0:	%{name}-pld-%{version}.tar.gz
-# Source0-md5:	2fdfda47ecd6d04b32e9047c31248a6a
+# Source0-md5:	d4f46fd262bbb0f1abc1614d53574d94
+Source1:	system-auth.pamd
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -280,6 +281,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lock/console
 %dir /etc/security/console.apps
 %config(noreplace) %verify(not md5 size mtime) /etc/pam.d/other
+%config(noreplace) %verify(not md5 size mtime) /etc/pam.d/system-auth
 %config(noreplace) %verify(not md5 size mtime) /etc/security/access.conf
 %config(noreplace) %verify(not md5 size mtime) /etc/security/pam_env.conf
 %config(noreplace) %verify(not md5 size mtime) /etc/security/group.conf
