@@ -4,8 +4,8 @@ Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authen
 Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.74.0
-Release:	3
+Version:	0.74.1
+Release:	1
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
@@ -171,6 +171,7 @@ pam_cap module.
 
 %build
 %configure \
+	%{?bcond_on_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
 %{__make}
 
@@ -251,6 +252,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /lib/security/pam_warn.so
 %attr(0755,root,root) /lib/security/pam_wheel.so
 %attr(0755,root,root) /lib/security/pam_xauth.so
+%{?bcond_on_pwexport:%attr(0755,root,root) /lib/security/pam_pwexport.so}
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/unix_chkpwd
 # Removed due to chicken-egg problem
