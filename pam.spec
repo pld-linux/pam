@@ -8,7 +8,7 @@ Version:	0.66
 Release:	26
 Copyright:	GPL or BSD
 Group:		Base
-%define		date	19990605
+%define		date	19990604
 Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildPrereq:	/usr/bin/nsgmls
@@ -94,19 +94,20 @@ make -C doc
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security,usr/{include/security,lib,share/man/man{3,8}}}
+install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security} \
+	$RPM_BUILD_ROOT{%{_includedir}/security,%{_libdir},%{_mandir}/man{3,8}}
 
 make install FAKEROOT=$RPM_BUILD_ROOT
 
 install conf/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
 
-install doc/man/pam.8 $RPM_BUILD_ROOT/usr/share/man/man8
-install doc/man/*.3 $RPM_BUILD_ROOT/usr/share/man/man3
-chmod u+w $RPM_BUILD_ROOT/usr/share/man/man3/*
-echo ".so pam.8" > $RPM_BUILD_ROOT/usr/share/man/man8/pam.conf.8
-echo ".so pam.8" > $RPM_BUILD_ROOT/usr/share/man/man8/pam.d.8
-echo ".so pam_start.3" > $RPM_BUILD_ROOT/usr/share/man/man3/pam_end.3
-echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/share/man/man3/pam_close_session.3
+install doc/man/pam.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install doc/man/*.3 $RPM_BUILD_ROOT%{_mandir}/man3
+chmod u+w $RPM_BUILD_ROOT%{_mandir}/man3/*
+echo ".so pam.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.conf.8
+echo ".so pam.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.d.8
+echo ".so pam_start.3" > $RPM_BUILD_ROOT%{_mandir}/man3/pam_end.3
+echo ".so pam_open_session.3" > $RPM_BUILD_ROOT%{_mandir}/man3/pam_close_session.3
 
 # make sure the modules built...
 [ -f $RPM_BUILD_ROOT/lib/security/pam_deny.so ] || {
@@ -122,12 +123,12 @@ strip --strip-debug $RPM_BUILD_ROOT/lib/lib*.so.*.* \
 	$RPM_BUILD_ROOT/sbin/unix_chkpwd \
 	$RPM_BUILD_ROOT/lib/security/*.so
 
-ln -sf ../../lib/libpam.so.0 $RPM_BUILD_ROOT/usr/lib/libpam.so
-ln -sf ../../lib/libpam_misc.so.0 $RPM_BUILD_ROOT/usr/lib/libpam_misc.so
+ln -sf /lib/libpam.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/libpam_misc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 
-mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
+mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT%{_libdir}
 
-gzip -9fn $RPM_BUILD_ROOT/usr/share/man/man[358]/* Copyright \
+gzip -9fn $RPM_BUILD_ROOT%{_mandir}/man[358]/* Copyright \
 	doc/txts/*.txt doc/specs/*.{raw,txt}
 
 rm -f doc/{ps,txts}/{README,*.log}
@@ -157,18 +158,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4755,root,root) /sbin/pwdb_chkpwd
 %attr(4755,root,root) /sbin/unix_chkpwd
 /sbin/pam_pwdb_helper
-/usr/share/man/man5/*
-/usr/share/man/man8/*
+%{_mandir}/man5/*
+%{_mandir}/man8/*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/lib/lib*.so
-/usr/include/security
-/usr/share/man/man3/*
+%attr(755,root,root) %{_libdir}/lib*.so
+%{_includedir}/security
+%{_mandir}/man3/*
 
 %files static
 %defattr(644,root,root,755)
-/usr/lib/lib*.a
+%{_libdir}/lib*.a
 
 %changelog
 * Thu Jun  3 1999 Jan Rêkorajski <baggins@pld.org.pl>
