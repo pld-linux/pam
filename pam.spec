@@ -16,6 +16,7 @@ Release:	1
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
+Patch0:		%{name}-am16.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -229,6 +230,7 @@ Modu³ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
+%patch -p1
 
 %build
 rm -rf missing
@@ -257,8 +259,6 @@ ln -sf /lib/libpam.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /lib/libpam_misc.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 ln -sf /lib/libpamc.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
-gzip -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
-
 rm -f doc/{ps,txts}/{README,*.log} \
 	doc/{html,txts}/Makefile*
 
@@ -273,7 +273,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc Copyright.gz doc/{html,txts,specs/*.gz}
+%doc Copyright doc/{html,txts,specs/*.{raw,txt}}
 %dir /etc/pam.d
 %dir /sbin/pam_filter
 %dir /var/lock/console
