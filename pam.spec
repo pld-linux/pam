@@ -8,7 +8,7 @@ Version:	0.69
 Release:	3
 Copyright:	GPL or BSD
 Group:		Base
-%define		date	19990817
+%define		date	19990818
 Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
@@ -166,6 +166,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4755,root,root) /sbin/pwdb_chkpwd
 %attr(4755,root,root) /sbin/unix_chkpwd
 %attr(0755,root,root) /sbin/pam_tally
+%attr(0755,root,root) /sbin/pwgen_trigram
 %{_mandir}/man5/*
 %{_mandir}/man8/*
 
