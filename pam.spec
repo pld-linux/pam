@@ -54,6 +54,13 @@ Systemverwalter Authentifizierungs-Dienste individuell für jede
 pam-kompatible Anwendung konfigurieren kann, ohne diese neu
 kompilieren zu müssen.
 
+%description -l es
+PAM (Módulos de Autenticación Plugables) es un potente, flexible y
+extensible sistema de autentificación, que permite al administrador
+del sistema configurar servicios de autentificación individualmente
+para cada aplicación pam compatible, sin la necesidad de recompilar
+cualquier una de las aplicaciones.
+
 %description -l fr
 PAM (Pluggable Authentication Modules) est un systéme
 d'authentification puissant, souple et extensible permettant à
@@ -69,12 +76,6 @@ które s± dostosowane i zlinkowane z bibliotekami PAM bez pó¼niejszej
 ich rekompilacji w momencie zmiany sposobu autentykacji tych¿e
 serwisów.
 
-%description -l tr
-PAM (Pluggable Authentication Modules) sistem yöneticilerinin
-uygulamalardan herhangi birini yeniden derlemeksizin bütün PAM uyumlu
-uygulamalar için doðrulama hizmetlerini ayarlamalarýna yardýmcý olan,
-güclü, esnek ve kapsamlý bir doðrulama sistemidir.
-
 %description -l pt_BR
 PAM (Módulos de Autenticação Plugáveis) é um poderoso, flexível e
 extensível sistema de autenticação, que permite o administrador do
@@ -82,18 +83,16 @@ sistema configurar serviços de autenticação individualmente para cada
 aplicação pam compatível, sem necessidade de recompilar qualquer uma
 das aplicações.
 
-%description -l es
-PAM (Módulos de Autenticación Plugables) es un potente, flexible y
-extensible sistema de autentificación, que permite al administrador
-del sistema configurar servicios de autentificación individualmente
-para cada aplicación pam compatible, sin la necesidad de recompilar
-cualquier una de las aplicaciones.
+%description -l tr
+PAM (Pluggable Authentication Modules) sistem yöneticilerinin
+uygulamalardan herhangi birini yeniden derlemeksizin bütün PAM uyumlu
+uygulamalar için doðrulama hizmetlerini ayarlamalarýna yardýmcý olan,
+güclü, esnek ve kapsamlý bir doðrulama sistemidir.
 
 %package devel
 Summary:	PAM header files
 Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
 Summary(pt_BR):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
-Summary(es):	Libraries and include files needed for PAM development
 Group:		Development/Libraries
 Group(de):	Entwicklung/Libraries
 Group(es):	Desarrollo/Bibliotecas
@@ -110,11 +109,8 @@ Header files for developing PAM based applications.
 %description devel -l pl
 Pliki nag³ówkowe i dokumentacja do PAM.
 
-%description -l pt_BR devel
+%description devel -l pt_BR
 Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
-
-%description -l es devel
-Libraries and include files needed for PAM development
 
 %package static
 Summary:	PAM static libraries
