@@ -9,12 +9,11 @@ Summary(pl):	Modularny system autentykacji
 Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.75.1
+Version:	0.75.3
 Release:	0.1
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
-Patch0:		%{name}-rlimit_locks.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -196,7 +195,6 @@ Modu³ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
-%patch0 -p1
 
 %build
 rm -rf missing
@@ -260,6 +258,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /lib/security/pam_access.so
 %attr(0755,root,root) /lib/security/pam_console.so
 %attr(0755,root,root) /lib/security/pam_cracklib.so
+%attr(0755,root,root) /lib/security/pam_debug.so
 %attr(0755,root,root) /lib/security/pam_deny.so
 %attr(0755,root,root) /lib/security/pam_env.so
 %attr(0755,root,root) /lib/security/pam_filter.so
