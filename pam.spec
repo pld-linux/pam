@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.72.3
-Release:	2
+Release:	3
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
@@ -22,6 +22,8 @@ BuildRequires:	flex
 BuildRequires:	bison
 Requires:	cracklib
 Requires:	cracklib-dicts
+Requires:	make
+Requires:	awk
 Obsoletes:	pamconfig
 Obsoletes:	pam_make
 Provides:	pam-pld
