@@ -13,7 +13,7 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.77.3
-Release:	2.2
+Release:	3
 Epoch:		0
 License:	GPL/BSD
 Group:		Base
@@ -26,7 +26,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
-BuildRequires:	db3-devel
+BuildRequires:	db-devel
 BuildRequires:	flex
 BuildRequires:	libcap-devel
 BuildRequires:	libtool >= 1:1.4.2-9
