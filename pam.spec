@@ -31,6 +31,7 @@ BuildRequires:	pwdb-devel
 BuildRequires:	skey-devel
 BuildRequires:	sgml-tools
 BuildRequires:	sp
+BuildRequires:	pam-devel
 Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
