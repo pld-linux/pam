@@ -32,6 +32,7 @@ BuildRequires:	cracklib-devel
 BuildRequires:	db-devel
 BuildRequires:	flex
 BuildRequires:	libcap-devel
+%{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libwrap-devel >= 7.6-32
 BuildRequires:	opie-devel
@@ -39,8 +40,7 @@ BuildRequires:	pwdb-devel
 BuildRequires:	skey-devel
 BuildRequires:	sgml-tools
 BuildRequires:	sp
-BuildRequires:	tetex-latex
-%{?with_selinux:BuildRequires:	libselinux-devel}
+BuildRequires:	tetex-format-latex
 Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
