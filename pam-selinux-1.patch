@@ -1536,9 +1536,8 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
 +extern struct spwd *_unix_run_verify_binary(pam_handle_t *pamh, unsigned int ctrl, const char *user);
  #endif /* _PAM_UNIX_SUPPORT_H */
  
-diff -urN pam-pld-0.77.3.org/modules/pam_unix/unix_chkpwd.c pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c
---- pam-pld-0.77.3.org/modules/pam_unix/unix_chkpwd.c	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c	2003-12-27 03:49:54.472968632 +0100
+--- pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c.orig	Fri Sep 26 13:30:16 2003
++++ pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c	Tue Jan 27 11:44:02 2004
 @@ -27,13 +27,24 @@
  #include <syslog.h>
  #include <unistd.h>
@@ -1782,13 +1781,17 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/unix_chkpwd.c pam-pld-0.77.3/modul
  		_log_err(LOG_NOTICE
  		      ,"inappropriate use of Unix helper binary [UID=%d]"
  			 ,getuid());
-@@ -258,19 +455,26 @@
- 		return UNIX_FAILED;
+@@ -259,32 +456,41 @@
  	}
  
--	/*
+ 	/*
 -	 * determine the current user's name is
--	 */
++	 * determine the current user's name is.
++	 * On a SELinux enabled system, policy will prevent third parties from using
++	 * unix_chkpwd as a password guesser.  Leaving the existing check prevents
++	 * su from working,  Since the current uid is the users and the password is
++	 * for root.
+ 	 */
 -	user = getuidname(getuid());
 -	if (argc == 2) {
 -	    /* if the caller specifies the username, verify that user
@@ -1796,28 +1799,47 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/unix_chkpwd.c pam-pld-0.77.3/modul
 -	    if (strcmp(user, argv[1])) {
 -		force_failure = 1;
 -	    }
--	}
-+       /*
-+        * determine the current user's name is.
-+        * On a SELinux enabled system, policy will prevent third parties from using
-+        * unix_chkpwd as a password guesser.  Leaving the existing check prevents
-+        * su from working,  Since the current uid is the users and the password is
-+        * for root.
-+         */
-+       if (SELINUX_ENABLED) {
-+         user=argv[1];
-+       }
-+       else {
-+         user = getuidname(getuid());
-+         /* if the caller specifies the username, verify that user
-+            matches it */
-+         if (strcmp(user, argv[1])) {
-+	   force_failure = 1;
-+         }
-+        }
++	if (SELINUX_ENABLED) {
++	  user=argv[1];
++	}
++	else {
++	  user = getuidname(getuid());
++	  /* if the caller specifies the username, verify that user
++	     matches it */
++	  if (strcmp(user, argv[1])) {
++	    force_failure = 1;
++	  }
+ 	}
  
 -	/* read the nullok/nonull option */
+-
+-	npass = read(STDIN_FILENO, option, 8);
++	option=argv[2];
++	if (strncmp(argv[2], "verify", 8) == 0) {
++		/* Get the account information from the shadow file */
++		return _verify_account(argv[1]);
++	}
+ 
+-	if (npass < 0) {
+-		_log_err(LOG_DEBUG, "no option supplied");
+-		return UNIX_FAILED;
+-	} else {
+-		option[7] = '\0';
+-		if (strncmp(option, "nullok", 8) == 0)
+-			opt = 1;
+-		else
+-			opt = 0;
++	if (strncmp(option, "shadow", 8) == 0) {
++		/* Attempting to change the password */
++		return _update_shadow(argv[1]);
+ 	}
+ 
 +        /* read the nullok/nonull option */
++	if (strncmp(option, "nullok", 8) == 0)
++		opt = 1;
++	else
++		opt = 0;
++
+ 	/* read the password from stdin (a pipe from the pam_unix module) */
  
- 	npass = read(STDIN_FILENO, option, 8);
- 
+ 	npass = read(STDIN_FILENO, pass, MAXPASS);
