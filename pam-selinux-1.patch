@@ -40,8 +40,8 @@ diff -urN pam-pld-0.77.3.org/modules/Makefile.am pam-pld-0.77.3/modules/Makefile
  
 diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modules/pam_selinux/Makefile.am
 --- pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am	1970-01-01 01:00:00.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_selinux/Makefile.am	2003-12-27 03:36:47.588593240 +0100
-@@ -0,0 +1,61 @@
++++ pam-pld-0.77.3/modules/pam_selinux/Makefile.am	2003-12-27 04:09:51.105052904 +0100
+@@ -0,0 +1,67 @@
 +## Process this file with automake to produce Makefile.in
 +
 +@SET_MAKE@
@@ -71,8 +71,12 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modu
 +
 +modulesdir		= /lib/security
 +
-+pam_selinux_la_CFLAGS	= -I$(top_srcdir)/include -DWITH_SELINUX=1 $(DYNAMIC)
-+pam_selinux_check_la_CFLAGS	= -I$(top_srcdir)/include -DWITH_SELINUX=1 $(DYNAMIC)
++pam_selinux_la_CFLAGS	= -I$(top_srcdir)/include \
++			  -I$(top_srcdir)/modules/pammodutil/include \
++			  -DWITH_SELINUX=1 $(DYNAMIC)
++pam_selinux_check_la_CFLAGS	= -I$(top_srcdir)/include \
++				  -I$(top_srcdir)/modules/pammodutil/include \
++				  -DWITH_SELINUX=1 $(DYNAMIC)
 +
 +pam_selinux_la_LDFLAGS	= -avoid-version -module
 +pam_selinux_check_la_LDFLAGS= -avoid-version -module
@@ -92,8 +96,10 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modu
 +libpam_selinux_check_la_SOURCES	= pam_selinux_check.c
 +libpam_selinux_la_DEPENDENCIES = register_static_stamp
 +libpam_selinux_check_la_DEPENDENCIES = register_static_stamp
-+libpam_selinux_la_CFLAGS	= -I. -I../.. -I$(top_srcdir)/include $(STATIC)
-+libpam_selinux_check_la_CFLAGS	= -I. -I../.. -I$(top_srcdir)/include $(STATIC)
++libpam_selinux_la_CFLAGS	= -I. -I../.. -I$(top_srcdir)/include \
++				  -I$(top_srcdir)/modules/pammodutil/include $(STATIC)
++libpam_selinux_check_la_CFLAGS	= -I. -I../.. -I$(top_srcdir)/include \
++				  -I$(top_srcdir)/modules/pammodutil/include $(STATIC)
 +endif
 +
 +endif
