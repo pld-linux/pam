@@ -4,8 +4,8 @@ Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authen
 Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.72.4
-Release:	2
+Version:	0.72.5
+Release:	1
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
