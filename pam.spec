@@ -42,6 +42,7 @@ BuildRequires:	skey-devel
 BuildRequires:	sgml-tools
 BuildRequires:	sp
 BuildRequires:	tetex-format-latex
+BuildRequires:	tetex-metafont
 Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
