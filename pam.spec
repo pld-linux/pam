@@ -172,7 +172,7 @@ pam_cap module.
 
 %build
 %configure \
-	%{?bcond_on_pwexport:--enable-want-pwexport-module} \
+	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
 %{__make}
 
@@ -253,7 +253,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /lib/security/pam_warn.so
 %attr(0755,root,root) /lib/security/pam_wheel.so
 %attr(0755,root,root) /lib/security/pam_xauth.so
-%{?bcond_on_pwexport:%attr(0755,root,root) /lib/security/pam_pwexport.so}
+%{?_with_pwexport:%attr(0755,root,root) /lib/security/pam_pwexport.so}
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/unix_chkpwd
 # Removed due to chicken-egg problem
