@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_with pwexport # enable pam_pwexport module (needs hacked pam_unix)
-%bcond_with selinux
+%bcond_without selinux
 #
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
