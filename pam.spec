@@ -19,7 +19,7 @@ Requires:	cracklib-dicts
 Requires:	pwdb >= 0.54-2
 Obsoletes:	pamconfig
 Obsoletes:	pam_make
-Buildroot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible, extensible
