@@ -1,35 +1,41 @@
-Summary:     Pluggable Authentication Modules: modular authentication
-Summary(de): Einsteckbare Authentifizierungsmodule: modulare Authentifizierung
-Summary(fr): PAM : Pluggable Authentication Modules: modular authentication
-Summary(pl): Pluggable Authentication Modules: modu³y autentykacji 
-Summary(tr): Modüler, artýmsal doðrulama birimleri
-Name:        pam
-Version:     0.66
-Release:     2d
-Copyright:   GPL or BSD
-Group:       Base
-Group(pl):   Podstawy
-Source0:     ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
-Source1:     other.pamd
-Patch0:	     %{name}-Makefile.patch
-Patch1:	     %{name}-defs.patch
-Patch2:	     %{name}-filter.patch
-Patch3:	     %{name}-group.patch
-Patch4:	     %{name}-lastlog.patch
-Patch5:	     %{name}-libpam.patch
-Patch6:	     %{name}-limits.patch
-Patch7:	     %{name}-mail.patch
-Patch8:	     %{name}-pwdb.patch
-Patch9:	     %{name}-radius.patch
-Patch10:     %{name}-rhosts.patch
-Patch11:     %{name}-sgml.patch
-Patch12:     %{name}-unix.patch
-Patch13:     %{name}-wheel.patch
-Requires:    cracklib
-Requires:    cracklib-dicts
-Requires:    pwdb 
-Url:         http://parc.power.net/morgan/Linux-PAM/index.html
-Buildroot:   /tmp/%{name}-%{version}-root
+Summary:	Pluggable Authentication Modules: modular authentication
+Summary(de):	Einsteckbare Authentifizierungsmodule
+Summary(fr):	PAM : Pluggable Authentication Modules: modular authentication
+Summary(pl):	Pluggable Authentication Modules: modu³y autentykacji 
+Summary(tr):	Modüler, artýmsal doðrulama birimleri
+Name:		pam
+Version:	0.66
+Release:	5d
+Copyright:	GPL or BSD
+Group:		Libraries
+Group(pl):	Biblioteki
+########	ftp://linux.kernel.org/linux/libs/pam/pre/
+Source0:	Linux-PAM-0.66.tar.bz2
+Source1:	other.pamd
+Patch0:		%{name}-Makefile.patch
+Patch1:		%{name}-defs.patch
+Patch2:		%{name}-filter.patch
+Patch3:		%{name}-group.patch
+Patch4:		%{name}-lastlog.patch
+Patch5:		%{name}-libpam.patch
+Patch6:		%{name}-limits.patch
+Patch7:		%{name}-mail.patch
+Patch8:		%{name}-pwdb.patch
+Patch9:		%{name}-radius.patch
+Patch10:	%{name}-rhosts.patch
+Patch11:	%{name}-sgml.patch
+Patch12:	%{name}-unix.patch
+Patch13:	%{name}-wheel.patch
+Patch14:	%{name}-faillog.patch
+Patch15:	%{name}-umask.patch
+Patch16:	%{name}-deflimit.patch
+Patch17:	%{name}-priority.patch
+Buildroot:	/tmp/%{name}-%{version}-root
+Url:		http://parc.power.net/morgan/Linux-PAM/index.html
+Prereq:		/sbin/ldconfig
+Requires:	cracklib
+Requires:	cracklib-dicts
+Requires:	pwdb 
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible,
@@ -62,12 +68,12 @@ herhangi birini yeniden derlemeksizin bütün PAM uyumlu uygulamalar için
 doðrulama hizmetlerini ayarlamalarýna yardýmcý olan, güclü, esnek ve kapsamlý
 bir doðrulama sistemidir.
 
-%package devel
-Summary:     pam headers and static library
-Group:       Libraries
-Group(pl):   Biblioteki
-Requires:    %{name} = %{version}
-Summary(pl): Pliki nag³ówkowe i biblioteka statyczna PAM
+%package	devel
+Summary:	pam headers and static library
+Summary(pl):	Pliki nag³ówkowe i biblioteka statyczna PAM
+Group:		Libraries
+Group(pl):	Biblioteki
+Requires:	%{name} = %{version}
 
 %description devel
 PAM headers and static library for developers.
@@ -91,13 +97,17 @@ Pliki nag³ówkowe i biblioteka statyczna PAM.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
-
-ln -sf defs/linux-pld.defs default.defs
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
+%patch17 -p1
 
 %build
 touch .freezemake
-OPTIMIZE="$RPM_OPT_FLAGS" LDFLAGS=-s \
-make all
+ln -sf defs/linux-pld.defs default.defs
+ln -sf libpam/include include
+
+make OPTIMIZE="$RPM_OPT_FLAGS -DWITH_PRIORITY"
 
 (cd doc; make)
 
@@ -117,8 +127,11 @@ install doc/man/*.3	$RPM_BUILD_ROOT/usr/man/man3
 echo .so pam.8 > $RPM_BUILD_ROOT/usr/man/man8/pam.conf.8
 echo .so pam.8 > $RPM_BUILD_ROOT/usr/man/man8/pam.d.8
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/{man3/*,man8/*}
-gzip -9nf doc/html/* doc/ps/*.ps doc/txts/*.txt doc/specs/rfc86.0.txt
+gzip -9fn $RPM_BUILD_ROOT/usr/man/man[38]/* 
+bzip2 -9 doc/ps/*.ps doc/txts/*.txt doc/specs/rfc86.0.txt
+
+strip $RPM_BUILD_ROOT/lib/*.so.*.*
+chmod 755 $RPM_BUILD_ROOT/lib/*.so.*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -128,8 +141,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc doc/html doc/ps/*.ps.gz doc/txts/*.txt.gz
-%doc doc/specs/rfc86.0.txt.gz
+%doc doc/html doc/ps/*.ps.bz2 doc/txts/*.txt.bz2
+%doc doc/specs/rfc86.0.txt.bz2
 
 %attr(750,root,root) %dir /etc/pam.d
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/other
@@ -137,54 +150,58 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /lib/*.so.*
 
 %dir /sbin/pam_filter
-%attr(711,root,root) /sbin/pam_filter/*
+%attr(755,root,root) /sbin/pam_filter/*
 
-%attr(711,root,root) /sbin/pwdb_chkpwd
+%attr(755,root,root) /sbin/pwdb_chkpwd
 %attr(755,root,root) /lib/security/*
+
 %attr(750,root,root) %dir /etc/security
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/security/*.conf
 %attr(644,root, man) /usr/man/man[38]/*
 
 %files devel
 %defattr(644,root,root,755)
-%doc examples
 
 %attr(755,root,root) /lib/*.so
 
 /lib/*.a
-/usr/include/security
+
+%dir /usr/include/security
+/usr/include/security/*
 
 %changelog
-* Wed Feb 10 1999 Micha³ Kuratczyk <kurkens@polbox.com>
+* Sun Feb 14 1999 Marcin Korzonek <mkorz@shadow.eu.org>
+  [0.66-5d]
+- added pam-priority patch (setting priority for user processes 
+  if build with -DWITH_PRIORITY flag)
+
+* Tue Feb 02 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
   [0.66-2d]
-- added LDFLAGS=-s
-- simplifications in %install and %files
-- added examples to pam-devel (was missing)
-- added gzipping documantation
-- sloted BuildRoot into PLD standard
-- removed "Prereq: /sbin/ldconfig"
-- gzipping instead bzipping
-- cosmetic changes
+- added default limits for users,
+  by Robert Mi³kowski <milek@rudy.mif.pg.gda.pl>
+- added pam-faillog.patch,
+  by Micha³ Zalewski <lcamtuf@dione.ids.pl>
+- set default limits (pam-deflimits.patch).
 
 * Mon Jan 04 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-[0.66-1d]
+  [0.66-1d]
 - updated to version 0.66,
 - added man pages,
 - added more documentations,
 - cosmetic changes ;)
 
 * Wed Dec 30 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-[0.65-3d]
+  [0.65-3d]
 - added patch against pam_tally.c. 
 
 * Mon Oct 19 1998 Arkadiusz Mi¶kiewicz <misiek@misiek.eu.org>
-[0.65-2d]
+  [0.65-2d]
 - removed 2> from make but added Linux-PAM-0.65.cast-ldconfig patch
 - corrected making of documentation
 - removed ps and txt from documentation
 
 * Tue Oct 06 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-[0.65-1d]
+  [0.65-1d]
 - translation modified for pl,
 - fixed files permissions,
 - macro %%{name} in Source & Patch,
@@ -194,12 +211,11 @@ rm -rf $RPM_BUILD_ROOT
 - minor modifications of the spec file.
 
 * Mon Jun 15 1998 Marcin Korzonek <mkorz@shadow.eu.org>
-[0.65-1]
+  [0.65-1]
 - updated to 0.65
 - build against glibc 2.1.
 
 * Fri Apr 24 1998 Prospector System <bugs@redhat.com>
-
 - translations modified for de, fr, tr
 
 * Tue Mar 10 1998 Cristian Gafton <gafton@redhat.com>
