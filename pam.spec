@@ -22,24 +22,24 @@ Patch0:		%{name}-rlimit_locks.patch
 Patch1:		%{name}-makefile.diff
 Patch2:		%{name}-am15.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
-BuildRequires:	sp
-BuildRequires:	sgml-tools
-BuildRequires:	pwdb-devel
-BuildRequires:	cracklib-devel
-BuildRequires:	skey-devel
-BuildRequires:	opie-devel
-BuildRequires:	libwrap-devel
-BuildRequires:	libcap-devel
-BuildRequires:	db3-devel
-BuildRequires:	flex
-BuildRequires:	bison
-BuildRequires:	libtool
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	bison
+BuildRequires:	cracklib-devel
+BuildRequires:	db3-devel
+BuildRequires:	flex
+BuildRequires:	libcap-devel
+BuildRequires:	libtool
+BuildRequires:	libwrap-devel
+BuildRequires:	opie-devel
+BuildRequires:	pwdb-devel
+BuildRequires:	skey-devel
+BuildRequires:	sgml-tools
+BuildRequires:	sp
+Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
 Requires:	make
-Requires:	awk
 Provides:	pam-pld
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	pamconfig
@@ -76,7 +76,7 @@ sans recompiler aucune application.
 PAM (Pluggable Authentication Modules) jest silnym i ³atwo
 dostosowywalnym do potrzeb systemem autentykacji, który umo¿liwia
 administratorowi indywidualne konfigurowanie poszczególnych serwisów,
-które s± dostosowane i zlinkowane z bibliotekami PAM bez pó¼niejszej
+które s± dostosowane i zlinkowane z bibliotekami PAM, bez pó¼niejszej
 ich rekompilacji w momencie zmiany sposobu autentykacji tych¿e
 serwisów.
 
