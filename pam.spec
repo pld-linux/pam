@@ -239,6 +239,8 @@ Modu³ pam_cap.
 %patch0 -p1
 
 %build
+find . -name Makefile.am -exec sed -i -e 's#modulesdir.*=.*@prefix@/lib#modulesdir = @libdir@#g' "{}" ";"
+find . -type f -exec sed -i -e 's#/lib/security#/%{_lib}/security#g' "{}" ";"
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -251,7 +253,7 @@ Modu³ pam_cap.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/lib
+install -d $RPM_BUILD_ROOT/%{_lib}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -262,19 +264,19 @@ rm -f doc/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib
+mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/%{_lib}
 
 install pamcrypt/.libs/libpamcrypt.a $RPM_BUILD_ROOT%{_libdir}
 
-cd $RPM_BUILD_ROOT/lib
-ln -sf /lib/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -sf /lib/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-ln -sf /lib/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+cd $RPM_BUILD_ROOT/%{_lib}
+ln -sf /%{_lib}/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /%{_lib}/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -sf /%{_lib}/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
 cp %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/system-auth
 
 # useless - shut up check-files
-rm -f $RPM_BUILD_ROOT/lib/security/*.{la,a}
+rm -f $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -301,43 +303,43 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist
 %config(noreplace) %verify(not md5 size mtime) /etc/security/pam_mail.conf
 %attr(0600,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/opasswd
-%attr(0755,root,root) /lib/lib*.so.*.*
-%attr(0755,root,root) /lib/security/pam_access.so
-%attr(0755,root,root) /lib/security/pam_console.so
-%attr(0755,root,root) /lib/security/pam_cracklib.so
-%attr(0755,root,root) /lib/security/pam_debug.so
-%attr(0755,root,root) /lib/security/pam_deny.so
-%attr(0755,root,root) /lib/security/pam_env.so
-%attr(0755,root,root) /lib/security/pam_filter.so
-%attr(0755,root,root) /lib/security/pam_ftp.so
-%attr(0755,root,root) /lib/security/pam_group.so
-%attr(0755,root,root) /lib/security/pam_homedir.so
-%attr(0755,root,root) /lib/security/pam_issue.so
-%attr(0755,root,root) /lib/security/pam_lastlog.so
-%attr(0755,root,root) /lib/security/pam_limits.so
-%attr(0755,root,root) /lib/security/pam_listfile.so
-%attr(0755,root,root) /lib/security/pam_mail.so
-%attr(0755,root,root) /lib/security/pam_make.so
-%attr(0755,root,root) /lib/security/pam_motd.so
-%attr(0755,root,root) /lib/security/pam_netid.so
-%attr(0755,root,root) /lib/security/pam_nologin.so
-%attr(0755,root,root) /lib/security/pam_permit.so
-%attr(0755,root,root) /lib/security/pam_pwgen.so
-%attr(0755,root,root) /lib/security/pam_rhosts.so
-%attr(0755,root,root) /lib/security/pam_rootok.so
-%attr(0755,root,root) /lib/security/pam_securetty.so
-%attr(0755,root,root) /lib/security/pam_shells.so
-%attr(0755,root,root) /lib/security/pam_stress.so
-%attr(0755,root,root) /lib/security/pam_tally.so
-%attr(0755,root,root) /lib/security/pam_time.so
-%attr(0755,root,root) /lib/security/pam_unix.so
-%attr(0755,root,root) /lib/security/pam_userdb.so
-%attr(0755,root,root) /lib/security/pam_usertty.so
-%attr(0755,root,root) /lib/security/pam_utmp.so
-%attr(0755,root,root) /lib/security/pam_warn.so
-%attr(0755,root,root) /lib/security/pam_wheel.so
-%attr(0755,root,root) /lib/security/pam_xauth.so
-%{?_with_pwexport:%attr(0755,root,root) /lib/security/pam_pwexport.so}
+%attr(0755,root,root) /%{_lib}/lib*.so.*.*
+%attr(0755,root,root) /%{_lib}/security/pam_access.so
+%attr(0755,root,root) /%{_lib}/security/pam_console.so
+%attr(0755,root,root) /%{_lib}/security/pam_cracklib.so
+%attr(0755,root,root) /%{_lib}/security/pam_debug.so
+%attr(0755,root,root) /%{_lib}/security/pam_deny.so
+%attr(0755,root,root) /%{_lib}/security/pam_env.so
+%attr(0755,root,root) /%{_lib}/security/pam_filter.so
+%attr(0755,root,root) /%{_lib}/security/pam_ftp.so
+%attr(0755,root,root) /%{_lib}/security/pam_group.so
+%attr(0755,root,root) /%{_lib}/security/pam_homedir.so
+%attr(0755,root,root) /%{_lib}/security/pam_issue.so
+%attr(0755,root,root) /%{_lib}/security/pam_lastlog.so
+%attr(0755,root,root) /%{_lib}/security/pam_limits.so
+%attr(0755,root,root) /%{_lib}/security/pam_listfile.so
+%attr(0755,root,root) /%{_lib}/security/pam_mail.so
+%attr(0755,root,root) /%{_lib}/security/pam_make.so
+%attr(0755,root,root) /%{_lib}/security/pam_motd.so
+%attr(0755,root,root) /%{_lib}/security/pam_netid.so
+%attr(0755,root,root) /%{_lib}/security/pam_nologin.so
+%attr(0755,root,root) /%{_lib}/security/pam_permit.so
+%attr(0755,root,root) /%{_lib}/security/pam_pwgen.so
+%attr(0755,root,root) /%{_lib}/security/pam_rhosts.so
+%attr(0755,root,root) /%{_lib}/security/pam_rootok.so
+%attr(0755,root,root) /%{_lib}/security/pam_securetty.so
+%attr(0755,root,root) /%{_lib}/security/pam_shells.so
+%attr(0755,root,root) /%{_lib}/security/pam_stress.so
+%attr(0755,root,root) /%{_lib}/security/pam_tally.so
+%attr(0755,root,root) /%{_lib}/security/pam_time.so
+%attr(0755,root,root) /%{_lib}/security/pam_unix.so
+%attr(0755,root,root) /%{_lib}/security/pam_userdb.so
+%attr(0755,root,root) /%{_lib}/security/pam_usertty.so
+%attr(0755,root,root) /%{_lib}/security/pam_utmp.so
+%attr(0755,root,root) /%{_lib}/security/pam_warn.so
+%attr(0755,root,root) /%{_lib}/security/pam_wheel.so
+%attr(0755,root,root) /%{_lib}/security/pam_xauth.so
+%{?_with_pwexport:%attr(0755,root,root) /%{_lib}/security/pam_pwexport.so}
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/unix_chkpwd
 %attr(755,root,root) %{_bindir}/pam_pwgen
@@ -359,27 +361,27 @@ rm -rf $RPM_BUILD_ROOT
 
 %files pam_pwdb
 %defattr(644,root,root,755)
-%attr(0755,root,root) /lib/security/pam_pwdb.so
+%attr(0755,root,root) /%{_lib}/security/pam_pwdb.so
 %attr(4755,root,root) /sbin/pwdb_chkpwd
 
 %files pam_radius
 %defattr(644,root,root,755)
-%attr(755,root,root) /lib/security/pam_radius.so
+%attr(755,root,root) /%{_lib}/security/pam_radius.so
 
 %files pam_skey
 %defattr(644,root,root,755)
-%attr(755,root,root) /lib/security/pam_skey.so
+%attr(755,root,root) /%{_lib}/security/pam_skey.so
 
 %files pam_opie
 %defattr(644,root,root,755)
-%attr(755,root,root) /lib/security/pam_opie.so
-%attr(755,root,root) /lib/security/pam_opietrust.so
+%attr(755,root,root) /%{_lib}/security/pam_opie.so
+%attr(755,root,root) /%{_lib}/security/pam_opietrust.so
 
 %files pam_tcpd
 %defattr(644,root,root,755)
-%attr(755,root,root) /lib/security/pam_tcpd.so
+%attr(755,root,root) /%{_lib}/security/pam_tcpd.so
 
 %files pam_cap
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 size mtime) /etc/security/capability.conf
-%attr(755,root,root) /lib/security/pam_cap.so
+%attr(755,root,root) /%{_lib}/security/pam_cap.so
