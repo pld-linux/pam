@@ -1,6 +1,7 @@
 #
 # Conditional build:
-# _with_pwexport		- enable pam_pwexport module (needs hacked pam_unix)
+%bcond_with pwexport # enable pam_pwexport module (needs hacked pam_unix)
+%bcond_with selinux
 #
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrement‰re Authentifizierung
@@ -13,7 +14,7 @@ Summary(tr):	Mod¸ler, art˝msal dorulama birimleri
 Summary(uk):	∂Œ”‘“’Õ≈Œ‘, ›œ ⁄¡¬≈⁄–≈ﬁ’§ ¡’‘≈Œ‘…∆¶À¡√¶¿ ƒÃ— –“œ«“¡Õ
 Name:		pam
 Version:	0.77.3
-Release:	5.1
+Release:	5.2
 Epoch:		0
 License:	GPL/BSD
 Group:		Base
@@ -22,6 +23,7 @@ Source0:	%{name}-pld-%{version}.tar.gz
 # Source0-md5:	d4f46fd262bbb0f1abc1614d53574d94
 Source1:	system-auth.pamd
 Patch0:		%{name}-consoles.patch
+Patch1:		%{name}-selinux-1.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -37,6 +39,7 @@ BuildRequires:	pwdb-devel
 BuildRequires:	skey-devel
 BuildRequires:	sgml-tools
 BuildRequires:	sp
+%{?with_selinux:BuildRequires:	libselinux-devel}
 Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
@@ -237,6 +240,7 @@ Modu≥ pam_cap.
 %prep
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
+%{?with_selinux:%patch1 -p1}
 
 %build
 find . -name Makefile.am -exec sed -i -e 's#modulesdir.*=.*@prefix@/lib#modulesdir = @libdir@#g' "{}" ";"
@@ -246,7 +250,7 @@ find . -type f -exec sed -i -e 's#/lib/security#/%{_lib}/security#g' "{}" ";"
 %{__autoconf}
 %{__automake}
 %configure \
-	%{?_with_pwexport:--enable-want-pwexport-module} \
+	%{?with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
 
 %{__make}
@@ -328,6 +332,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /%{_lib}/security/pam_rhosts.so
 %attr(0755,root,root) /%{_lib}/security/pam_rootok.so
 %attr(0755,root,root) /%{_lib}/security/pam_securetty.so
+%{?with_selinux:%attr(0755,root,root) /%{_lib}/security/pam_selinux*.so}
 %attr(0755,root,root) /%{_lib}/security/pam_shells.so
 %attr(0755,root,root) /%{_lib}/security/pam_stress.so
 %attr(0755,root,root) /%{_lib}/security/pam_tally.so
