@@ -7,13 +7,13 @@ Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(es):	Módulos de autentificación plugables (PAM)
 Name:		pam
 Version:	0.74.3
-Release:	1
+Release:	2
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
+Group(es):	Base
 Group(pl):	Podstawowe
 Group(pt_BR):	Base
-Group(es):	Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
 Patch0:		%{name}-rlimit_locks.patch
 Patch1:		%{name}-makefile.diff
@@ -76,16 +76,18 @@ uygulamalar için doðrulama hizmetlerini ayarlamalarýna yardýmcý olan,
 güclü, esnek ve kapsamlý bir doðrulama sistemidir.
 
 %description -l pt_BR
-PAM (Módulos de Autenticação Plugáveis) é um poderoso, flexível e extensível
-sistema de autenticação, que permite o administrador do sistema configurar
-serviços de autenticação individualmente para cada aplicação pam compatível,
-sem necessidade de recompilar qualquer uma das aplicações.
+PAM (Módulos de Autenticação Plugáveis) é um poderoso, flexível e
+extensível sistema de autenticação, que permite o administrador do
+sistema configurar serviços de autenticação individualmente para cada
+aplicação pam compatível, sem necessidade de recompilar qualquer uma
+das aplicações.
 
 %description -l es
-PAM (Módulos de Autenticación Plugables) es un potente, flexible y extensible
-sistema de autentificación, que permite al administrador del sistema configurar
-servicios de autentificación individualmente para cada aplicación pam
-compatible, sin la necesidad de recompilar cualquier una de las aplicaciones.
+PAM (Módulos de Autenticación Plugables) es un potente, flexible y
+extensible sistema de autentificación, que permite al administrador
+del sistema configurar servicios de autentificación individualmente
+para cada aplicación pam compatible, sin la necesidad de recompilar
+cualquier una de las aplicaciones.
 
 %package devel
 Summary:	PAM header files
@@ -94,8 +96,12 @@ Summary(pt_BR):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 Summary(es):	Libraries and include files needed for PAM development
 Group:		Development/Libraries
 Group(de):	Entwicklung/Libraries
+Group(es):	Desarrollo/Bibliotecas
 Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
+Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description devel
@@ -115,8 +121,12 @@ Summary:	PAM static libraries
 Summary(pl):	Biblioteki statyczne PAM
 Group:		Development/Libraries
 Group(de):	Entwicklung/Libraries
+Group(es):	Desarrollo/Bibliotecas
 Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
+Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-devel = %{version}
 
 %description static
@@ -130,7 +140,9 @@ Summary:	pam_pwdb module
 Summary(pl):	Modu³ pam_pwdb
 Group:		Base
 Group(de):	Gründsätzlich
+Group(es):	Base
 Group(pl):	Podstawowe
+Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	pwdb >= 0.54-2
 
@@ -145,7 +157,9 @@ Summary:	pam_radius module
 Summary(pl):	Modu³ pam_radius
 Group:		Base
 Group(de):	Gründsätzlich
+Group(es):	Base
 Group(pl):	Podstawowe
+Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	pwdb >= 0.54-2
 
@@ -160,7 +174,9 @@ Summary:	pam_skey module
 Summary(pl):	Modu³ pam_skey
 Group:		Base
 Group(de):	Gründsätzlich
+Group(es):	Base
 Group(pl):	Podstawowe
+Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	skey
 
@@ -175,7 +191,9 @@ Summary:	pam_opie module
 Summary(pl):	Modu³ pam_opie
 Group:		Base
 Group(de):	Gründsätzlich
+Group(es):	Base
 Group(pl):	Podstawowe
+Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	opie
 
@@ -190,7 +208,9 @@ Summary:	pam_tcpd module
 Summary(pl):	Modu³ pam_tcpd
 Group:		Base
 Group(de):	Gründsätzlich
+Group(es):	Base
 Group(pl):	Podstawowe
+Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	libwrap
 
@@ -205,7 +225,9 @@ Summary:	pam_cap module
 Summary(pl):	Modu³ pam_cap
 Group:		Base
 Group(de):	Gründsätzlich
+Group(es):	Base
 Group(pl):	Podstawowe
+Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	libcap
 
