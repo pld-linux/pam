@@ -8,7 +8,7 @@ Version:	0.69
 Release:	4
 Copyright:	GPL or BSD
 Group:		Base
-%define		date	19990911
+%define		date	19990914
 Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
@@ -101,8 +101,6 @@ install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security} \
 make install FAKEROOT=$RPM_BUILD_ROOT
 
 touch $RPM_BUILD_ROOT/etc/security/blacklist
-
-ln -s trigram.en $RPM_BUILD_ROOT/etc/security/trigram
 
 install conf/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
 
