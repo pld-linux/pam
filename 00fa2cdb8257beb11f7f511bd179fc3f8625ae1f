@@ -1,0 +1,6 @@
+- update to 0.72.4
+- bugfix: now /%{_lib}/security/ may be omitted in /etc/pam.d/* (saq)
+- modules/pam_unix/support.c (_unix_verify_password):
+	fixed two potential SIGSEGV (misiek)
+- finished and enabled pam_utmp module (me)
+- fixed compilation with db3
