@@ -1,3 +1,6 @@
+#
+# Conditional build:
+# _with_pwexport	- enable pam_pwexport module (needs hacked pam_unix)
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(es):	Módulos de autentificación plugables (PAM)
@@ -7,7 +10,7 @@ Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.74.3
-Release:	2
+Release:	3
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
@@ -17,6 +20,7 @@ Group(pt_BR):	Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
 Patch0:		%{name}-rlimit_locks.patch
 Patch1:		%{name}-makefile.diff
+Patch2:		%{name}-am15.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
 BuildRequires:	sgml-tools
@@ -237,6 +241,7 @@ Modu³ pam_cap.
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
 %patch1 -p0
+%patch2 -p1
 
 %build
 rm -rf missing
@@ -247,6 +252,9 @@ automake -a -c
 %configure \
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
+
+ln -sf ../libtool modules/libtool
+
 %{__make}
 
 %install
@@ -256,9 +264,9 @@ install -d $RPM_BUILD_ROOT/lib
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
-ln -s -f /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -s -f /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-ln -s -f /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+ln -sf /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -sf /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
 gzip -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
 
@@ -268,8 +276,8 @@ rm -f doc/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
