@@ -10,7 +10,7 @@ Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.75.0
-Release:	0.2
+Release:	0.3
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
@@ -221,6 +221,10 @@ ln -sf ../../../libpam/include/security/pam_modules.h libpam_misc/include/securi
 
 
 %{__make}
+
+# avoid relinking libpam_misc to allow building w/o pam-devel installed
+sed s/^relink_command.*// libpam_misc/libpam_misc.la > libpam_misc.la.tmp
+mv -f libpam_misc.la.tmp libpam_misc/libpam_misc.la
 
 %install
 rm -rf $RPM_BUILD_ROOT
