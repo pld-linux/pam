@@ -15,7 +15,7 @@ Version:	0.77.0
 Release:	1
 License:	GPL/BSD
 Group:		Base
-Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
+Source0:	ftp://ftp.pld.org.pl/software/pam/%{name}-pld-%{version}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
