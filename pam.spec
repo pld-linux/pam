@@ -99,6 +99,8 @@ install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security} \
 
 make install FAKEROOT=$RPM_BUILD_ROOT
 
+touch $RPM_BUILD_ROOT/etc/security/blacklist
+
 install conf/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
 
 install doc/man/pam.8 $RPM_BUILD_ROOT%{_mandir}/man8
@@ -151,6 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/pam.d/other
 %config /etc/security/*.conf
 %config /etc/security/consoles
+%config(noreplace) /etc/security/blacklist
 %attr(0600,root,root) %config(noreplace) /etc/security/opasswd
 %attr(0755,root,root) /lib/lib*.so.*.*
 %attr(0755,root,root) /lib/security/*.so
