@@ -237,7 +237,6 @@ Modu³ pam_cap.
 %setup -q -n %{name}-pld-%{version}
 
 %build
-rm -f missing
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -271,6 +270,9 @@ ln -sf /lib/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.s
 ln -sf /lib/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
 cp %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/system-auth
+
+# useless - shut up check-files
+rm -f $RPM_BUILD_ROOT/lib/security/*.{la,a}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
