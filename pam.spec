@@ -10,7 +10,7 @@ Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.74.3
-Release:	4
+Release:	3
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
@@ -254,6 +254,16 @@ automake -a -c
 	--enable-strong-crypto
 
 ln -sf ../libtool modules/libtool
+ln -sf libpam/include include
+ln -sf ../../../libpam_misc/include/security/pam_misc.h include/security/pam_misc.h
+ln -sf ../../../libpamc/include/security/pam_client.h include/security/pam_client.h
+ln -sf ../../../libpam/include/security/_pam_compat.h libpam_misc/include/security/_pam_compat.h
+ln -sf ../../../libpam/include/security/_pam_macros.h libpam_misc/include/security/_pam_macros.h
+ln -sf ../../../libpam/include/security/_pam_types.h libpam_misc/include/security/_pam_types.h
+ln -sf ../../../libpam/include/security/pam_appl.h libpam_misc/include/security/pam_appl.h
+ln -sf ../../../libpam/include/security/pam_malloc.h libpam_misc/include/security/pam_malloc.h
+ln -sf ../../../libpam/include/security/pam_modules.h libpam_misc/include/security/pam_modules.h
+
 
 %{__make}
 
@@ -289,7 +299,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /sbin/pam_filter
 %dir /var/lock/console
 %dir /etc/security/console.apps
-%config(noreplace) %verify(not md5 size mtime) /etc/pam.d/other
+%config %verify(not md5 size mtime) /etc/pam.d/other
 %config %verify(not md5 size mtime) /etc/security/access.conf
 %config %verify(not md5 size mtime) /etc/security/pam_env.conf
 %config %verify(not md5 size mtime) /etc/security/group.conf
