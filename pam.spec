@@ -17,6 +17,7 @@ Release:	1
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
+%{?_with_configurable_pam_mail:Source1:	%{name}-pam_mail.conf}
 %{?_with_configurable_pam_mail:Patch0:	%{name}-configurable_pam_mail.patch}
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
@@ -266,6 +267,8 @@ rm -f doc/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
+%{?_with_configurable_pam_mail:install %{SOURCE1} $RPM_BUILD_ROOT/etc/security/pam_mail.conf}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -288,6 +291,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 size mtime) /etc/security/consoles
 %config(noreplace) %verify(not md5 size mtime) /etc/security/trigram*
 %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist
+%{?_with_configurable_pam_mail:%config(noreplace) %verify(not md5 size mtime) /etc/security/pam_mail.conf}
 %attr(0600,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/opasswd
 %attr(0755,root,root) /lib/lib*.so.*.*
 %attr(0755,root,root) /lib/security/pam_access.so
