@@ -12,7 +12,8 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.77.1
-Release:	1
+Release:	2
+Epoch:		0
 License:	GPL/BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/software/pam/%{name}-pld-%{version}.tar.gz
@@ -115,7 +116,7 @@ Summary(pt_BR):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 Summary(ru):	âÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 
 %description devel
 Header files for developing PAM based applications.
@@ -138,7 +139,7 @@ Summary(pl):	Biblioteki statyczne PAM
 Summary(ru):	óÔÁÔÉÞÅÓËÉÅ ÂÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM
 Summary(uk):	óÔÁÔÉÞÎ¦ Â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description static
 PAM static libraries.
@@ -156,7 +157,7 @@ Biblioteki statyczne PAM.
 Summary:	pam_pwdb module
 Summary(pl):	Modu³ pam_pwdb
 Group:		Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	pwdb >= 0.54-2
 
 %description pam_pwdb
@@ -169,7 +170,7 @@ Modu³ pam_pwdb.
 Summary:	pam_radius module
 Summary(pl):	Modu³ pam_radius
 Group:		Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	pwdb >= 0.54-2
 
 %description pam_radius
@@ -182,7 +183,7 @@ Modu³ pam_radius.
 Summary:	pam_skey module
 Summary(pl):	Modu³ pam_skey
 Group:		Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	skey
 
 %description pam_skey
@@ -195,7 +196,7 @@ Modu³ pam_skey.
 Summary:	pam_opie module
 Summary(pl):	Modu³ pam_opie
 Group:		Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	opie
 
 %description pam_opie
@@ -208,7 +209,7 @@ Modu³ pam_opie.
 Summary:	pam_tcpd module
 Summary(pl):	Modu³ pam_tcpd
 Group:		Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	libwrap
 
 %description pam_tcpd
@@ -221,7 +222,7 @@ Modu³ pam_tcpd.
 Summary:	pam_cap module
 Summary(pl):	Modu³ pam_cap
 Group:		Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	libcap
 
 %description pam_cap
