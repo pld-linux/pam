@@ -29,7 +29,7 @@ BuildRequires:	cracklib-devel
 BuildRequires:	db-devel
 BuildRequires:	flex
 BuildRequires:	libcap-devel
-BuildRequires:	libtool >= 1:1.4.2-9
+BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libwrap-devel >= 7.6-32
 BuildRequires:	opie-devel
 BuildRequires:	pwdb-devel
