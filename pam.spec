@@ -1,39 +1,39 @@
-Summary:     Pluggable Authentication Modules: modular, incremental authentication
-Summary(de): Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
-Summary(fr): PAM : Pluggable Authentication Modules: modular, incremental authentication
-Summary(pl): Modularny system autentypacji
-Summary(tr): Modüler, artýmsal doðrulama birimleri
-Name:        pam
-Version:     0.66
-Release:     3
-Copyright:   GPL or BSD
-Group:       Base
-Source:      ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
-Source1:     other.pamd
-Source2:     ftp://sysadm.dntis.ro/pub/devel/pam/pam_make-0.1.tar.gz
-%define      date 990323
-Source3:     ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_unix-%{date}.tar.gz
-Patch0:      Linux-PAM-Makefile.patch
-Patch1:      Linux-PAM-defs.patch
-Patch2:      Linux-PAM-deflimit.patch
-Patch3:      Linux-PAM-prompt.patch
-Patch4:      Linux-PAM-pwdb.patch
-Patch5:      Linux-PAM-libpwdb.patch
-Patch6:      Linux-PAM-glibc.patch
-Patch7:      Linux-PAM-sgml.patch
-Patch8:      Linux-PAM-priority.patch
-Patch9:      Linux-PAM-tally-shadow_faillog.patch
-Patch10:     Linux-PAM-tally-new_options.patch
-Patch11:     Linux-PAM-tally-add_time.patch
-Patch12:     Linux-PAM-tally-rhost_and_time.patch
-Patch13:     Linux-PAM-tally-fstat.patch
-Patch14:     Linux-PAM-Maildir.patch
-Patch15:     Linux-PAM-pam_make.patch
-Patch16:     Linux-PAM-cleanup.patch
-URL:         http://parc.power.net/morgan/Linux-PAM/index.html
-Requires:    cracklib, cracklib-dicts, pwdb >= 0.54-2
-Obsoletes:   pamconfig, pam_make
-Buildroot:   /tmp/%{name}-%{version}-root
+Summary:	Pluggable Authentication Modules: modular, incremental authentication
+Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
+Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authentication
+Summary(pl):	Modularny system autentypacji
+Summary(tr):	Modüler, artýmsal doðrulama birimleri
+Name:		pam
+Version:	0.66
+Release:	3
+Copyright:	GPL or BSD
+Group:		Base
+Source0:	ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
+Source1:	other.pamd
+Source2:	ftp://sysadm.dntis.ro/pub/devel/pam/pam_make-0.1.tar.gz
+%define		date 990323
+Source3:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_unix-%{date}.tar.gz
+Patch0:		Linux-PAM-Makefile.patch
+Patch1:		Linux-PAM-defs.patch
+Patch2:		Linux-PAM-deflimit.patch
+Patch3:		Linux-PAM-prompt.patch
+Patch4:		Linux-PAM-pwdb.patch
+Patch5:		Linux-PAM-libpwdb.patch
+Patch6:		Linux-PAM-glibc.patch
+Patch7:		Linux-PAM-sgml.patch
+Patch8:		Linux-PAM-priority.patch
+Patch9:		Linux-PAM-tally-shadow_faillog.patch
+Patch10:	Linux-PAM-tally-new_options.patch
+Patch11:	Linux-PAM-tally-add_time.patch
+Patch12:	Linux-PAM-tally-rhost_and_time.patch
+Patch13:	Linux-PAM-tally-fstat.patch
+Patch14:	Linux-PAM-Maildir.patch
+Patch15:	Linux-PAM-pam_make.patch
+Patch16:	Linux-PAM-cleanup.patch
+URL:		http://parc.power.net/morgan/Linux-PAM/index.html
+Requires:	cracklib, cracklib-dicts, pwdb >= 0.54-2
+Obsoletes:	pamconfig, pam_make
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible, extensible
@@ -67,11 +67,11 @@ doðrulama hizmetlerini ayarlamalarýna yardýmcý olan, güclü, esnek ve kapsamlý
 bir doðrulama sistemidir.
 
 %package devel
-Summary:     PAM header files
-Summary(pl): Pliki nag³ówkowe i dokumentacja do PAM
-Group:       Libraries
-Group(pl):   Biblioteki
-Requires:    %{name} = %{version}
+Summary:	PAM header files
+Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
+Group:		Libraries
+Group(pl):	Biblioteki
+Requires:	%{name} = %{version}
 
 %description devel
 Header files for developing PAM based applications.
@@ -83,11 +83,11 @@ Header files for developing PAM based applications.
 Pliki nag³ówkowe i dokumentacja do PAM.
 
 %package static
-Summary:     PAM static libraries
-Summary(pl): Biblioteki statyczne PAM
-Group:       Libraries
-Group(pl):   Biblioteki
-Requires:    %{name}-devel = %{version}
+Summary:	PAM static libraries
+Summary(pl):	Biblioteki statyczne PAM
+Group:		Libraries
+Group(pl):	Biblioteki
+Requires:	%{name}-devel = %{version}
 
 %description static
 PAM static libraries.
@@ -144,11 +144,11 @@ echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/man/man3/pam_close_session.3
 
 # make sure the modules built...
 [ -f $RPM_BUILD_ROOT/lib/security/pam_deny.so ] || {
-  echo "You have LITTLE or NOTHING in your /lib/security directory:"
-  echo $RPM_BUILD_ROOT/lib/security/*
-  echo ""
-  echo "Fix it before you install this package, while you still can!"
-  exit 1
+	echo "You have LITTLE or NOTHING in your /lib/security directory:"
+	echo $RPM_BUILD_ROOT/lib/security/*
+	echo ""
+	echo "Fix it before you install this package, while you still can!"
+	exit 1
 }
 
 strip $RPM_BUILD_ROOT/lib/lib*.so.*.*
@@ -163,34 +163,34 @@ gzip -9fn $RPM_BUILD_ROOT/usr/man/man[38]/* Copyright \
 
 rm -f doc/{ps,txts}/{README,*.log}
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %files
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %doc Copyright.gz doc/{html,ps,txts,specs/*.gz}
 %dir /etc/pam.d
 %dir /lib/security
 %dir /sbin/pam_filter
 %config /etc/pam.d/other
 %config /etc/security/*
-%attr(755 , root, root) /lib/lib*.so.*.*
-%attr(755 , root, root) /lib/security/*.so
-%attr(755 , root, root) /sbin/pam_filter/upperLOWER
-%attr(4711, root, root) /sbin/pwdb_chkpwd
-%attr(644 , root, root) /usr/man/man8/*
+%attr(0755,root,root) /lib/lib*.so.*.*
+%attr(0755,root,root) /lib/security/*.so
+%attr(0755,root,root) /sbin/pam_filter/upperLOWER
+%attr(4711,root,root) /sbin/pwdb_chkpwd
+%attr(0644,root,root) /usr/man/man8/*
 
 %files devel
-%defattr(644, root, root, 755)
-/lib/lib*.so
+%defattr(644,root,root,755)
+%attr(755,root,root) /lib/lib*.so
 /usr/include/security
-%attr(644, root, root) /usr/man/man3/*
+/usr/man/man3/*
 
 %files static
-%attr(644, root, root) /usr/lib/lib*.a
+%attr(644,root,root) /usr/lib/lib*.a
 
 %changelog
 * Sat Mar  21 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
