@@ -20,7 +20,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.77.6
-Release:	0.3
+Release:	1
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
