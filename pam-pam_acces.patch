@@ -1,0 +1,12 @@
+diff -urN pam-pld-0.73.0/modules/pam_access/pam_access.c pam-new/modules/pam_access/pam_access.c
+--- pam-pld-0.73.0/modules/pam_access/pam_access.c	Thu Dec  7 20:30:24 2000
++++ pam-new/modules/pam_access/pam_access.c	Wed Jan 13 04:12:48 2049
+@@ -12,7 +12,7 @@
+ #include <stdlib.h>
+ #include <unistd.h>
+ 
+-#ifndef gethostname
++#if ! defined __USE_BSD || ! defined __USE_XOPEN
+ /* man page says above file includes this... */
+ extern int gethostname(char *name, size_t len);
+ #endif
