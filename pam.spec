@@ -109,7 +109,7 @@ install ${RPM_SOURCE_DIR}/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
 }
 
 strip $RPM_BUILD_ROOT/lib/lib*.so.*.*
-strip --strip-debug $RPM_BUILD_ROOT/lib/security/*.so
+strip --strip-debug $RPM_BUILD_ROOT/lib/security/*.so || :
 strip $RPM_BUILD_ROOT/sbin/pwdb_chkpwd
 mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
 
