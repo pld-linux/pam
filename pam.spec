@@ -80,8 +80,8 @@ bir doðrulama sistemidir.
 %package devel
 Summary:	PAM header files
 Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
-Group:		Libraries
-Group(pl):	Biblioteki
+Group:		Development/Libraries
+Group(pl):	Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 
 %description devel
@@ -96,8 +96,8 @@ Pliki nag³ówkowe i dokumentacja do PAM.
 %package static
 Summary:	PAM static libraries
 Summary(pl):	Biblioteki statyczne PAM
-Group:		Libraries
-Group(pl):	Biblioteki
+Group:		Development/Libraries
+Group(pl):	Programowanie/Biblioteki
 Requires:	%{name}-devel = %{version}
 
 %description static
