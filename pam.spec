@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_with	pwexport	# enable pam_pwexport module (needs hacked pam_unix)
-%bcond_with	selinux		# SELinux support (for testing, may not work correcly yet)
+%bcond_without	selinux		# build without SELinux support
 #
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
@@ -14,7 +14,7 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.77.3
-Release:	8
+Release:	9
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -122,7 +122,7 @@ Summary(pt_BR):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 Summary(ru):	âÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM
 Group:		Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	FHS >= 2.2-9
 
 %description devel
@@ -146,7 +146,7 @@ Summary(pl):	Biblioteki statyczne PAM
 Summary(ru):	óÔÁÔÉÞÅÓËÉÅ ÂÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM
 Summary(uk):	óÔÁÔÉÞÎ¦ Â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{epoch}:%{version}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description static
 PAM static libraries.
@@ -164,7 +164,7 @@ Biblioteki statyczne PAM.
 Summary:	pam_pwdb module
 Summary(pl):	Modu³ pam_pwdb
 Group:		Base
-Requires:	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	pwdb >= 0.54-2
 
 %description pam_pwdb
@@ -177,7 +177,7 @@ Modu³ pam_pwdb.
 Summary:	pam_radius module
 Summary(pl):	Modu³ pam_radius
 Group:		Base
-Requires:	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	pwdb >= 0.54-2
 
 %description pam_radius
@@ -190,7 +190,7 @@ Modu³ pam_radius.
 Summary:	pam_skey module
 Summary(pl):	Modu³ pam_skey
 Group:		Base
-Requires:	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	skey
 
 %description pam_skey
@@ -203,7 +203,7 @@ Modu³ pam_skey.
 Summary:	pam_opie module
 Summary(pl):	Modu³ pam_opie
 Group:		Base
-Requires:	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	opie
 
 %description pam_opie
@@ -216,7 +216,7 @@ Modu³ pam_opie.
 Summary:	pam_tcpd module
 Summary(pl):	Modu³ pam_tcpd
 Group:		Base
-Requires:	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	libwrap >= 7.6-32
 
 %description pam_tcpd
@@ -229,7 +229,7 @@ Modu³ pam_tcpd.
 Summary:	pam_cap module
 Summary(pl):	Modu³ pam_cap
 Group:		Base
-Requires:	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	libcap
 
 %description pam_cap
