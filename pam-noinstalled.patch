@@ -1,0 +1,10 @@
+--- pam-pld-0.77.1/modules/pam_tally/Makefile.am.orig	Mon Nov 18 17:27:55 2002
++++ pam-pld-0.77.1/modules/pam_tally/Makefile.am	Wed Dec 25 21:45:33 2002
+@@ -28,6 +28,7 @@
+ 
+ sbin_PROGRAMS		= pam_tally
+ pam_tally_SOURCES	= pam_tally_app.c
++pam_tally_CFLAGS	= -I$(top_srcdir)/include
+ 
+ clean-local:
+ 	rm -rf static

@@ -16,6 +16,7 @@ Release:	1
 License:	GPL/BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/software/pam/%{name}-pld-%{version}.tar.gz
+Patch0:		%{name}-noinstalled.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -24,14 +25,13 @@ BuildRequires:	cracklib-devel
 BuildRequires:	db-devel
 BuildRequires:	flex
 BuildRequires:	libcap-devel
-BuildRequires:	libtool
+BuildRequires:	libtool >= 1:1.4.2-9
 BuildRequires:	libwrap-devel
 BuildRequires:	opie-devel
 BuildRequires:	pwdb-devel
 BuildRequires:	skey-devel
 BuildRequires:	sgml-tools
 BuildRequires:	sp
-BuildRequires:	pam-devel
 Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
@@ -230,18 +230,19 @@ Modu³ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
+%patch -p1
 
 %build
-rm -rf missing
+rm -f missing
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__automake}
 %configure \
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
 
 %{__make}
-
-# avoid relinking libpam_misc to allow building w/o pam-devel installed
-sed s/^relink_command.*// libpam_misc/libpam_misc.la > libpam_misc.la.tmp
-mv -f libpam_misc.la.tmp libpam_misc/libpam_misc.la
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -249,16 +250,17 @@ install -d $RPM_BUILD_ROOT/lib
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
-ln -sf /lib/libpam.so.0.77.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -sf /lib/libpam_misc.so.0.77.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-ln -sf /lib/libpamc.so.0.77.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
-
 rm -f doc/{ps,txts}/{README,*.log} \
 	doc/{html,txts}/Makefile*
 
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
+
+mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib
+cd $RPM_BUILD_ROOT/lib
+ln -sf /lib/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -sf /lib/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
