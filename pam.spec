@@ -1,7 +1,7 @@
 #
 # Conditional build:
-%bcond_with pwexport # enable pam_pwexport module (needs hacked pam_unix)
-%bcond_without selinux
+%bcond_with	pwexport	# enable pam_pwexport module (needs hacked pam_unix)
+%bcond_with	selinux		# SELinux support (BROKEN, DON'T USE!!!)
 #
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementДre Authentifizierung
@@ -14,7 +14,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.77.3
-Release:	6
+Release:	7
 Epoch:		0
 License:	GPL/BSD
 Group:		Base
