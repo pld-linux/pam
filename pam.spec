@@ -195,7 +195,7 @@ rm -rf $RPM_BUILD_ROOT
 - /sbin/ldconfig is now runed as -p parameter in %post{un},
 - fixed makin ps documentation,
 - added static and devel subpackages,
-- added ignore errors during "make install" (-i switch),
+- added ignore errors during "make install" (-i swhich),
 - added striping shared libraries,
 - added striping /sbin/pwdb_chkpwd,
 - added striping debug info on all modules,
