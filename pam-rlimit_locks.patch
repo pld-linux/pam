@@ -1,0 +1,21 @@
+diff -urN pam-pld-0.74.0.org/modules/pam_limits/pam_limits.c pam-pld-0.74.0/modules/pam_limits/pam_limits.c
+--- pam-pld-0.74.0.org/modules/pam_limits/pam_limits.c	Fri Feb  2 16:17:15 2001
++++ pam-pld-0.74.0/modules/pam_limits/pam_limits.c	Fri Feb  2 16:20:42 2001
+@@ -237,7 +237,7 @@
+     D(("called."));
+ 
+     for(i = 0; i < RLIM_NLIMITS; i++) 
+-	retval |= getrlimit(i, &pl->limits[i].limit);
++	retval |= (i == RLIMIT_LOCKS) ? 0 : getrlimit(i, &pl->limits[i].limit);
+     
+     pl->limits[RLIMIT_CPU].src_soft = LIMITS_DEF_NONE;
+     pl->limits[RLIMIT_CPU].src_hard = LIMITS_DEF_NONE;
+@@ -498,7 +498,7 @@
+     for (i=0; i<RLIM_NLIMITS; i++) {
+         if (pl->limits[i].limit.rlim_cur > pl->limits[i].limit.rlim_max)
+             pl->limits[i].limit.rlim_cur = pl->limits[i].limit.rlim_max;
+-        retval |= setrlimit(i, &pl->limits[i].limit);
++        retval |= (i == RLIMIT_LOCKS) ? 0 :  setrlimit(i, &pl->limits[i].limit);
+     }
+     
+     if (retval != PAM_SUCCESS)
