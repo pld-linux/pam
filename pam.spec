@@ -77,9 +77,9 @@ sans recompiler aucune application.
 PAM (Pluggable Authentication Modules) jest silnym i ³atwo
 dostosowywalnym do potrzeb systemem uwierzytelniania, który umo¿liwia
 administratorowi indywidualne konfigurowanie poszczególnych us³ug,
-które s± dostosowane i zlinkowane z bibliotekami PAM, bez pó¼niejszej
-ich rekompilacji w momencie zmiany sposobu uwierzytelniania tych¿e
-us³ug.
+które s± dostosowane i skonsolidowane z bibliotekami PAM, bez
+pó¼niejszej ich rekompilacji w momencie zmiany sposobu
+uwierzytelniania tych¿e us³ug.
 
 %description -l pt_BR
 PAM (Módulos de Autenticação Plugáveis) é um poderoso, flexível e
