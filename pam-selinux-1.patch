@@ -1,7 +1,7 @@
-diff -urN pam-pld-0.77.3.org/configure.in pam-pld-0.77.3/configure.in
---- pam-pld-0.77.3.org/configure.in	2003-12-27 01:14:06.000000000 +0100
-+++ pam-pld-0.77.3/configure.in	2003-12-27 03:27:48.069612592 +0100
-@@ -282,6 +282,8 @@
+diff -urN pam-pld-0.77.6.orig/configure.in pam-pld-0.77.6/configure.in
+--- pam-pld-0.77.6.orig/configure.in	2004-10-01 17:22:23.000000000 +0200
++++ pam-pld-0.77.6/configure.in	2004-10-04 19:55:06.043759376 +0200
+@@ -290,6 +290,8 @@
  	AC_MSG_WARN(pam_cap module will not be built!))
  AC_CHECK_LIB(opie, opieverify, opielib_present=true,
  	AC_MSG_WARN(pam_opie modules will not be built!))
@@ -10,7 +10,7 @@ diff -urN pam-pld-0.77.3.org/configure.in pam-pld-0.77.3/configure.in
  AC_MSG_CHECKING(for hosts_access in -lwrap)
  oldLIBS=$LIBS
  LIBS="$LIBS -lwrap"
-@@ -301,6 +303,7 @@
+@@ -309,6 +311,7 @@
  AM_CONDITIONAL(CAPLIB_PRESENT, test x$caplib_present = xtrue)
  AM_CONDITIONAL(WRAPLIB_PRESENT, test x$wraplib_present = xtrue)
  AM_CONDITIONAL(OPIELIB_PRESENT, test x$opielib_present = xtrue)
@@ -18,51 +18,9 @@ diff -urN pam-pld-0.77.3.org/configure.in pam-pld-0.77.3/configure.in
  AC_DEFINE(HAVE_CRACKLIB)
  
  AC_MSG_CHECKING([where cracklib_dict is located])
-diff -urN pam-pld-0.77.3.org/modules/pam_unix/lckpwdf.-c pam-pld-0.77.3/modules/pam_unix/lckpwdf.-c
---- pam-pld-0.77.3.org/modules/pam_unix/lckpwdf.-c	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/lckpwdf.-c	2003-12-27 01:14:20.000000000 +0100
-@@ -26,6 +26,9 @@
- 
- #include <fcntl.h>
- #include <signal.h>
-+#ifdef WITH_SELINUX
-+#include <selinux/selinux.h>
-+#endif
- 
- #define LOCKFILE "/etc/.pwd.lock"
- #define TIMEOUT 15
-@@ -64,6 +67,28 @@
- 	if (lockfd != -1)
- 		return -1;
- 
-+#ifdef WITH_SELINUX
-+	if(is_selinux_enabled() > 0)
-+	{
-+		lockfd = open(LOCKFILE, O_WRONLY);
-+		if(lockfd == -1 && errno == ENOENT)
-+		{
-+			security_context_t create_context;
-+			int rc;
-+
-+			if(getfilecon("/etc/passwd", &create_context))
-+				return -1;
-+			rc = setfscreatecon(create_context);
-+			freecon(create_context);
-+			if(rc)
-+				return -1;
-+			lockfd = open(LOCKFILE, O_CREAT | O_WRONLY, 0600);
-+			if(setfscreatecon(NULL))
-+				return -1;
-+		}
-+	}
-+	else
-+#endif
- 	lockfd = open(LOCKFILE, O_CREAT | O_WRONLY, 0600);
- 	if (lockfd == -1)
- 		return -1;
-diff -urN pam-pld-0.77.3.org/modules/pam_unix/Makefile.am pam-pld-0.77.3/modules/pam_unix/Makefile.am
---- pam-pld-0.77.3.org/modules/pam_unix/Makefile.am	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/Makefile.am	2003-12-27 03:33:35.157847160 +0100
+diff -urN pam-pld-0.77.6.orig/modules/pam_unix/Makefile.am pam-pld-0.77.6/modules/pam_unix/Makefile.am
+--- pam-pld-0.77.6.orig/modules/pam_unix/Makefile.am	2004-10-01 16:49:14.000000000 +0200
++++ pam-pld-0.77.6/modules/pam_unix/Makefile.am	2004-10-04 19:55:06.044759224 +0200
 @@ -9,11 +9,19 @@
  modulesdir		= /@libdirname@/security
  sbindir			= /sbin
@@ -114,9 +72,51 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/Makefile.am pam-pld-0.77.3/modules
  
  EXTRA_DIST		= README CHANGELOG
  
-diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_acct.c pam-pld-0.77.3/modules/pam_unix/pam_unix_acct.c
---- pam-pld-0.77.3.org/modules/pam_unix/pam_unix_acct.c	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/pam_unix_acct.c	2003-12-27 01:14:20.000000000 +0100
+diff -urN pam-pld-0.77.6.orig/modules/pam_unix/lckpwdf.-c pam-pld-0.77.6/modules/pam_unix/lckpwdf.-c
+--- pam-pld-0.77.6.orig/modules/pam_unix/lckpwdf.-c	2003-09-26 13:30:16.000000000 +0200
++++ pam-pld-0.77.6/modules/pam_unix/lckpwdf.-c	2004-10-04 19:55:06.044759224 +0200
+@@ -26,6 +26,9 @@
+ 
+ #include <fcntl.h>
+ #include <signal.h>
++#ifdef WITH_SELINUX
++#include <selinux/selinux.h>
++#endif
+ 
+ #define LOCKFILE "/etc/.pwd.lock"
+ #define TIMEOUT 15
+@@ -64,6 +67,28 @@
+ 	if (lockfd != -1)
+ 		return -1;
+ 
++#ifdef WITH_SELINUX
++	if(is_selinux_enabled() > 0)
++	{
++		lockfd = open(LOCKFILE, O_WRONLY);
++		if(lockfd == -1 && errno == ENOENT)
++		{
++			security_context_t create_context;
++			int rc;
++
++			if(getfilecon("/etc/passwd", &create_context))
++				return -1;
++			rc = setfscreatecon(create_context);
++			freecon(create_context);
++			if(rc)
++				return -1;
++			lockfd = open(LOCKFILE, O_CREAT | O_WRONLY, 0600);
++			if(setfscreatecon(NULL))
++				return -1;
++		}
++	}
++	else
++#endif
+ 	lockfd = open(LOCKFILE, O_CREAT | O_WRONLY, 0600);
+ 	if (lockfd == -1)
+ 		return -1;
+diff -urN pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_acct.c pam-pld-0.77.6/modules/pam_unix/pam_unix_acct.c
+--- pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_acct.c	2004-10-01 16:49:14.000000000 +0200
++++ pam-pld-0.77.6/modules/pam_unix/pam_unix_acct.c	2004-10-04 19:55:06.045759072 +0200
 @@ -44,6 +44,15 @@
  #include <pwd.h>
  #include <shadow.h>
@@ -131,8 +131,8 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_acct.c pam-pld-0.77.3/mod
 +#define SELINUX_ENABLED 0
 +#endif
  
- 
  #include "security/_pam_macros.h"
+ 
 @@ -59,7 +68,110 @@
  #endif				/* LINUX_PAM */
  
@@ -252,11 +252,11 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_acct.c pam-pld-0.77.3/mod
 +	    spent = _unix_run_verify_binary(pamh, ctrl, uname);
 +
  	if (!spent)
- 		return PAM_AUTHINFO_UNAVAIL;	/* Couldn't get username from shadow */
- 
-diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/modules/pam_unix/pam_unix_passwd.c
---- pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/pam_unix_passwd.c	2003-12-27 03:09:39.984026744 +0100
+ 		if (on(UNIX_BROKEN_SHADOW,ctrl))
+ 			return PAM_SUCCESS;
+diff -urN pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.6/modules/pam_unix/pam_unix_passwd.c
+--- pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_passwd.c	2004-10-01 17:21:11.000000000 +0200
++++ pam-pld-0.77.6/modules/pam_unix/pam_unix_passwd.c	2004-10-04 19:55:06.048758616 +0200
 @@ -56,7 +56,18 @@
  #include <rpc/rpc.h>
  #include <rpcsvc/yp_prot.h>
@@ -277,7 +277,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
  #ifdef HAVE_CRACK_H
  #include <crack.h>
  #endif
-@@ -260,6 +271,97 @@
+@@ -224,6 +235,97 @@
  	return master;
  }
  
@@ -375,10 +375,10 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
  static int check_old_password(const char *forwho, const char *newpass)
  {
  	static char buf[16384];
-@@ -318,16 +420,41 @@
+@@ -284,16 +386,41 @@
      }
  
- 	oldmask = umask(077);
+     oldmask = umask(077);
 +	
 +	if (SELINUX_ENABLED) {
 +		security_context_t passwd_context = NULL;
@@ -401,10 +401,10 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +		freecon(passwd_context);
 +	}
 +
- 	pwfile = fopen(OPW_TMPFILE, "w");
- 	umask(oldmask);
+     pwfile = fopen(OPW_TMPFILE, "w");
+     umask(oldmask);
 -    if (pwfile == NULL) {
--		return PAM_AUTHTOK_ERR;
+-	return PAM_AUTHTOK_ERR;
 -    }
 +    
 +	if (pwfile == NULL) {
@@ -412,24 +412,24 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +	    goto done;
 +    	}
  
- 	opwfile = fopen(OLD_PASSWORDS_FILE, "r");
- 	if (opwfile == NULL) {
--		fclose(pwfile);
--		return PAM_AUTHTOK_ERR;
+     opwfile = fopen(OLD_PASSWORDS_FILE, "r");
+     if (opwfile == NULL) {
+-	fclose(pwfile);
+-	return PAM_AUTHTOK_ERR;
 +	    	fclose(pwfile);
 +	    	err=1;
 +		goto done;
- 	}
+     }
  
- 	chown(OPW_TMPFILE, 0, 0);
-@@ -388,8 +515,20 @@
- 		err = 1;
- 	}
+     if (fstat (fileno (opwfile), &st) == -1)
+@@ -371,8 +498,20 @@
+ 	err = 1;
+     }
  
--	if (!err) {
+-    if (!err) {
 +done:
 +	if (!err)
- 		rename(OPW_TMPFILE, OLD_PASSWORDS_FILE);
+ 	rename(OPW_TMPFILE, OLD_PASSWORDS_FILE);
 +#ifdef WITH_SELINUX
 +	if (SELINUX_ENABLED) {
 +	    if (setfscreatecon(prev_context)) {
@@ -441,13 +441,13 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +	}
 +#endif
 +	if (!err) {
- 		return PAM_SUCCESS;
- 	} else {
- 		unlink(OPW_TMPFILE);
-@@ -406,16 +545,36 @@
- 	int oldmask;
+ 	return PAM_SUCCESS;
+     } else {
+ 	unlink(OPW_TMPFILE);
+@@ -390,16 +529,36 @@
+     int oldmask;
  
- 	oldmask = umask(077);
+     oldmask = umask(077);
 +#ifdef WITH_SELINUX
 +   	if (SELINUX_ENABLED) {
 +     	    security_context_t passwd_context=NULL;
@@ -466,34 +466,34 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +     	    freecon(passwd_context);
 +   	}
 +#endif
- 	pwfile = fopen(PW_TMPFILE, "w");
- 	umask(oldmask);
+     pwfile = fopen(PW_TMPFILE, "w");
+     umask(oldmask);
 -    if (pwfile == NULL) {
--		return PAM_AUTHTOK_ERR;
+-	return PAM_AUTHTOK_ERR;
 -    }
 +    	if (pwfile == NULL) {
 +	    	err=1;
 +		goto done;
 +    	}
  
- 	opwfile = fopen("/etc/passwd", "r");
- 	if (opwfile == NULL) {
--		fclose(pwfile);
--		return PAM_AUTHTOK_ERR;
+     opwfile = fopen("/etc/passwd", "r");
+     if (opwfile == NULL) {
+-	fclose(pwfile);
+-	return PAM_AUTHTOK_ERR;
 +	    	fclose(pwfile);       
 +		err = 1;
 +		goto done;
- 	}
+     }
  
- 	chown(PW_TMPFILE, 0, 0);
-@@ -447,9 +606,22 @@
- 		err = 1;
- 	}
+     if (fstat (fileno (opwfile), &st) == -1)
+@@ -448,9 +607,22 @@
+ 	err = 1;
+     }
  
 +done:
- 	if (!err) {
- 		rename(PW_TMPFILE, "/etc/passwd");
- 		_log_err(LOG_NOTICE, pamh, "password changed for %s", forwho);
+     if (!err) {
+ 	rename(PW_TMPFILE, "/etc/passwd");
+ 	_log_err(LOG_NOTICE, pamh, "password changed for %s", forwho);
 +	}
 +#ifdef WITH_SELINUX
 +	if (SELINUX_ENABLED) {
@@ -506,22 +506,22 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +	}
 +#endif
 +	if (!err) {
- 		return PAM_SUCCESS;
- 	} else {
- 		unlink(PW_TMPFILE);
-@@ -465,20 +637,43 @@
- 	int oldmask;
+ 	return PAM_SUCCESS;
+     } else {
+ 	unlink(PW_TMPFILE);
+@@ -467,20 +639,43 @@
+     int oldmask;
  
- 	spwdent = getspnam(forwho);
+     spwdent = getspnam(forwho);
 -    if (spwdent == NULL) {
--		return PAM_USER_UNKNOWN;
+-	return PAM_USER_UNKNOWN;
 -    }
 +
 +	if (spwdent == NULL) {
 +	    return PAM_USER_UNKNOWN;
 +     	}
 +	
- 	oldmask = umask(077);
+     oldmask = umask(077);
 +#ifdef WITH_SELINUX
 +   	if (SELINUX_ENABLED) {
 +     	    security_context_t shadow_context=NULL;
@@ -540,10 +540,10 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +     	    freecon(shadow_context);
 +   	}
 +#endif
- 	pwfile = fopen(SH_TMPFILE, "w");
- 	umask(oldmask);
+     pwfile = fopen(SH_TMPFILE, "w");
+     umask(oldmask);
 -    if (pwfile == NULL) {
--		return PAM_AUTHTOK_ERR;
+-	return PAM_AUTHTOK_ERR;
 -    }
 +	
 +	if (pwfile == NULL) {
@@ -551,22 +551,22 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +     	    goto done;
 +    	}
  
- 	opwfile = fopen("/etc/shadow", "r");
- 	if (opwfile == NULL) {
- 		fclose(pwfile);
--		return PAM_AUTHTOK_ERR;
+     opwfile = fopen("/etc/shadow", "r");
+     if (opwfile == NULL) {
+ 	fclose(pwfile);
+-	return PAM_AUTHTOK_ERR;
 +	 	err = 1;
 +	 	goto done;
- 	}
+     }
  
- 	chown(SH_TMPFILE, 0, 0);
-@@ -508,8 +703,22 @@
- 		err = 1;
- 	}
+     if (fstat (fileno (opwfile), &st) == -1)
+@@ -528,8 +723,22 @@
+ 	err = 1;
+     }
  
 +done:
- 	if (!err) {
- 		rename(SH_TMPFILE, "/etc/shadow");
+     if (!err) {
+ 	rename(SH_TMPFILE, "/etc/shadow");
 +	}
 +#ifdef WITH_SELINUX
 +   	if (SELINUX_ENABLED) {
@@ -580,11 +580,11 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +#endif
 +    
 +	if (!err) {
- 		return PAM_SUCCESS;
- 	} else {
- 		unlink(SH_TMPFILE);
-@@ -600,6 +809,8 @@
- 	}
+ 	return PAM_SUCCESS;
+     } else {
+ 	unlink(SH_TMPFILE);
+@@ -638,6 +847,8 @@
+ 	
  	if (on(UNIX_SHADOW, ctrl) || (strcmp(pwd->pw_passwd, "x") == 0)) {
  		retval = _update_shadow(forwho, towhat);
 +		if (retval != PAM_SUCCESS && SELINUX_ENABLED)
@@ -592,7 +592,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
  		if (retval == PAM_SUCCESS)
  			retval = _update_passwd(pamh, forwho, "x");
  	} else {
-@@ -609,7 +820,7 @@
+@@ -651,7 +862,7 @@
  	return retval;
  }
  
@@ -601,7 +601,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
  {
  	struct passwd *pwd = NULL;	/* Password and shadow password */
  	struct spwd *spwdent = NULL;	/* file entries for the user */
-@@ -630,6 +841,8 @@
+@@ -670,6 +881,8 @@
  		spwdent = getspnam(user);
  		endspent();
  
@@ -610,7 +610,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
  		if (spwdent == NULL)
  			return PAM_AUTHINFO_UNAVAIL;
  	} else {
-@@ -877,7 +1090,7 @@
+@@ -878,7 +1091,7 @@
  			_log_err(LOG_CRIT, pamh,
  			         "failed to set PAM_OLDAUTHTOK");
  		}
@@ -619,18 +619,18 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
  		if (retval == PAM_AUTHTOK_ERR) {
  			if (off(UNIX__IAMROOT, ctrl))
  				_make_remark(pamh, ctrl, PAM_ERROR_MSG,
-@@ -926,7 +1139,7 @@
- #endif
+@@ -924,7 +1137,7 @@
+ 			_log_err(LOG_NOTICE, pamh, "user not authenticated");
  			return retval;
  		}
 -		retval = _unix_verify_shadow(user, ctrl);
 +		retval = _unix_verify_shadow(pamh, user, ctrl);
  		if (retval != PAM_SUCCESS) {
  			_log_err(LOG_NOTICE, pamh, "user not authenticated 2");
- #ifdef USE_LCKPWDF
-diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/pam_unix/support.c
---- pam-pld-0.77.3.org/modules/pam_unix/support.c	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/support.c	2003-12-27 03:10:49.073523544 +0100
+ 			return retval;
+diff -urN pam-pld-0.77.6.orig/modules/pam_unix/support.c pam-pld-0.77.6/modules/pam_unix/support.c
+--- pam-pld-0.77.6.orig/modules/pam_unix/support.c	2004-10-01 17:21:52.000000000 +0200
++++ pam-pld-0.77.6/modules/pam_unix/support.c	2004-10-04 19:55:06.049758464 +0200
 @@ -13,11 +13,18 @@
  #include <pwd.h>
  #include <shadow.h>
@@ -650,8 +650,8 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/p
 +    
  #include "security/_pam_macros.h"
  #include "security/pam_modules.h"
- 
-@@ -464,18 +471,32 @@
+ #include "security/_pam_modutil.h"
+@@ -404,18 +411,32 @@
      /* fork */
      child = fork();
      if (child == 0) {
@@ -685,7 +685,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/p
  
  	execve(CHKPWD_HELPER, args, envp);
  
-@@ -485,11 +506,7 @@
+@@ -425,11 +446,7 @@
      } else if (child > 0) {
  	/* wait for child */
  	/* if the stored password is NULL */
@@ -698,7 +698,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/p
  	if (passwd != NULL) {            /* send the password to the child */
  	    write(fds[1], passwd, strlen(passwd)+1);
  	    passwd = NULL;
-@@ -498,10 +515,17 @@
+@@ -438,10 +455,17 @@
  	}
  	close(fds[0]);       /* close here to avoid possible SIGPIPE above */
  	close(fds[1]);
@@ -718,7 +718,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/p
  	retval = PAM_AUTH_ERR;
      }
  
-@@ -523,6 +547,7 @@
+@@ -463,6 +487,7 @@
  	char *data_name;
  	int retval;
  
@@ -726,7 +726,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/p
  	D(("called"));
  
  #ifdef HAVE_PAM_FAIL_DELAY
-@@ -589,7 +614,7 @@
+@@ -529,7 +554,7 @@
  
  	retval = PAM_SUCCESS;
  	if (pwd == NULL || salt == NULL || strlen(salt) == 1) {
@@ -735,9 +735,9 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/p
  			/* we are not root perhaps this is the reason? Run helper */
  			D(("running helper binary"));
  			retval = _unix_run_helper_binary(pamh, p, ctrl, name);
-diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/pam_unix/support.h
---- pam-pld-0.77.3.org/modules/pam_unix/support.h	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/support.h	2003-12-27 01:14:20.000000000 +0100
+diff -urN pam-pld-0.77.6.orig/modules/pam_unix/support.h pam-pld-0.77.6/modules/pam_unix/support.h
+--- pam-pld-0.77.6.orig/modules/pam_unix/support.h	2004-10-01 16:49:14.000000000 +0200
++++ pam-pld-0.77.6/modules/pam_unix/support.h	2004-10-04 19:55:06.340714232 +0200
 @@ -147,5 +147,6 @@
  			,const char *data_name
  			,const char **pass);
@@ -745,8 +745,9 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
 +extern struct spwd *_unix_run_verify_binary(pam_handle_t *pamh, unsigned int ctrl, const char *user);
  #endif /* _PAM_UNIX_SUPPORT_H */
  
---- pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c.orig	Fri Sep 26 13:30:16 2003
-+++ pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c	Tue Jan 27 11:44:02 2004
+diff -urN pam-pld-0.77.6.orig/modules/pam_unix/unix_chkpwd.c pam-pld-0.77.6/modules/pam_unix/unix_chkpwd.c
+--- pam-pld-0.77.6.orig/modules/pam_unix/unix_chkpwd.c	2004-05-14 14:42:29.000000000 +0200
++++ pam-pld-0.77.6/modules/pam_unix/unix_chkpwd.c	2004-10-04 19:55:06.342713928 +0200
 @@ -27,13 +27,24 @@
  #include <syslog.h>
  #include <unistd.h>
@@ -807,7 +808,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
  static int _unix_verify_password(const char *name, const char *p, int opt)
  {
  	struct passwd *pwd = NULL;
-@@ -223,11 +261,171 @@
+@@ -207,11 +245,171 @@
  	return username;
  }
  
@@ -980,7 +981,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
  	int force_failure = 0;
  	int retval = UNIX_FAILED;
  	char *user;
-@@ -246,8 +444,7 @@
+@@ -230,8 +428,7 @@
  	 * account).
  	 */
  
@@ -990,7 +991,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
  		_log_err(LOG_NOTICE
  		      ,"inappropriate use of Unix helper binary [UID=%d]"
  			 ,getuid());
-@@ -259,32 +456,41 @@
+@@ -243,31 +440,40 @@
  	}
  
  	/*
@@ -1008,27 +1009,12 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
 -	    if (strcmp(user, argv[1])) {
 -		force_failure = 1;
 -	    }
-+	if (SELINUX_ENABLED) {
-+	  user=argv[1];
-+	}
-+	else {
-+	  user = getuidname(getuid());
-+	  /* if the caller specifies the username, verify that user
-+	     matches it */
-+	  if (strcmp(user, argv[1])) {
-+	    force_failure = 1;
-+	  }
- 	}
- 
+-	}
+-
 -	/* read the nullok/nonull option */
 -
 -	npass = read(STDIN_FILENO, option, 8);
-+	option=argv[2];
-+	if (strncmp(argv[2], "verify", 8) == 0) {
-+		/* Get the account information from the shadow file */
-+		return _verify_account(argv[1]);
-+	}
- 
+-
 -	if (npass < 0) {
 -		_log_err(LOG_DEBUG, "no option supplied");
 -		return UNIX_FAILED;
@@ -1038,17 +1024,34 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
 -			opt = 1;
 -		else
 -			opt = 0;
++	if (SELINUX_ENABLED) {
++	  user=argv[1];
+ 	}
++	else {
++	  user = getuidname(getuid());
++	  /* if the caller specifies the username, verify that user
++	     matches it */
++	  if (strcmp(user, argv[1])) {
++	    force_failure = 1;
++	  }
++	}
++
++	option=argv[2];
++	if (strncmp(argv[2], "verify", 8) == 0) {
++		/* Get the account information from the shadow file */
++		return _verify_account(argv[1]);
++	}
++
 +	if (strncmp(option, "shadow", 8) == 0) {
 +		/* Attempting to change the password */
 +		return _update_shadow(argv[1]);
- 	}
- 
++	}
++
 +        /* read the nullok/nonull option */
 +	if (strncmp(option, "nullok", 8) == 0)
 +		opt = 1;
 +	else
 +		opt = 0;
-+
+ 
  	/* read the password from stdin (a pipe from the pam_unix module) */
  
- 	npass = read(STDIN_FILENO, pass, MAXPASS);
