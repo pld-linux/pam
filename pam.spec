@@ -153,7 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 - added development manual pages (level 3) to devel,
 - added missing %postun with runing ldconfig,
 - /sbin/ldconfig is now runed as -p parameter in %post{un},
-- fixed makin ps documentation,
+- fixed making ps documentation,
 - added static and devel subpackages,
 - added ignore errors during "make install" (-i switch),
 - added striping shared libraries,
