@@ -4,8 +4,8 @@ Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authen
 Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.72.3
-Release:	3
+Version:	0.72.4
+Release:	1
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
@@ -237,6 +237,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /lib/security/pam_unix.so
 %attr(0755,root,root) /lib/security/pam_userdb.so
 %attr(0755,root,root) /lib/security/pam_usertty.so
+%attr(0755,root,root) /lib/security/pam_utmp.so
 %attr(0755,root,root) /lib/security/pam_warn.so
 %attr(0755,root,root) /lib/security/pam_wheel.so
 %attr(0755,root,root) /lib/security/pam_xauth.so
