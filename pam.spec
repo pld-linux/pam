@@ -4,12 +4,11 @@ Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authen
 Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.70
-Release:	6
+Version:	0.71
+Release:	1
 Copyright:	GPL or BSD
 Group:		Base
-%define		date	19991103
-Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
+Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
 BuildRequires:	sgml-tools
@@ -83,60 +82,41 @@ PAM static libraries.
 Biblioteki statyczne PAM.
 
 %prep
-%setup -q -n pam
-
-ln -sf defs/linux-pld.defs default.defs
-ln -sf libpam/include include
+%setup -q -n %{name}-pld-%{version}
 
 %build
-touch .freezemake
+%configure \
+	--enable-strong-crypto
 make
-make -C doc
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security} \
-	$RPM_BUILD_ROOT{%{_includedir}/security,%{_libdir},%{_mandir}/man{3,8}}
+install -d $RPM_BUILD_ROOT%{_libdir}
 
-make install FAKEROOT=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 
 touch $RPM_BUILD_ROOT/etc/security/blacklist
-
-install conf/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
-
-install doc/man/pam.8 $RPM_BUILD_ROOT%{_mandir}/man8
-install doc/man/*.3 $RPM_BUILD_ROOT%{_mandir}/man3
-chmod u+w $RPM_BUILD_ROOT%{_mandir}/man3/*
-echo ".so pam.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.conf.8
-echo ".so pam.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.d.8
-echo ".so pam_start.3" > $RPM_BUILD_ROOT%{_mandir}/man3/pam_end.3
-echo ".so pam_open_session.3" > $RPM_BUILD_ROOT%{_mandir}/man3/pam_close_session.3
-
-# make sure the modules built...
-[ -f $RPM_BUILD_ROOT/lib/security/pam_deny.so ] || {
-	echo "You have LITTLE or NOTHING in your /lib/security directory:"
-	echo $RPM_BUILD_ROOT/lib/security/*
-	echo ""
-	echo "Fix it before you install this package, while you still can!"
-	exit 1
-}
-
-strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
-	$RPM_BUILD_ROOT/sbin/pwdb_chkpwd \
-	$RPM_BUILD_ROOT/sbin/unix_chkpwd \
-	$RPM_BUILD_ROOT/sbin/pam_tally \
-	$RPM_BUILD_ROOT/lib/security/*.so
 
 ln -sf /lib/libpam.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /lib/libpamc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 ln -sf /lib/libpam_misc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 
-mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT%{_libdir}
+mv $RPM_BUILD_ROOT/lib/lib*.{la,a} $RPM_BUILD_ROOT%{_libdir}/
+
+strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
+	$RPM_BUILD_ROOT%{_sbindir}/pwgen_trigram \
+	$RPM_BUILD_ROOT/sbin/pwdb_chkpwd \
+	$RPM_BUILD_ROOT/sbin/unix_chkpwd \
+	$RPM_BUILD_ROOT/lib/security/*.so
+
+# Removed due to chicken-egg problem
+#	$RPM_BUILD_ROOT/sbin/pam_tally \
 
 gzip -9fn $RPM_BUILD_ROOT%{_mandir}/man[358]/* Copyright \
 	doc/txts/*.txt doc/specs/*.{raw,txt}
 
 rm -f doc/{ps,txts}/{README,*.log}
+rm -f doc/{html,txts}/Makefile*
 
 touch $RPM_BUILD_ROOT/etc/security/opasswd
 
@@ -164,14 +144,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/pwdb_chkpwd
 %attr(4755,root,root) /sbin/unix_chkpwd
-%attr(0755,root,root) /sbin/pam_tally
-%attr(0755,root,root) /sbin/pwgen_trigram
+# Removed due to chicken-egg problem
+# %attr(755,root,root) /sbin/pam_tally
+%attr(755,root,root) %{_sbindir}/pwgen_trigram
 %{_mandir}/man5/*
 %{_mandir}/man8/*
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
+%{_libdir}/lib*.la
 %{_includedir}/security
 %{_mandir}/man3/*
 
