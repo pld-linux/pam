@@ -50,6 +50,8 @@ BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-metafont
 BuildRequires:	tetex-tex-babel
+%else
+BuildRequires:	sed >= 4.0
 %endif
 Requires:	awk
 Requires:	cracklib
