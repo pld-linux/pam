@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	12
+Release:	13
 Copyright:	GPL or BSD
 Group:		Base
 Source0:	ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
@@ -217,6 +217,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/lib*.a
 
 %changelog
+* Tue Apr 27 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
+  [0.66-13]
+- fix for remember patch, cracklib needed -lcrypt
+
 * Tue Apr 23 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
   [0.66-12]
 - new version of pam_unix modules - nasty BUG FIXED!
