@@ -5,10 +5,10 @@ Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	26
+Release:	27
 Copyright:	GPL or BSD
 Group:		Base
-%define		date	990611
+%define		date	19990614
 Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.bz2
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildPrereq:	/usr/bin/nsgmls
