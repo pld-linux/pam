@@ -124,10 +124,10 @@ strip --strip-debug $RPM_BUILD_ROOT/lib/lib*.so.*.* \
 	$RPM_BUILD_ROOT/sbin/unix_chkpwd \
 	$RPM_BUILD_ROOT/lib/security/*.so
 
-ln -sf ../../lib/libpam.so.0 $RPM_BUILD_ROOT/usr/lib/libpam.so
-ln -sf ../../lib/libpam_misc.so.0 $RPM_BUILD_ROOT/usr/lib/libpam_misc.so
+ln -sf ../../lib/libpam.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf ../../lib/libpam_misc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 
-mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
+mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT%{_libdir}/
 
 gzip -9fn $RPM_BUILD_ROOT%{_mandir}/man[38]/* Copyright \
 	doc/txts/*.txt doc/specs/*.{raw,txt}
@@ -160,13 +160,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/lib/lib*.so
+%attr(755,root,root) %{_libdir}/lib*.so
 /usr/include/security
 %{_mandir}/man3/*
 
 %files static
 %defattr(644,root,root,755)
-/usr/lib/lib*.a
+%{_libdir}/lib*.a
 
 %changelog
 * Thu May 13 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
@@ -210,7 +210,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Mar 31 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [0.66-9]
-- lib*.so links moved to /usr/lib,
+- lib*.so links moved to %{_libdir},
 - removed ps %doc.
  
 * Sat Mar  21 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
