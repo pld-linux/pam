@@ -11,7 +11,8 @@ Group:		Base
 %define		date	19990706
 Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
-BuildRequires:	/usr/bin/nsgmls
+BuildRequires:	sp
+BuildRequires:	sgml-tools
 BuildRequires:	pwdb-devel
 BuildRequires:	cracklib-devel
 Requires:	cracklib
@@ -120,11 +121,11 @@ echo ".so pam_open_session.3" > $RPM_BUILD_ROOT%{_mandir}/man3/pam_close_session
 	exit 1
 }
 
-strip --strip-debug $RPM_BUILD_ROOT/lib/lib*.so.*.* \
+strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
 	$RPM_BUILD_ROOT/sbin/pwdb_chkpwd \
 	$RPM_BUILD_ROOT/sbin/unix_chkpwd \
 	$RPM_BUILD_ROOT/sbin/pam_tally \
-	$RPM_BUILD_ROOT/lib/security/*.so || :
+	$RPM_BUILD_ROOT/lib/security/*.so
 
 ln -sf /lib/libpam.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /lib/libpam_misc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
