@@ -13,7 +13,7 @@ Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.75.8
 Release:	1
-License:	GPL or BSD
+License:	GPL/BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
