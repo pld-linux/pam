@@ -46,8 +46,10 @@ BuildRequires:	libtool >= 2:1.5
 %if %{with doc}
 BuildRequires:	sgml-tools
 BuildRequires:	sp
+BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-metafont
+BuildRequires:	tetex-tex-babel
 %endif
 Requires:	awk
 Requires:	cracklib
