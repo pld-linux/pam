@@ -35,6 +35,7 @@ Patch16:	Linux-PAM-cleanup.patch
 Patch17:	Linux-PAM-motd.patch
 Patch18:	Linux-PAM-stringh.patch
 Patch19:	Linux-PAM-crypt16.patch
+Patch19:	Linux-PAM-remember.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildPrereq:	/usr/bin/nsgmls
 BuildPrereq:	pwdb-devel
