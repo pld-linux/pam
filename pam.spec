@@ -1,10 +1,10 @@
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
+Summary(es):	Módulos de autentificación plugables (PAM)
 Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authentication
 Summary(pl):	Modularny system autentykacji
-Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
-Summary(es):	Módulos de autentificación plugables (PAM)
+Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.74.3
 Release:	2
@@ -268,7 +268,7 @@ rm -f doc/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-%post   -p /sbin/ldconfig
+%post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %clean
