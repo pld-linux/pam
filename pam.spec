@@ -16,7 +16,7 @@ Name:		pam
 Version:	0.77.3
 Release:	8
 Epoch:		0
-License:	GPL/BSD
+License:	GPL or BSD
 Group:		Base
 #Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 Source0:	%{name}-pld-%{version}.tar.gz
