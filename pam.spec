@@ -13,7 +13,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.77.3
-Release:	1
+Release:	2
 Epoch:		0
 License:	GPL/BSD
 Group:		Base
@@ -266,6 +266,8 @@ cd $RPM_BUILD_ROOT/lib
 ln -sf /lib/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /lib/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 ln -sf /lib/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+
+cp %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/system-auth
 
 %clean
 rm -rf $RPM_BUILD_ROOT
