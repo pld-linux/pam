@@ -10,7 +10,7 @@ Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.74.3
-Release:	4
+Release:	5
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
