@@ -9,7 +9,7 @@ Release:	20
 Copyright:	GPL or BSD
 Group:		Base
 %define		date	19990527
-Source0:	ftp://ftp.pld.org.pl/packages/pam-%{version}.%{date}.tar.gz
+Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildPrereq:	/usr/bin/nsgmls
 BuildPrereq:	pwdb-devel
