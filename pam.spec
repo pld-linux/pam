@@ -15,7 +15,8 @@ Group(pl):	Podstawowe
 Group(pt_BR):	Base
 Group(es):	Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
-Patch0:		pam-rlimit_locks.patch
+Patch0:		%{name}-rlimit_locks.patch
+Patch1:		%{name}-makefile.diff
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
 BuildRequires:	sgml-tools
@@ -217,6 +218,7 @@ Modu³ pam_cap.
 %prep
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
+%patch1 -p0
 
 %build
 rm -rf missing
