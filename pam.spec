@@ -262,7 +262,7 @@ rm -f doc/{ps,txts}/{README,*.log} \
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib
 
-install pamcrypt/.libs/libpamcrypt.a $RPM_BUILD_ROOT/%{_libdir}
+install pamcrypt/.libs/libpamcrypt.a $RPM_BUILD_ROOT%{_libdir}
 
 cd $RPM_BUILD_ROOT/lib
 ln -sf /lib/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
