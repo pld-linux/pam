@@ -18,6 +18,7 @@ Group:		Base
 Source0:	ftp://ftp.pld.org.pl/software/pam/%{name}-pld-%{version}.tar.gz
 # Source0-md5: 704ba4ee1139918021b6dcaa6fe27908
 Patch0:		%{name}-noinstalled.patch
+Patch1:		%{name}-tcpd-severity.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -231,7 +232,8 @@ Modu³ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
-%patch -p1
+%patch0 -p1
+%patch1 -p1
 
 %build
 rm -f missing
