@@ -22,6 +22,7 @@ Requires:	cracklib
 Requires:	cracklib-dicts
 Obsoletes:	pamconfig
 Obsoletes:	pam_make
+Provides:	pam-pld
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
