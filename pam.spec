@@ -19,6 +19,7 @@ BuildRequires:	opie-devel
 BuildRequires:	libwrap-devel
 BuildRequires:	libcap-devel
 BuildRequires:	flex
+BuildRequires:	bison
 Requires:	cracklib
 Requires:	cracklib-dicts
 Obsoletes:	pamconfig
