@@ -8,6 +8,8 @@ Version:	0.72.4
 Release:	1
 License:	GPL or BSD
 Group:		Base
+Group(de):	Gründsätzlich
+Group(pl):	Podstawowe
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
@@ -67,6 +69,7 @@ güclü, esnek ve kapsamlý bir doðrulama sistemidir.
 Summary:	PAM header files
 Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
 Group:		Development/Libraries
+Group(de):	Entwicklung/Libraries
 Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
 Requires:	%{name} = %{version}
@@ -84,6 +87,7 @@ Pliki nag³ówkowe i dokumentacja do PAM.
 Summary:	PAM static libraries
 Summary(pl):	Biblioteki statyczne PAM
 Group:		Development/Libraries
+Group(de):	Entwicklung/Libraries
 Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
 Requires:	%{name}-devel = %{version}
@@ -97,6 +101,8 @@ Biblioteki statyczne PAM.
 %package pam_pwdb
 Summary:	pam_pwdb module
 Group:		Base
+Group(de):	Gründsätzlich
+Group(pl):	Podstawowe
 Requires:	%{name} = %{version}
 Requires:	pwdb >= 0.54-2
 
@@ -106,6 +112,8 @@ pam_pwdb module
 %package pam_radius
 Summary:	pam_radius module
 Group:		Base
+Group(de):	Gründsätzlich
+Group(pl):	Podstawowe
 Requires:	%{name} = %{version}
 Requires:	pwdb >= 0.54-2
 
@@ -115,6 +123,8 @@ pam_radius module
 %package pam_skey
 Summary:	pam_skey module
 Group:		Base
+Group(de):	Gründsätzlich
+Group(pl):	Podstawowe
 Requires:	%{name} = %{version}
 Requires:	skey
 
@@ -124,6 +134,8 @@ pam_skey module
 %package pam_opie
 Summary:	pam_opie module
 Group:		Base
+Group(de):	Gründsätzlich
+Group(pl):	Podstawowe
 Requires:	%{name} = %{version}
 Requires:	opie
 
@@ -133,6 +145,8 @@ pam_opie module
 %package pam_tcpd
 Summary:	pam_tcpd module
 Group:		Base
+Group(de):	Gründsätzlich
+Group(pl):	Podstawowe
 Requires:	%{name} = %{version}
 Requires:	libwrap
 
@@ -142,6 +156,8 @@ pam_tcpd module
 %package pam_cap
 Summary:	pam_cap module
 Group:		Base
+Group(de):	Gründsätzlich
+Group(pl):	Podstawowe
 Requires:	%{name} = %{version}
 Requires:	libcap
 
@@ -152,7 +168,6 @@ pam_cap module
 %setup -q -n %{name}-pld-%{version}
 
 %build
-LDFLAGS="-s"; export LDFLAGS
 %configure \
 	--enable-strong-crypto
 %{__make}
@@ -163,7 +178,7 @@ install -d $RPM_BUILD_ROOT%{_libdir}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-mv $RPM_BUILD_ROOT/lib/lib*.{la,a,so} $RPM_BUILD_ROOT%{_libdir}/
+mv -f $RPM_BUILD_ROOT/lib/lib*.{la,a,so} $RPM_BUILD_ROOT%{_libdir}/
 ln -sf /lib/libpam.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /lib/libpam_misc.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 ln -sf /lib/libpamc.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
