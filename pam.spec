@@ -4,7 +4,7 @@ Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authen
 Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.74.2
+Version:	0.74.3
 Release:	1
 License:	GPL or BSD
 Group:		Base
@@ -178,11 +178,11 @@ pam_cap module.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_libdir}
+install -d $RPM_BUILD_ROOT/lib
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-mv -f $RPM_BUILD_ROOT/lib/lib*.{la,a,so} $RPM_BUILD_ROOT%{_libdir}/
+mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
 ln -sf /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 ln -sf /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
