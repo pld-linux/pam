@@ -63,8 +63,8 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/lckpwdf.-c pam-pld-0.77.3/modules/
 diff -urN pam-pld-0.77.3.org/modules/pam_unix/Makefile.am pam-pld-0.77.3/modules/pam_unix/Makefile.am
 --- pam-pld-0.77.3.org/modules/pam_unix/Makefile.am	2003-12-27 01:14:07.000000000 +0100
 +++ pam-pld-0.77.3/modules/pam_unix/Makefile.am	2003-12-27 03:33:35.157847160 +0100
-@@ -9,10 +9,18 @@
- modulesdir		= /lib/security
+@@ -9,11 +9,19 @@
+ modulesdir		= /@libdirname@/security
  sbindir			= /sbin
  
 +if SELINUX_PRESENT
@@ -77,39 +77,40 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/Makefile.am pam-pld-0.77.3/modules
 +
  AM_CPPFLAGS = -DCHKPWD_HELPER=\"$(sbindir)/$(sbin_PROGRAMS)\" \
  			  -I$(top_srcdir)/include \
- 			  -I$(top_srcdir)/pamcrypt/include
+ 			  -I$(top_srcdir)/pamcrypt/include \
+ 			  -I$(top_srcdir)/modules/pammodutil/include
 -pam_unix_la_CFLAGS	= $(DYNAMIC)
 +pam_unix_la_CFLAGS	= $(LIBSELINUX_DEFS) $(DYNAMIC)
  
  if DYNAMIC_MODULES
  modules_LTLIBRARIES	= pam_unix.la
-@@ -25,15 +33,15 @@
+@@ -26,15 +34,15 @@
  
  if NSLLIB_PRESENT
  if CRACKLIB_PRESENT
--pam_unix_la_LIBADD	= -lnsl -lcrack ../../pamcrypt/libpamcrypt.la
-+pam_unix_la_LIBADD	= -lnsl -lcrack $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la
+-pam_unix_la_LIBADD	= -lnsl -lcrack ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
++pam_unix_la_LIBADD	= -lnsl -lcrack $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
  else
--pam_unix_la_LIBADD	= -lnsl ../../pamcrypt/libpamcrypt.la
-+pam_unix_la_LIBADD	= -lnsl $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la
+-pam_unix_la_LIBADD	= -lnsl ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
++pam_unix_la_LIBADD	= -lnsl $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
  endif
  else
  if CRACKLIB_PRESENT
--pam_unix_la_LIBADD	= -lcrack ../../pamcrypt/libpamcrypt.la
-+pam_unix_la_LIBADD	= -lcrack $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la
+-pam_unix_la_LIBADD	= -lcrack ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
++pam_unix_la_LIBADD	= -lcrack $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
  else
--pam_unix_la_LIBADD	= ../../pamcrypt/libpamcrypt.la
-+pam_unix_la_LIBADD	= $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la
+-pam_unix_la_LIBADD	= ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
++pam_unix_la_LIBADD	= $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
  endif
  endif
  
-@@ -42,7 +50,8 @@
+@@ -43,7 +51,8 @@
  sbin_PROGRAMS		= unix_chkpwd
  
  unix_chkpwd_SOURCES	= unix_chkpwd.c
--unix_chkpwd_LDADD	= ../../pamcrypt/libpamcrypt.la
+-unix_chkpwd_LDADD	= ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
 +unix_chkpwd_CFLAGS	= $(LIBSELINUX_DEFS)
-+unix_chkpwd_LDADD	= $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la
++unix_chkpwd_LDADD	= $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
  
  EXTRA_DIST		= README CHANGELOG
  
@@ -728,7 +729,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/p
 @@ -589,7 +614,7 @@
  
  	retval = PAM_SUCCESS;
- 	if (pwd == NULL || salt == NULL || !strcmp(salt, "x")) {
+ 	if (pwd == NULL || salt == NULL || strlen(salt) == 1) {
 -		if (geteuid()) {
 +		if (geteuid() || SELINUX_ENABLED) {
  			/* we are not root perhaps this is the reason? Run helper */
