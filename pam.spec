@@ -59,10 +59,10 @@ Requires:	cracklib
 Requires:	cracklib-dicts
 Requires:	make
 Provides:	pam-pld
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	pamconfig
 Obsoletes:	pam_make
 Obsoletes:	pam-doc
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible,
