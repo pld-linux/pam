@@ -1,6 +1,7 @@
 #
 # Conditional build:
 # _with_pwexport		- enable pam_pwexport module (needs hacked pam_unix)
+#
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(es):	Módulos de autentificación plugables (PAM)
@@ -117,6 +118,7 @@ Summary(ru):	âÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}
+Requires:	FHS >= 2.2-9
 
 %description devel
 Header files for developing PAM based applications.
@@ -339,7 +341,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.la
-%{_includedir}/security
+%{_includedir}/security/*.h
 %{_mandir}/man3/*
 
 %files static
