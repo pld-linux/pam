@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	20
+Release:	21
 Copyright:	GPL or BSD
 Group:		Base
 %define		date	19990527
@@ -81,7 +81,7 @@ PAM static libraries.
 Biblioteki statyczne PAM.
 
 %prep
-%setup -q
+%setup -q -n pam
 
 ln -sf defs/linux-pld.defs default.defs
 ln -sf libpam/include include
