@@ -3,6 +3,8 @@ Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authe
 Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authentication
 Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
+Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
+Summary(es):	Módulos de autentificación plugables (PAM)
 Name:		pam
 Version:	0.74.3
 Release:	1
@@ -10,6 +12,8 @@ License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
 Group(pl):	Podstawowe
+Group(pt_BR):	Base
+Group(es):	Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
 Patch0:		pam-rlimit_locks.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
@@ -24,6 +28,9 @@ BuildRequires:	libcap-devel
 BuildRequires:	db3-devel
 BuildRequires:	flex
 BuildRequires:	bison
+BuildRequires:	libtool
+BuildRequires:	autoconf
+BuildRequires:	automake
 Requires:	cracklib
 Requires:	cracklib-dicts
 Requires:	make
@@ -67,9 +74,23 @@ uygulamalardan herhangi birini yeniden derlemeksizin bütün PAM uyumlu
 uygulamalar için doðrulama hizmetlerini ayarlamalarýna yardýmcý olan,
 güclü, esnek ve kapsamlý bir doðrulama sistemidir.
 
+%description -l pt_BR
+PAM (Módulos de Autenticação Plugáveis) é um poderoso, flexível e extensível
+sistema de autenticação, que permite o administrador do sistema configurar
+serviços de autenticação individualmente para cada aplicação pam compatível,
+sem necessidade de recompilar qualquer uma das aplicações.
+
+%description -l es
+PAM (Módulos de Autenticación Plugables) es un potente, flexible y extensible
+sistema de autentificación, que permite al administrador del sistema configurar
+servicios de autentificación individualmente para cada aplicación pam
+compatible, sin la necesidad de recompilar cualquier una de las aplicaciones.
+
 %package devel
 Summary:	PAM header files
 Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
+Summary(pt_BR):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
+Summary(es):	Libraries and include files needed for PAM development
 Group:		Development/Libraries
 Group(de):	Entwicklung/Libraries
 Group(fr):	Development/Librairies
@@ -81,6 +102,12 @@ Header files for developing PAM based applications.
 
 %description devel -l pl
 Pliki nag³ówkowe i dokumentacja do PAM.
+
+%description -l pt_BR devel
+Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
+
+%description -l es devel
+Libraries and include files needed for PAM development
 
 %package static
 Summary:	PAM static libraries
@@ -192,7 +219,11 @@ Modu³ pam_cap.
 %patch0 -p1
 
 %build
+rm -rf missing
 libtoolize --copy --force
+aclocal
+autoconf
+automake -a -c
 %configure \
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
