@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.74.0
-Release:	1
+Release:	2
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
@@ -179,9 +179,9 @@ install -d $RPM_BUILD_ROOT%{_libdir}
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 mv -f $RPM_BUILD_ROOT/lib/lib*.{la,a,so} $RPM_BUILD_ROOT%{_libdir}/
-ln -sf /lib/libpam.so.0.73.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -sf /lib/libpam_misc.so.0.73.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-ln -sf /lib/libpamc.so.0.73.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+ln -sf /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -sf /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
 gzip -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
 
