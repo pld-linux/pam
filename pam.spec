@@ -17,6 +17,7 @@ License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
 Patch0:		%{name}-am16.patch
+Patch1:		%{name}-lt14d.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -230,11 +231,12 @@ Modu³ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
-%patch -p1
+%patch0 -p1
+%patch1 -p1
 
 %build
 rm -rf missing
-libtoolize --copy --force
+%{__libtoolize}
 aclocal
 %{__autoconf}
 %{__automake}
@@ -265,11 +267,11 @@ rm -f doc/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
-
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -336,7 +338,7 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
+%attr(755,root,root) %{_libdir}/lib*.la
 %{_includedir}/security
 %{_mandir}/man3/*
 

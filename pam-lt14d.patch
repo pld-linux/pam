@@ -1,0 +1,10 @@
+--- pam-pld-0.75.6/modules/pammodutil/Makefile.am.orig	Wed Mar  6 23:44:09 2002
++++ pam-pld-0.75.6/modules/pammodutil/Makefile.am	Thu Jun 13 19:43:19 2002
+@@ -4,7 +4,6 @@
+ libpammodutil_la_SOURCES= modutil_cleanup.c modutil_getpwnam.c modutil_getpwuid.c
+ 
+ libpammodutil_la_LDFLAGS=
+-libpammodutil_la_LIBADD	= modutil_cleanup.o modutil_getpwnam.o modutil_getpwuid.o
+ 
+ noinst_HEADERS		= pammodutil.h include/security/_pam_modutil.h
+ 
