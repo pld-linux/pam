@@ -13,7 +13,7 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.77.3
-Release:	3
+Release:	2.2
 Epoch:		0
 License:	GPL/BSD
 Group:		Base
@@ -26,7 +26,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
-BuildRequires:	db-devel
+BuildRequires:	db3-devel
 BuildRequires:	flex
 BuildRequires:	libcap-devel
 BuildRequires:	libtool >= 1:1.4.2-9
@@ -262,12 +262,13 @@ rm -f doc/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib
+
+install pamcrypt/md5.h $RPM_BUILD_ROOT%{_includedir}/security
+
 cd $RPM_BUILD_ROOT/lib
 ln -sf /lib/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /lib/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 ln -sf /lib/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
-
-install pamcrypt/md5.h $RPM_BUILD_ROOT%{_includedir}/security
 
 cp %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/system-auth
 
