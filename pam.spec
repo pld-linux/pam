@@ -159,7 +159,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libdir}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT/lib/lib*.{la,a,so} $RPM_BUILD_ROOT%{_libdir}/
 ln -sf /lib/libpam.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
