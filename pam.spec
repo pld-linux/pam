@@ -4,39 +4,14 @@ Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authen
 Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
+%define		date 19990513
 Version:	0.66
-Release:	13
+Release:	14
 Copyright:	GPL or BSD
 Group:		Base
 Group(pl):	Podstawy
-Source0:	ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
+Source0:	ftp://ftp.pld.org.pl/stable/SOURCES/pam-pld-%{version}.%{date}.tar.gz
 Source1:	other.pamd
-Source2:	ftp://sysadm.dntis.ro/pub/devel/pam/pam_make-0.1.tar.gz
-%define		date 990420
-Source3:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_unix-%{date}.tar.gz
-Source4:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_homedir-0.2.tar.gz
-Source5:	ftp://ftp.debian.org/pub/debian/dists/unstable/main/source/admin/libpam-motd_0.1.tar.gz
-Patch0:		Linux-PAM-Makefile.patch
-Patch1:		Linux-PAM-defs.patch
-Patch2:		Linux-PAM-deflimit.patch
-Patch3:		Linux-PAM-prompt.patch
-Patch4:		Linux-PAM-pwdb.patch
-Patch5:		Linux-PAM-libpwdb.patch
-Patch6:		Linux-PAM-glibc.patch
-Patch7:		Linux-PAM-sgml.patch
-Patch8:		Linux-PAM-priority.patch
-Patch9:		Linux-PAM-tally-shadow_faillog.patch
-Patch10:	Linux-PAM-tally-new_options.patch
-Patch11:	Linux-PAM-tally-add_time.patch
-Patch12:	Linux-PAM-tally-rhost_and_time.patch
-Patch13:	Linux-PAM-tally-fstat.patch
-Patch14:	Linux-PAM-Maildir.patch
-Patch15:	Linux-PAM-pam_make.patch
-Patch16:	Linux-PAM-cleanup.patch
-Patch17:	Linux-PAM-motd.patch
-Patch18:	Linux-PAM-stringh.patch
-Patch19:	Linux-PAM-crypt16.patch
-Patch20:	Linux-PAM-remember.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildPrereq:	/usr/bin/nsgmls
 BuildPrereq:	pwdb-devel
@@ -108,35 +83,7 @@ PAM static libraries.
 Biblioteki statyczne PAM.
 
 %prep
-%setup -q -n Linux-PAM
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
-tar zxf %{SOURCE2} -C modules/
-%patch15 -p1
-%patch16 -p1
-rm -rf modules/pam_unix
-tar zxf %{SOURCE3} -C modules/
-tar zxf %{SOURCE4} -C modules/
-tar zxf %{SOURCE5} -C modules/
-mv modules/libpam-motd-0.1 modules/pam_motd
-%patch17 -p1
-%patch18 -p1
-# If you need pam_pwdb to understand Ultrix passwords, uncoment this
-%patch19 -p1
-%patch20 -p1
+%setup -q -n pam
 
 ln -sf defs/linux-pld.defs default.defs
 ln -sf libpam/include include
@@ -174,6 +121,7 @@ echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/share/man/man3/pam_close_ses
 
 strip --strip-debug $RPM_BUILD_ROOT/lib/lib*.so.*.* \
 	$RPM_BUILD_ROOT/sbin/pwdb_chkpwd \
+	$RPM_BUILD_ROOT/sbin/unix_chkpwd \
 	$RPM_BUILD_ROOT/lib/security/*.so
 
 ln -sf ../../lib/libpam.so.0 $RPM_BUILD_ROOT/usr/lib/libpam.so
@@ -206,6 +154,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /lib/security/*.so
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/pwdb_chkpwd
+%attr(4755,root,root) /sbin/unix_chkpwd
+/sbin/pam_pwdb_helper
 /usr/share/man/man8/*
 
 %files devel
@@ -219,6 +169,13 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/lib*.a
 
 %changelog
+* Thu May 13 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
+  [0.66-14]
+- added unix_chkpwd helper to pam_pwdb module, now pam_pwdb calls
+  /sbin/pam_pwdb_helper, a link to pwdb_chkpwd
+- switched source archive to that from PLD CVS, and removed all
+  mess (twenty-something patches and tar archives).
+
 * Tue Apr 27 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
   [0.66-13]
 - fix for remember patch, cracklib needed -lcrypt
