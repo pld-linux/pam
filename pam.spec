@@ -10,7 +10,7 @@ Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.74.3
-Release:	3
+Release:	4
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
@@ -289,7 +289,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /sbin/pam_filter
 %dir /var/lock/console
 %dir /etc/security/console.apps
-%config %verify(not md5 size mtime) /etc/pam.d/other
+%config(noreplace) %verify(not md5 size mtime) /etc/pam.d/other
 %config %verify(not md5 size mtime) /etc/security/access.conf
 %config %verify(not md5 size mtime) /etc/security/pam_env.conf
 %config %verify(not md5 size mtime) /etc/security/group.conf
