@@ -40,7 +40,7 @@ diff -urN pam-pld-0.77.3.org/modules/Makefile.am pam-pld-0.77.3/modules/Makefile
  
 diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modules/pam_selinux/Makefile.am
 --- pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am	1970-01-01 01:00:00.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_selinux/Makefile.am	2003-12-27 03:33:53.700028320 +0100
++++ pam-pld-0.77.3/modules/pam_selinux/Makefile.am	2003-12-27 03:36:47.588593240 +0100
 @@ -0,0 +1,61 @@
 +## Process this file with automake to produce Makefile.in
 +
@@ -86,7 +86,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modu
 +
 +if STATIC_MODULES
 +
-+if SELINX_PRESENT
++if SELINUX_PRESENT
 +noinst_LTLIBRARIES		= libpam_selinux.la libpam_selinux_check.la
 +libpam_selinux_la_SOURCES	= pam_selinux.c
 +libpam_selinux_check_la_SOURCES	= pam_selinux_check.c
