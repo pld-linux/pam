@@ -1,0 +1,2 @@
+- added %verify flags for %config files,
+- added using %{__*} macros.
