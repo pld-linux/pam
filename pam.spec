@@ -11,8 +11,8 @@ Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
-Version:	0.75.8
-Release:	2
+Version:	0.77.0
+Release:	0.1
 License:	GPL/BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
@@ -249,9 +249,9 @@ install -d $RPM_BUILD_ROOT/lib
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
-ln -sf /lib/libpam.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -sf /lib/libpam_misc.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-ln -sf /lib/libpamc.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+ln -sf /lib/libpam.so.0.77.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/libpam_misc.so.0.77.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -sf /lib/libpamc.so.0.77.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
 rm -f doc/{ps,txts}/{README,*.log} \
 	doc/{html,txts}/Makefile*
