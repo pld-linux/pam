@@ -102,6 +102,7 @@ Biblioteki statyczne PAM.
 
 %package pam_pwdb
 Summary:	pam_pwdb module
+Summary(pl):	Modu³ pam_pwdb
 Group:		Base
 Group(de):	Gründsätzlich
 Group(pl):	Podstawowe
@@ -111,8 +112,12 @@ Requires:	pwdb >= 0.54-2
 %description pam_pwdb
 pam_pwdb module.
 
+%description pam_pwdb -l pl
+Modu³ pam_pwdb.
+
 %package pam_radius
 Summary:	pam_radius module
+Summary(pl):	Modu³ pam_radius
 Group:		Base
 Group(de):	Gründsätzlich
 Group(pl):	Podstawowe
@@ -122,8 +127,12 @@ Requires:	pwdb >= 0.54-2
 %description pam_radius
 pam_radius module.
 
+%description pam_radius -l pl
+Modu³ pam_radius.
+
 %package pam_skey
 Summary:	pam_skey module
+Summary(pl):	Modu³ pam_skey
 Group:		Base
 Group(de):	Gründsätzlich
 Group(pl):	Podstawowe
@@ -133,8 +142,12 @@ Requires:	skey
 %description pam_skey
 pam_skey module.
 
+%description pam_skey -l pl
+Modu³ pam_skey.
+
 %package pam_opie
 Summary:	pam_opie module
+Summary(pl):	Modu³ pam_opie
 Group:		Base
 Group(de):	Gründsätzlich
 Group(pl):	Podstawowe
@@ -144,8 +157,12 @@ Requires:	opie
 %description pam_opie
 pam_opie module.
 
+%description pam_opie -l pl
+Modu³ pam_opie.
+
 %package pam_tcpd
 Summary:	pam_tcpd module
+Summary(pl):	Modu³ pam_tcpd
 Group:		Base
 Group(de):	Gründsätzlich
 Group(pl):	Podstawowe
@@ -155,8 +172,12 @@ Requires:	libwrap
 %description pam_tcpd
 pam_tcpd module.
 
+%description pam_tcpd -l pl
+Modu³ pam_tcpd.
+
 %package pam_cap
 Summary:	pam_cap module
+Summary(pl):	Modu³ pam_cap
 Group:		Base
 Group(de):	Gründsätzlich
 Group(pl):	Podstawowe
@@ -166,11 +187,15 @@ Requires:	libcap
 %description pam_cap
 pam_cap module.
 
+%description pam_cap -l pl
+Modu³ pam_cap.
+
 %prep
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
 
 %build
+libtoolize --copy --force
 %configure \
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
