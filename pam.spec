@@ -5,7 +5,7 @@ Summary(pl): Modularny system autentypacji
 Summary(tr): Modüler, artýmsal doðrulama birimleri
 Name:        pam
 Version:     0.65
-Release:     2
+Release:     3
 Copyright:   GPL or BSD
 Group:       Base
 Source:      ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.gz
@@ -25,6 +25,9 @@ Patch12:     Linux-PAM-sgml.patch
 Patch13:     Linux-PAM-makefile.patch
 Patch14:     Linux-PAM-shadow_faillog.patch
 Patch15:     Linux-PAM-new_options.patch
+Patch16:     Linux-PAM-add_time.patch
+Patch17:     Linux-PAM-rhost_and_time.patch
+
 URL:         http://parc.power.net/morgan/Linux-PAM/index.html
 Requires:    cracklib, cracklib-dicts, pwdb >= 0.54-2
 Obsoletes:   pamconfig
@@ -108,8 +111,10 @@ Biblioteki statyczne PAM.
 %patch11 -p1 -b .shlib
 %patch12 -p1 -b .shml
 %patch13 -p1 -b .makefile
-%patch14 -p1 -b .shadow_faillog
-%patch15 -p1 -b new_options
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
+%patch17 -p1
 
 %ifos Linux
 rm -f default.defs
@@ -171,13 +176,20 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644, root, root) /usr/lib/lib*.a
 
 %changelog
+* Thu Dec  3 1998 Robert Mi³kowski <milek@rudy.mif.pg.gda.pl>
+  [0.65-3]
+- added new patches:
+  -- failure time logging,
+  -- support for fail_line field,
+  -- support for fail_locktime field with new option no_lock_time.
+
 * Mon Nov 30 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [0.65-2]
 - added %ifos Linux .. %endif around setting up default.defs,
 - added pl translation.
 
 * Mon Nov 30 1998 Robert Mi³kowski <milek@rudy.mif.pg.gda.pl>
-- changeg format of /var/log/faillog to one from
+- changed format of /var/log/faillog to one from
   shadow-utils,
 - added new option "per_user" for pam_tally module.
 
@@ -187,7 +199,7 @@ rm -rf $RPM_BUILD_ROOT
 - changed Buildroot to /tmp/%%{name}-%%{version}-root,
 - added using %%{version} in Source snd %setup,
 - fixed %post{un},
-- changed dependencies to "Requires: %%{name} = %%{version}" in devel
+- changeded dependences to "Requires: %%{name} = %%{version}" in devel
   subpackage,
 - fiew simplification in %build and %install,
 - added development manual pages (level 3) to devel,
@@ -195,12 +207,12 @@ rm -rf $RPM_BUILD_ROOT
 - /sbin/ldconfig is now runed as -p parameter in %post{un},
 - fixed makin ps documentation,
 - added static and devel subpackages,
-- added ignore errors during "make install" (-i swhich),
-- added stripping shared libraries,
-- added stripping /sbin/pwdb_chkpwd,
-- added stripping debug info on all modules,
+- added ignore errors during "make install" (-i switch),
+- added striping shared libraries,
+- added striping /sbin/pwdb_chkpwd,
+- added striping debug info on all modules,
 - added "Obsoletes: pamconfig" (now it is not neccessary),
-- added %attr and %defattr macros in %files (allows build package from
+- added %attr and %defattr macros in %files (allow build package from
   non-root account).
 
 * Sat May 23 1998 Jeff Johnson <jbj@redhat.com>
