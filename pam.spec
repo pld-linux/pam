@@ -13,6 +13,7 @@ Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildPrereq:	/usr/bin/nsgmls
 BuildPrereq:	pwdb-devel
+BuildPrereq:	cracklib-devel
 Requires:	cracklib
 Requires:	cracklib-dicts
 Requires:	pwdb >= 0.54-2
