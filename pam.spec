@@ -13,7 +13,7 @@ Group(pl):	Podstawy
 Source0:	ftp://ftp.pld.org.pl/stable/SOURCES/pam-pld-%{version}.%{date}.tar.gz
 Source1:	other.pamd
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
-BuildPrereq:	/usr/bin/nsgmls
+BuildPrereq:	%{_bindir}/nsgmls
 BuildPrereq:	pwdb-devel
 Requires:	cracklib
 Requires:	cracklib-dicts
