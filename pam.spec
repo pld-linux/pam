@@ -5,11 +5,12 @@ Summary(pl): Modularny system autentypacji
 Summary(tr): Modüler, artýmsal doðrulama birimleri
 Name:        pam
 Version:     0.65
-Release:     3
+Release:     4
 Copyright:   GPL or BSD
 Group:       Base
 Source:      ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.gz
 Source1:     other.pamd
+Source2:     ftp://sysadm.dntis.ro/pub/devel/pam/pam_make-0.1.tar.gz
 Patch1:      Linux-PAM-dirs.patch
 Patch2:      Linux-PAM-prompt.patch
 Patch3:      Linux-PAM-nopasswd+.patch
@@ -19,7 +20,7 @@ Patch6:      Linux-PAM-rhlock.patch
 Patch7:      Linux-PAM-strerror.patch
 Patch8:      Linux-PAM-pwdb.patch
 Patch9:      Linux-PAM-glibc.patch
-Patch10:     Linux-PAM-alpha.patch
+Patch10:     Linux-PAM-noansi.patch
 Patch11:     Linux-PAM-shlib.patch
 Patch12:     Linux-PAM-sgml.patch
 Patch13:     Linux-PAM-makefile.patch
@@ -27,10 +28,17 @@ Patch14:     Linux-PAM-shadow_faillog.patch
 Patch15:     Linux-PAM-new_options.patch
 Patch16:     Linux-PAM-add_time.patch
 Patch17:     Linux-PAM-rhost_and_time.patch
+Patch18:     Linux-PAM-Maildir.patch
+Patch19:     Linux-PAM-unix-md5.patch
+Patch20:     Linux-PAM-unix-NIS.patch
+Patch21:     Linux-PAM-umask.patch
+Patch22:     Linux-PAM-pam_make.patch
+Patch23:     Linux-PAM-cleanup.patch
 
 URL:         http://parc.power.net/morgan/Linux-PAM/index.html
 Requires:    cracklib, cracklib-dicts, pwdb >= 0.54-2
 Obsoletes:   pamconfig
+Obsoletes:   pam_make
 Buildroot:   /tmp/%{name}-%{version}-root
 
 %description
@@ -95,7 +103,6 @@ Biblioteki statyczne PAM.
 
 %prep
 %setup -q -n Linux-PAM-%{version}
-%setup -q -n Linux-PAM-%{version}
 %patch1 -p1 -b .dirs
 %patch2 -p1 -b .prompt
 %patch3 -p1 -b .nopasswd+
@@ -105,9 +112,7 @@ Biblioteki statyczne PAM.
 %patch7 -p1 -b .strerror
 %patch8 -p1 -b .pwdb
 %patch9 -p1 -b .glibc
-%ifarch alpha
-%patch10 -p1 -b .alpha
-%endif
+%patch10 -p1 -b .noansi
 %patch11 -p1 -b .shlib
 %patch12 -p1 -b .shml
 %patch13 -p1 -b .makefile
@@ -115,6 +120,13 @@ Biblioteki statyczne PAM.
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
+%patch18 -p0
+%patch19 -p1
+%patch20 -p1
+%patch21 -p1
+tar zxf %{SOURCE2} -C $RPM_BUILD_DIR/Linux-PAM-%{version}/modules/
+%patch22 -p1
+%patch23 -p1
 
 %ifos Linux
 rm -f default.defs
@@ -129,9 +141,16 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security,usr/{include/security,lib,man/man3}}
+install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security,usr/{include/security,lib,man/man{3,8}}}
 make -i install FAKEROOT=$RPM_BUILD_ROOT
 install ${RPM_SOURCE_DIR}/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
+install doc/man/pam.8 $RPM_BUILD_ROOT/usr/man/man8
+install doc/man/*.3 $RPM_BUILD_ROOT/usr/man/man3
+chmod u+w $RPM_BUILD_ROOT/usr/man/man3/*
+echo ".so pam.8" > $RPM_BUILD_ROOT/usr/man/man8/pam.conf.8
+echo ".so pam.8" > $RPM_BUILD_ROOT/usr/man/man8/pam.d.8
+echo ".so pam_start.3" > $RPM_BUILD_ROOT/usr/man/man3/pam_end.3
+echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/man/man3/pam_close_session.3
 
 # make sure the modules built...
 [ -f $RPM_BUILD_ROOT/lib/security/pam_deny.so ] || {
@@ -146,8 +165,6 @@ strip $RPM_BUILD_ROOT/lib/lib*.so.*.*
 strip --strip-debug $RPM_BUILD_ROOT/lib/security/*.so || :
 strip $RPM_BUILD_ROOT/sbin/pwdb_chkpwd
 mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
-
-install doc/man/* $RPM_BUILD_ROOT/usr/man/man3
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -166,16 +183,36 @@ rm -rf $RPM_BUILD_ROOT
 %attr(511 , root, root) /sbin/pam_filter/upperLOWER
 %attr(4555, root, root) /sbin/pwdb_chkpwd
 %attr(755 , root, root) /lib/security
+%attr(644 , root, root) /usr/man/man8/*
 
 %files devel
 %defattr(644, root, root, 755)
 /lib/lib*.so
 /usr/include/security
+%attr(644, root, root) /usr/man/man3/*
 
 %files static
 %attr(644, root, root) /usr/lib/lib*.a
 
 %changelog
+* Sun Jan 10 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
+- added pam_make module
+- cleaned up compiles time warnings in modules (-cleanup.patch)
+
+* Sat Jan  9 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
+  [0.65-4]
+- fixed installation and packeging of man pages
+- renamed alpha patch to noansi (NIS RPC won't compile with -ansi and -DPOSIX)
+- added new patches:
+  -- umask fix in pam_unix_passwd
+  -- md5 passwords capability for pam_unix - new option "md5"
+  -- support for setting passwords via NIS RPC for pam_unix_passswd - new option "nis"
+     WARNING! if you set this, pam_unix_passwd will use ONLY NIS RPC for password
+              setting. This is meant for NIS workstations.
+  -- renamed strict/fascist=true/false option in pam_unix_passwd to simple
+     no_strict/no_fasxist if someone wants relaxed passwd checking
+  -- Maildir format recognition for pam_mail
+
 * Thu Dec  3 1998 Robert Mi³kowski <milek@rudy.mif.pg.gda.pl>
   [0.65-3]
 - added new patches:
