@@ -5,15 +5,15 @@ Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	11
+Release:	12
 Copyright:	GPL or BSD
 Group:		Base
 Source0:	ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
 Source1:	other.pamd
 Source2:	ftp://sysadm.dntis.ro/pub/devel/pam/pam_make-0.1.tar.gz
-%define		date 990327
+%define		date 990420
 Source3:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_unix-%{date}.tar.gz
-Source4:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_homedir-0.1.tar.gz
+Source4:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_homedir-0.2.tar.gz
 Source5:	ftp://ftp.debian.org/pub/debian/dists/unstable/main/source/admin/libpam-motd_0.1.tar.gz
 Patch0:		Linux-PAM-Makefile.patch
 Patch1:		Linux-PAM-defs.patch
@@ -133,7 +133,8 @@ mv modules/libpam-motd-0.1 modules/pam_motd
 %patch17 -p1
 %patch18 -p1
 # If you need pam_pwdb to understand Ultrix passwords, uncoment this
-#%patch19 -p1
+%patch19 -p1
+%patch20 -p1
 
 ln -sf defs/linux-pld.defs default.defs
 ln -sf libpam/include include
@@ -182,6 +183,8 @@ gzip -9fn $RPM_BUILD_ROOT/usr/man/man[38]/* Copyright \
 
 rm -f doc/{ps,txts}/{README,*.log}
 
+touch $RPM_BUILD_ROOT/etc/security/opasswd
+
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
@@ -194,7 +197,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/pam.d
 %dir /sbin/pam_filter
 %config /etc/pam.d/other
-%config /etc/security/*
+%config /etc/security/*.conf
+%attr(0600,root,root) %config(noreplace) /etc/security/opasswd
 %attr(0755,root,root) /lib/lib*.so.*.*
 %attr(0755,root,root) /lib/security/*.so
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
@@ -212,6 +216,18 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/lib*.a
 
 %changelog
+* Tue Apr 20 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
+  [0.66-12]
+- new version of pam_unix modules - nasty BUG FIXED!
+- added remember patch. Ever wondered how to stop lusers from having
+  two passwords for a lifetime? Just add remember=N to pam_pwdb or
+  pam_unix_passwd and your system will remember last N passwords for
+  each user.
+- uncommented crypt16 patch, if you want PAM to understand crypt16
+  passwords add a crypt16 option to pam_pwdb.
+- fixed crypt16 patch for pam_pwdb - now it really works, you need to
+  add "crypt16" option in auth line with pam_pwdb
+
 * Wed Apr 21 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [0.66-11]
 - recompiles on new rpm.
