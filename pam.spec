@@ -187,7 +187,7 @@ rm -rf $RPM_BUILD_ROOT
 - changed Buildroot to /tmp/%%{name}-%%{version}-root,
 - added using %%{version} in Source snd %setup,
 - fixed %post{un},
-- changeded dependences to "Requires: %%{name} = %%{version}" in devel
+- changed dependencies to "Requires: %%{name} = %%{version}" in devel
   subpackage,
 - fiew simplification in %build and %install,
 - added development manual pages (level 3) to devel,
