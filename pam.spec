@@ -200,7 +200,7 @@ rm -rf $RPM_BUILD_ROOT
 - added stripping /sbin/pwdb_chkpwd,
 - added stripping debug info on all modules,
 - added "Obsoletes: pamconfig" (now it is not neccessary),
-- added %attr and %defattr macros in %files (allow build package from
+- added %attr and %defattr macros in %files (allows build package from
   non-root account).
 
 * Sat May 23 1998 Jeff Johnson <jbj@redhat.com>
