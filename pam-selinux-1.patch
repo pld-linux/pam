@@ -40,7 +40,7 @@ diff -urN pam-pld-0.77.3.org/modules/Makefile.am pam-pld-0.77.3/modules/Makefile
  
 diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modules/pam_selinux/Makefile.am
 --- pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am	1970-01-01 01:00:00.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_selinux/Makefile.am	2003-12-27 03:31:12.336559296 +0100
++++ pam-pld-0.77.3/modules/pam_selinux/Makefile.am	2003-12-27 03:33:53.700028320 +0100
 @@ -0,0 +1,61 @@
 +## Process this file with automake to produce Makefile.in
 +
@@ -86,7 +86,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modu
 +
 +if STATIC_MODULES
 +
-+if LIBSELINX_PRESENT
++if SELINX_PRESENT
 +noinst_LTLIBRARIES		= libpam_selinux.la libpam_selinux_check.la
 +libpam_selinux_la_SOURCES	= pam_selinux.c
 +libpam_selinux_check_la_SOURCES	= pam_selinux_check.c
@@ -851,12 +851,12 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/lckpwdf.-c pam-pld-0.77.3/modules/
  		return -1;
 diff -urN pam-pld-0.77.3.org/modules/pam_unix/Makefile.am pam-pld-0.77.3/modules/pam_unix/Makefile.am
 --- pam-pld-0.77.3.org/modules/pam_unix/Makefile.am	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/Makefile.am	2003-12-27 03:30:01.217371056 +0100
++++ pam-pld-0.77.3/modules/pam_unix/Makefile.am	2003-12-27 03:33:35.157847160 +0100
 @@ -9,10 +9,18 @@
  modulesdir		= /lib/security
  sbindir			= /sbin
  
-+if LIBSELINUX_PRESENT
++if SELINUX_PRESENT
 +LIBSELINUX              = -lselinux
 +LIBSELINUX_DEFS		= -DWITH_SELINUX=1
 +else
