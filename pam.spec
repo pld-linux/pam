@@ -9,8 +9,8 @@ Summary(pl):	Modularny system autentykacji
 Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.74.3
-Release:	5
+Version:	0.75.0
+Release:	0.1
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
