@@ -26,7 +26,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
-BuildRequires:	db-devel
+BuildRequires:	db3-devel
 BuildRequires:	flex
 BuildRequires:	libcap-devel
 BuildRequires:	libtool >= 1:1.4.2-9
