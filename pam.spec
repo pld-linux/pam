@@ -1,7 +1,13 @@
 #
 # Conditional build:
 %bcond_with	pwexport	# enable pam_pwexport module (needs hacked pam_unix)
+%bcond_without	cap		# don't build pam_cap module
+%bcond_without	doc		# don't build documentation
+%bcond_without	opie		# don't build pam_opie module
+%bcond_without	pwdb		# don't build pam_pwdb and pam_radius modules
 %bcond_without	selinux		# build without SELinux support
+%bcond_without	skey		# don't build pam_skey module
+%bcond_without	tcpd		# don't build pam_tcpd module
 #
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
@@ -30,17 +36,19 @@ BuildRequires:	bison
 BuildRequires:	cracklib-devel
 BuildRequires:	db-devel
 BuildRequires:	flex
-BuildRequires:	libcap-devel
+%{?with_cap:BuildRequires:	libcap-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:1.5
-BuildRequires:	libwrap-devel >= 7.6-32
-BuildRequires:	opie-devel
-BuildRequires:	pwdb-devel
-BuildRequires:	skey-devel
+%{?with_tcpd:BuildRequires:	libwrap-devel >= 7.6-32}
+%{?with_opie:BuildRequires:	opie-devel}
+%{?with_pwdb:BuildRequires:	pwdb-devel}
+%{?with_skey:BuildRequires:	skey-devel}
+%if %{with doc}
 BuildRequires:	sgml-tools
 BuildRequires:	sp
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-metafont
+%endif
 Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
@@ -242,6 +250,8 @@ Modu³ pam_cap.
 %setup -q -n %{name}-pld-%{version}
 %{?with_selinux:%patch0 -p1}
 
+%{!?with_doc:sed -i -e '/all-local:/d' doc/Makefile.am}
+
 %build
 find . -name Makefile.am | xargs %{__perl} -pi -e 's#modulesdir.*=.*\@prefix\@/lib#modulesdir = \@libdir\@#g'
 find . -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
@@ -250,6 +260,11 @@ find . -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
 %{__autoconf}
 %{__automake}
 %configure \
+	%{!?with_cap:ac_cv_lib_cap_cap_init=no} \
+	%{!?with_opie:ac_cv_lib_opie_opieverify=no} \
+	%{!?with_pwdb:ac_cv_lib_pwdb_pwdb_posix_getlogin=no} \
+	%{!?with_skey:ac_cv_lib_skey_skeyaccess=no} \
+	%{!?with_tcpd:libwrap=no} \
 	%{?with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
 
@@ -290,7 +305,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc Copyright doc/{html,txts,specs/*.{raw,txt}}
+%doc Copyright %{?with_doc:doc/{html,txts,specs/*.{raw,txt}}}
 %dir /etc/pam.d
 %dir /sbin/pam_filter
 %dir /var/lock/console
@@ -343,7 +358,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /%{_lib}/security/pam_warn.so
 %attr(755,root,root) /%{_lib}/security/pam_wheel.so
 %attr(755,root,root) /%{_lib}/security/pam_xauth.so
-%{?_with_pwexport:%attr(755,root,root) /%{_lib}/security/pam_pwexport.so}
+%{?with_pwexport:%attr(755,root,root) /%{_lib}/security/pam_pwexport.so}
 %attr(755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/unix_chkpwd
 %attr(755,root,root) %{_bindir}/pam_pwgen
@@ -363,6 +378,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/lib*.a
 
+%if %{with pwdb}
 %files pam_pwdb
 %defattr(644,root,root,755)
 %attr(755,root,root) /%{_lib}/security/pam_pwdb.so
@@ -371,21 +387,30 @@ rm -rf $RPM_BUILD_ROOT
 %files pam_radius
 %defattr(644,root,root,755)
 %attr(755,root,root) /%{_lib}/security/pam_radius.so
+%endif
 
+%if %{with skey}
 %files pam_skey
 %defattr(644,root,root,755)
 %attr(755,root,root) /%{_lib}/security/pam_skey.so
+%endif
 
+%if %{with opie}
 %files pam_opie
 %defattr(644,root,root,755)
 %attr(755,root,root) /%{_lib}/security/pam_opie.so
 %attr(755,root,root) /%{_lib}/security/pam_opietrust.so
+%endif
 
+%if %{with tcpd}
 %files pam_tcpd
 %defattr(644,root,root,755)
 %attr(755,root,root) /%{_lib}/security/pam_tcpd.so
+%endif
 
+%if %{with cap}
 %files pam_cap
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 size mtime) /etc/security/capability.conf
 %attr(755,root,root) /%{_lib}/security/pam_cap.so
+%endif
