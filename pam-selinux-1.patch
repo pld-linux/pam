@@ -158,8 +158,8 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/pam_selinux.8 pam-pld-0.77.3/mo
 +Dan Walsh <dwalsh@redhat.com>
 diff -urN pam-pld-0.77.3.org/modules/pam_selinux/pam_selinux.c pam-pld-0.77.3/modules/pam_selinux/pam_selinux.c
 --- pam-pld-0.77.3.org/modules/pam_selinux/pam_selinux.c	1970-01-01 01:00:00.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_selinux/pam_selinux.c	2003-12-27 01:14:20.000000000 +0100
-@@ -0,0 +1,542 @@
++++ pam-pld-0.77.3/modules/pam_selinux/pam_selinux.c	2003-12-27 04:00:04.357252128 +0100
+@@ -0,0 +1,539 @@
 +/******************************************************************************
 + * A module for Linux-PAM that will set the default security context after login 
 + * via PAM.
@@ -203,8 +203,6 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/pam_selinux.c pam-pld-0.77.3/mo
 +#define PAM_SM_AUTH
 +#define PAM_SM_SESSION
 +
-+#include "../../_pam_aconf.h"
-+
 +#include <errno.h>
 +#include <limits.h>
 +#include <pwd.h>
@@ -213,10 +211,9 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/pam_selinux.c pam-pld-0.77.3/mo
 +#include <string.h>
 +#include <unistd.h>
 +
-+#include "../../_pam_aconf.h"
-+#include <security/pam_modules.h>
-+#include <security/_pam_macros.h>
-+#include <security/_pam_modutil.h>
++#include "security/pam_modules.h"
++#include "security/_pam_macros.h"
++#include "security/_pam_modutil.h"
 +
 +#include <libintl.h>
 +#define _(x) gettext(x)
