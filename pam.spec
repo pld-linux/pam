@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.73.0
-Release:	1
+Release:	2
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
