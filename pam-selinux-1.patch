@@ -36,7 +36,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/lckpwdf.-c pam-pld-0.77.3/modules/
  		return -1;
  
 +#ifdef WITH_SELINUX
-+	if(is_selinux_enabled())
++	if(is_selinux_enabled() > 0)
 +	{
 +		lockfd = open(LOCKFILE, O_WRONLY);
 +		if(lockfd == -1 && errno == ENOENT)
@@ -125,7 +125,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_acct.c pam-pld-0.77.3/mod
 +#include <sys/wait.h>
 +#ifdef WITH_SELINUX
 +#include <selinux/selinux.h>
-+#define SELINUX_ENABLED is_selinux_enabled()
++#define SELINUX_ENABLED (is_selinux_enabled() > 0)
 +#else
 +#define SELINUX_ENABLED 0
 +#endif
@@ -268,7 +268,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.3/m
 +#ifdef WITH_SELINUX
 +#include <selinux/selinux.h>
 +static security_context_t prev_context=NULL;
-+#define SELINUX_ENABLED (selinux_enabled != -1 ? selinux_enabled : selinux_enabled=is_selinux_enabled())
++#define SELINUX_ENABLED (selinux_enabled != -1 ? selinux_enabled : selinux_enabled=(is_selinux_enabled() > 0))
 +#else
 +#define SELINUX_ENABLED 0
 +#endif
@@ -642,7 +642,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.c pam-pld-0.77.3/modules/p
 -
 +#ifdef WITH_SELINUX
 +#include <selinux/selinux.h>
-+#define SELINUX_ENABLED is_selinux_enabled()
++#define SELINUX_ENABLED (is_selinux_enabled() > 0)
 +#else
 +#define SELINUX_ENABLED 0
 +#endif
@@ -760,7 +760,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
 +static int selinux_enabled=-1;
 +#ifdef WITH_SELINUX
 +#include <selinux/selinux.h>
-+#define SELINUX_ENABLED (selinux_enabled!=-1 ? selinux_enabled : selinux_enabled=is_selinux_enabled())
++#define SELINUX_ENABLED (selinux_enabled!=-1 ? selinux_enabled : selinux_enabled=(is_selinux_enabled() > 0))
 +static security_context_t prev_context=NULL;
 +#else
 +#define SELINUX_ENABLED 0
