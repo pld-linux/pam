@@ -19,14 +19,14 @@ Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
-Version:	0.77.5
-Release:	1
+Version:	0.77.6
+Release:	0.1
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
 #Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 Source0:	%{name}-pld-%{version}.tar.gz
-# Source0-md5:	907a60e9103ce094a4964a562d3d415b
+# Source0-md5:	60855377612a986d095077d24bbe90dc
 Source1:	system-auth.pamd
 Patch0:		%{name}-selinux-1.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
@@ -337,6 +337,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /%{_lib}/security/pam_lastlog.so
 %attr(755,root,root) /%{_lib}/security/pam_limits.so
 %attr(755,root,root) /%{_lib}/security/pam_listfile.so
+%attr(755,root,root) /%{_lib}/security/pam_localuser.so
 %attr(755,root,root) /%{_lib}/security/pam_mail.so
 %attr(755,root,root) /%{_lib}/security/pam_make.so
 %attr(755,root,root) /%{_lib}/security/pam_motd.so
@@ -349,6 +350,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /%{_lib}/security/pam_securetty.so
 %attr(755,root,root) /%{_lib}/security/pam_shells.so
 %attr(755,root,root) /%{_lib}/security/pam_stress.so
+%attr(755,root,root) /%{_lib}/security/pam_succeed_if.so
 %attr(755,root,root) /%{_lib}/security/pam_tally.so
 %attr(755,root,root) /%{_lib}/security/pam_time.so
 %attr(755,root,root) /%{_lib}/security/pam_unix.so
