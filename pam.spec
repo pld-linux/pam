@@ -1,70 +1,60 @@
-Summary:     Pluggable Authentication Modules: modular, incremental authentication
-Summary(de): Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
-Summary(fr): PAM : Pluggable Authentication Modules: modular, incremental authentication
-Summary(pl): Modularny system autentypacji
+Summary:     Pluggable Authentication Modules: modular authentication
+Summary(de): Einsteckbare Authentifizierungsmodule: modulare Authentifizierung
+Summary(fr): PAM : Pluggable Authentication Modules: modular authentication
+Summary(pl): Pluggable Authentication Modules: modu³y autentykacji 
 Summary(tr): Modüler, artýmsal doðrulama birimleri
 Name:        pam
-Version:     0.65
-Release:     4
+Version:     0.66
+Release:     2d
 Copyright:   GPL or BSD
 Group:       Base
-Source:      ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.gz
+Group(pl):   Podstawy
+Source0:     ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
 Source1:     other.pamd
-Source2:     ftp://sysadm.dntis.ro/pub/devel/pam/pam_make-0.1.tar.gz
-Patch1:      Linux-PAM-dirs.patch
-Patch2:      Linux-PAM-prompt.patch
-Patch3:      Linux-PAM-nopasswd+.patch
-Patch4:      Linux-PAM-bothconfs.patch
-Patch5:      Linux-PAM-nopedantic.patch
-Patch6:      Linux-PAM-rhlock.patch
-Patch7:      Linux-PAM-strerror.patch
-Patch8:      Linux-PAM-pwdb.patch
-Patch9:      Linux-PAM-glibc.patch
-Patch10:     Linux-PAM-noansi.patch
-Patch11:     Linux-PAM-shlib.patch
-Patch12:     Linux-PAM-sgml.patch
-Patch13:     Linux-PAM-makefile.patch
-Patch14:     Linux-PAM-shadow_faillog.patch
-Patch15:     Linux-PAM-new_options.patch
-Patch16:     Linux-PAM-add_time.patch
-Patch17:     Linux-PAM-rhost_and_time.patch
-Patch18:     Linux-PAM-Maildir.patch
-Patch19:     Linux-PAM-unix-md5.patch
-Patch20:     Linux-PAM-unix-NIS.patch
-Patch21:     Linux-PAM-umask.patch
-Patch22:     Linux-PAM-pam_make.patch
-Patch23:     Linux-PAM-cleanup.patch
-
-URL:         http://parc.power.net/morgan/Linux-PAM/index.html
-Requires:    cracklib, cracklib-dicts, pwdb >= 0.54-2
-Obsoletes:   pamconfig
-Obsoletes:   pam_make
+Patch0:	     %{name}-Makefile.patch
+Patch1:	     %{name}-defs.patch
+Patch2:	     %{name}-filter.patch
+Patch3:	     %{name}-group.patch
+Patch4:	     %{name}-lastlog.patch
+Patch5:	     %{name}-libpam.patch
+Patch6:	     %{name}-limits.patch
+Patch7:	     %{name}-mail.patch
+Patch8:	     %{name}-pwdb.patch
+Patch9:	     %{name}-radius.patch
+Patch10:     %{name}-rhosts.patch
+Patch11:     %{name}-sgml.patch
+Patch12:     %{name}-unix.patch
+Patch13:     %{name}-wheel.patch
+Requires:    cracklib
+Requires:    cracklib-dicts
+Requires:    pwdb 
+Url:         http://parc.power.net/morgan/Linux-PAM/index.html
 Buildroot:   /tmp/%{name}-%{version}-root
 
 %description
-PAM (Pluggable Authentication Modules) is a powerful, flexible, extensible
-authentication system which allows the system administrator to configure
-authentication services individually for every pam-compliant application
-without recompiling any of the applications.
+PAM (Pluggable Authentication Modules) is a powerful, flexible,
+extensible authentication system which allows the system administrator
+to configure authentication services individually for every pam-compliant
+application without recompiling any of the applications.
+
+%description -l pl 
+PAM (Pluggable Authentication Modules) s± doskona³ym systemem autentykacji
+pozwalaj±cym administratorowi systemu na skonfigurowanie dowolnego serwisu
+(kompilowanego ze wsparciem dla PAM), jak równie¿ okre¶lnie jakie osoby mog±
+z nich korzystaæ. Pakiet ten zawiera podstawowe modu³y autentykacji dla 
+twojego Linuxa i nigdy nie powinien byæ odinstalowany.
 
 %description -l de
 PAM (Pluggable Authentication Modules) ist ein leistungsfähiges, flexibles
 und erweiterbares Authentifizierungssystem, mit dem der Systemverwalter
-Authentifizierungs-Dienste individuell für jede pam-kompatible Anwendung
-konfigurieren kann, ohne diese neu kompilieren zu müssen.
+Authentifizierungs-Dienste individuell für jede pam-kompatible
+Anwendung konfigurieren kann, ohne diese neu kompilieren zu müssen.
 
 %description -l fr
 PAM (Pluggable Authentication Modules) est un systéme d'authentification
 puissant, souple et extensible permettant à l'administrateur système de
-configurer les individuellement les services d'authentification pour chaque
-application conforme à PAM, sans recompiler aucune application.
-
-%description -l pl
-PAM (Pluggable Authentication Modules) jest silnym i ³atwo dostosowywalnym
-do potrzeb systemem autentykacji, który umo¿liwia administratorowi
-indywidualne konfigurowanie poszczególnych serwisów, które s± dostosowane i
-zlinkowane z bibliotekami PAM bez pó¼niejszej ich rekompilacji w momencie
-zmiany sposobu autentykacji tych¿e serwisów.
+configurer les individuellement les services d'authentification pour
+chaque application conforme à PAM, sans recompiler aucune application.
 
 %description -l tr
 PAM (Pluggable Authentication Modules) sistem yöneticilerinin uygulamalardan
@@ -73,190 +63,143 @@ doðrulama hizmetlerini ayarlamalarýna yardýmcý olan, güclü, esnek ve kapsamlý
 bir doðrulama sistemidir.
 
 %package devel
-Summary:     PAM header files
-Summary(pl): Pliki nag³ówkowe i dokumentacja do PAM
+Summary:     pam headers and static library
 Group:       Libraries
 Group(pl):   Biblioteki
 Requires:    %{name} = %{version}
+Summary(pl): Pliki nag³ówkowe i biblioteka statyczna PAM
 
 %description devel
-Header files for developing PAM based applications.
+PAM headers and static library for developers.
 
-%description devel
-Header files for developing PAM based applications.
-
-%description devel -l pl
-Pliki nag³ówkowe i dokumentacja do PAM.
-
-%package static
-Summary:     PAM static libraries
-Summary(pl): Biblioteki statyczne PAM
-Group:       Libraries
-Group(pl):   Biblioteki
-Requires:    %{name}-devel = %{version}
-
-%description static
-PAM static libraries.
-
-%description static -l pl
-Biblioteki statyczne PAM.
+%description -l pl devel
+Pliki nag³ówkowe i biblioteka statyczna PAM.
 
 %prep
-%setup -q -n Linux-PAM-%{version}
-%patch1 -p1 -b .dirs
-%patch2 -p1 -b .prompt
-%patch3 -p1 -b .nopasswd+
-%patch4 -p1 -b .bothconfs
-%patch5 -p1 -b .nopedantic
-%patch6 -p1 -b .rhlock
-%patch7 -p1 -b .strerror
-%patch8 -p1 -b .pwdb
-%patch9 -p1 -b .glibc
-%patch10 -p1 -b .noansi
-%patch11 -p1 -b .shlib
-%patch12 -p1 -b .shml
-%patch13 -p1 -b .makefile
-%patch14 -p1
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch18 -p0
-%patch19 -p1
-%patch20 -p1
-%patch21 -p1
-tar zxf %{SOURCE2} -C $RPM_BUILD_DIR/Linux-PAM-%{version}/modules/
-%patch22 -p1
-%patch23 -p1
+%setup -q -n Linux-PAM
+%patch0  -p1
+%patch1  -p1
+%patch2  -p1
+%patch3  -p1
+%patch4  -p1
+%patch5  -p1
+%patch6  -p1
+%patch7  -p1
+%patch8  -p1
+%patch9  -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
 
-%ifos Linux
-rm -f default.defs
-ln -s defs/redhat.defs default.defs
-%endif
+ln -sf defs/linux-pld.defs default.defs
 
 %build
 touch .freezemake
-make
+OPTIMIZE="$RPM_OPT_FLAGS" LDFLAGS=-s \
+make all
 
-(cd doc ; make; gzip -9 ps/*.ps)
+(cd doc; make)
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security,usr/{include/security,lib,man/man{3,8}}}
-make -i install FAKEROOT=$RPM_BUILD_ROOT
-install ${RPM_SOURCE_DIR}/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
-install doc/man/pam.8 $RPM_BUILD_ROOT/usr/man/man8
-install doc/man/*.3 $RPM_BUILD_ROOT/usr/man/man3
-chmod u+w $RPM_BUILD_ROOT/usr/man/man3/*
-echo ".so pam.8" > $RPM_BUILD_ROOT/usr/man/man8/pam.conf.8
-echo ".so pam.8" > $RPM_BUILD_ROOT/usr/man/man8/pam.d.8
-echo ".so pam_start.3" > $RPM_BUILD_ROOT/usr/man/man3/pam_end.3
-echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/man/man3/pam_close_session.3
 
-# make sure the modules built...
-[ -f $RPM_BUILD_ROOT/lib/security/pam_deny.so ] || {
-  echo "You have LITTLE or NOTHING in your /lib/security directory:"
-  echo $RPM_BUILD_ROOT/lib/security/*
-  echo ""
-  echo "Fix it before you install this package, while you still can!"
-  exit 1
-}
+install -d $RPM_BUILD_ROOT/{/usr/include/security,lib/security}
+make install FAKEROOT=$RPM_BUILD_ROOT 
 
-strip $RPM_BUILD_ROOT/lib/lib*.so.*.*
-strip --strip-debug $RPM_BUILD_ROOT/lib/security/*.so || :
-strip $RPM_BUILD_ROOT/sbin/pwdb_chkpwd
-mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
+install -d $RPM_BUILD_ROOT/{etc/pam.d,usr/man/{man3,man8}}
+
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/other
+
+install doc/man/pam.8	$RPM_BUILD_ROOT/usr/man/man8
+install doc/man/*.3	$RPM_BUILD_ROOT/usr/man/man3
+
+echo .so pam.8 > $RPM_BUILD_ROOT/usr/man/man8/pam.conf.8
+echo .so pam.8 > $RPM_BUILD_ROOT/usr/man/man8/pam.d.8
+
+gzip -9nf $RPM_BUILD_ROOT/usr/man/{man3/*,man8/*}
+gzip -9nf doc/html/* doc/ps/*.ps doc/txts/*.txt doc/specs/rfc86.0.txt
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post   -p /sbin/ldconfig
+%post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(644, root, root, 755)
-%doc Copyright doc/{html,ps,txts,specs/rfc86.0.txt}
-%dir /etc/pam.d
-%config /etc/pam.d/other
-%config /etc/security/*
-%attr(755 , root, root) /lib/lib*.so.*.*
+%defattr(644,root,root,755)
+%doc doc/html doc/ps/*.ps.gz doc/txts/*.txt.gz
+%doc doc/specs/rfc86.0.txt.gz
+
+%attr(750,root,root) %dir /etc/pam.d
+%attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/other
+
+%attr(755,root,root) /lib/*.so.*
+
 %dir /sbin/pam_filter
-%attr(511 , root, root) /sbin/pam_filter/upperLOWER
-%attr(4555, root, root) /sbin/pwdb_chkpwd
-%attr(755 , root, root) /lib/security
-%attr(644 , root, root) /usr/man/man8/*
+%attr(711,root,root) /sbin/pam_filter/*
+
+%attr(711,root,root) /sbin/pwdb_chkpwd
+%attr(755,root,root) /lib/security/*
+%attr(750,root,root) %dir /etc/security
+%attr(640,root,root) %config %verify(not size mtime md5) /etc/security/*.conf
+%attr(644,root, man) /usr/man/man[38]/*
 
 %files devel
-%defattr(644, root, root, 755)
-/lib/lib*.so
-/usr/include/security
-%attr(644, root, root) /usr/man/man3/*
+%defattr(644,root,root,755)
+%doc examples
 
-%files static
-%attr(644, root, root) /usr/lib/lib*.a
+%attr(755,root,root) /lib/*.so
+
+/lib/*.a
+/usr/include/security
 
 %changelog
-* Sun Jan 10 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
-- added pam_make module
-- cleaned up compiles time warnings in modules (-cleanup.patch)
+* Wed Feb 10 1999 Micha³ Kuratczyk <kurkens@polbox.com>
+  [0.66-2d]
+- added LDFLAGS=-s
+- simplifications in %install and %files
+- added examples to pam-devel (was missing)
+- added gzipping documantation
+- sloted BuildRoot into PLD standard
+- removed "Prereq: /sbin/ldconfig"
+- gzipping instead bzipping
+- cosmetic changes
 
-* Sat Jan  9 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
-  [0.65-4]
-- fixed installation and packeging of man pages
-- renamed alpha patch to noansi (NIS RPC won't compile with -ansi and -DPOSIX)
-- added new patches:
-  -- umask fix in pam_unix_passwd
-  -- md5 passwords capability for pam_unix - new option "md5"
-  -- support for setting passwords via NIS RPC for pam_unix_passswd - new option "nis"
-     WARNING! if you set this, pam_unix_passwd will use ONLY NIS RPC for password
-              setting. This is meant for NIS workstations.
-  -- renamed strict/fascist=true/false option in pam_unix_passwd to simple
-     no_strict/no_fasxist if someone wants relaxed passwd checking
-  -- Maildir format recognition for pam_mail
+* Mon Jan 04 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+[0.66-1d]
+- updated to version 0.66,
+- added man pages,
+- added more documentations,
+- cosmetic changes ;)
 
-* Thu Dec  3 1998 Robert Mi³kowski <milek@rudy.mif.pg.gda.pl>
-  [0.65-3]
-- added new patches:
-  -- failure time logging,
-  -- support for fail_line field,
-  -- support for fail_locktime field with new option no_lock_time.
+* Wed Dec 30 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+[0.65-3d]
+- added patch against pam_tally.c. 
 
-* Mon Nov 30 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [0.65-2]
-- added %ifos Linux .. %endif around setting up default.defs,
-- added pl translation.
+* Mon Oct 19 1998 Arkadiusz Mi¶kiewicz <misiek@misiek.eu.org>
+[0.65-2d]
+- removed 2> from make but added Linux-PAM-0.65.cast-ldconfig patch
+- corrected making of documentation
+- removed ps and txt from documentation
 
-* Mon Nov 30 1998 Robert Mi³kowski <milek@rudy.mif.pg.gda.pl>
-- changed format of /var/log/faillog to one from
-  shadow-utils,
-- added new option "per_user" for pam_tally module.
+* Tue Oct 06 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+[0.65-1d]
+- translation modified for pl,
+- fixed files permissions,
+- macro %%{name} in Source & Patch,
+- buildroot moved to /var/tmp/%{name}-%{version}-%{release}-root,
+- added devel subpackage,
+- build from root's account,
+- minor modifications of the spec file.
 
-* Sun Aug 22 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [0.64-4]
-- added -q %setup parameter,
-- changed Buildroot to /tmp/%%{name}-%%{version}-root,
-- added using %%{version} in Source snd %setup,
-- fixed %post{un},
-- changeded dependences to "Requires: %%{name} = %%{version}" in devel
-  subpackage,
-- fiew simplification in %build and %install,
-- added development manual pages (level 3) to devel,
-- added missing %postun with runing ldconfig,
-- /sbin/ldconfig is now runed as -p parameter in %post{un},
-- fixed makin ps documentation,
-- added static and devel subpackages,
-- added ignore errors during "make install" (-i switch),
-- added striping shared libraries,
-- added striping /sbin/pwdb_chkpwd,
-- added striping debug info on all modules,
-- added "Obsoletes: pamconfig" (now it is not neccessary),
-- added %attr and %defattr macros in %files (allow build package from
-  non-root account).
-
-* Sat May 23 1998 Jeff Johnson <jbj@redhat.com>
-- Partial fix for new sgml syntax.
-- Hack to get around failiing sgml2latex.
+* Mon Jun 15 1998 Marcin Korzonek <mkorz@shadow.eu.org>
+[0.65-1]
+- updated to 0.65
+- build against glibc 2.1.
 
 * Fri Apr 24 1998 Prospector System <bugs@redhat.com>
+
 - translations modified for de, fr, tr
 
 * Tue Mar 10 1998 Cristian Gafton <gafton@redhat.com>
