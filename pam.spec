@@ -36,8 +36,13 @@ Patch17:	Linux-PAM-motd.patch
 Patch18:	Linux-PAM-stringh.patch
 Patch19:	Linux-PAM-crypt16.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
-Requires:	cracklib, cracklib-dicts, pwdb >= 0.54-2
-Obsoletes:	pamconfig, pam_make
+BuildPrereq:	/usr/bin/nsgmls
+BuildPrereq:	pwdb-devel
+Requires:	cracklib
+Requires:	cracklib-dicts
+Requires:	pwdb >= 0.54-2
+Obsoletes:	pamconfig
+Obsoletes:	pam_make
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
@@ -187,7 +192,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc Copyright.gz doc/{html,txts,specs/*.gz}
 %dir /etc/pam.d
-%dir /lib/security
 %dir /sbin/pam_filter
 %config /etc/pam.d/other
 %config /etc/security/*
@@ -204,7 +208,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/man/man3/*
 
 %files static
-%defattr(644,root,root)
+%defattr(644,root,root,755)
 /usr/lib/lib*.a
 
 %changelog
@@ -268,7 +272,7 @@ rm -rf $RPM_BUILD_ROOT
   -- umask fix in pam_unix_passwd
   -- md5 passwords capability for pam_unix - new option "md5"
   -- support for setting passwords via NIS RPC for pam_unix_passswd - new option "nis"
-     WARNING! if you set this, pam_unix_passwd will use ONLY NIS RPC for password
+    WARNING! if you set this, pam_unix_passwd will use ONLY NIS RPC for password
               setting. This is meant for NIS workstations.
   -- renamed strict/fascist=true/false option in pam_unix_passwd to simple
      no_strict/no_fasxist if someone wants relaxed passwd checking
