@@ -244,14 +244,14 @@ rm -rf $RPM_BUILD_ROOT
 %dir /sbin/pam_filter
 %dir /var/lock/console
 %dir /etc/security/console.apps
-%config %verify(not md5 size mtime) /etc/pam.d/other
-%config %verify(not md5 size mtime) /etc/security/access.conf
-%config %verify(not md5 size mtime) /etc/security/pam_env.conf
-%config %verify(not md5 size mtime) /etc/security/group.conf
-%config %verify(not md5 size mtime) /etc/security/limits.conf
-%config %verify(not md5 size mtime) /etc/security/time.conf
-%config %verify(not md5 size mtime) /etc/security/consoles
-%config %verify(not md5 size mtime) /etc/security/trigram*
+%config(noreplace) %verify(not md5 size mtime) /etc/pam.d/other
+%config(noreplace) %verify(not md5 size mtime) /etc/security/access.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/pam_env.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/group.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/limits.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/time.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/consoles
+%config(noreplace) %verify(not md5 size mtime) /etc/security/trigram*
 %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist
 %attr(0600,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/opasswd
 %attr(0755,root,root) /lib/lib*.so.*.*
@@ -334,5 +334,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files pam_cap
 %defattr(644,root,root,755)
-%config %verify(not md5 size mtime) /etc/security/capability.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/capability.conf
 %attr(755,root,root) /lib/security/pam_cap.so
