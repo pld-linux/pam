@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	3
+Release:	9
 Copyright:	GPL or BSD
 Group:		Base
 Source0:	ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
@@ -151,15 +151,17 @@ echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/man/man3/pam_close_session.3
 	exit 1
 }
 
-strip $RPM_BUILD_ROOT/lib/lib*.so.*.*
-for i in $RPM_BUILD_ROOT/lib/security/*.so
-	do strip --strip-debug $i
-done
-strip $RPM_BUILD_ROOT/sbin/pwdb_chkpwd
+strip --strip-debug $RPM_BUILD_ROOT/lib/lib*.so.*.* \
+	$RPM_BUILD_ROOT/sbin/pwdb_chkpwd \
+	$RPM_BUILD_ROOT/lib/security/*.so
+
+ln -sf ../../lib/libpam.so.0 $RPM_BUILD_ROOT/usr/lib/libpam.so
+ln -sf ../../lib/libpam_misc.so.0 $RPM_BUILD_ROOT/usr/lib/libpam_misc.so
+
 mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
 
 gzip -9fn $RPM_BUILD_ROOT/usr/man/man[38]/* Copyright \
-	doc/ps/*.ps doc/txts/*.txt doc/specs/*.{raw,txt}
+	doc/txts/*.txt doc/specs/*.{raw,txt}
 
 rm -f doc/{ps,txts}/{README,*.log}
 
@@ -171,7 +173,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc Copyright.gz doc/{html,ps,txts,specs/*.gz}
+%doc Copyright.gz doc/{html,txts,specs/*.gz}
 %dir /etc/pam.d
 %dir /lib/security
 %dir /sbin/pam_filter
@@ -180,12 +182,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /lib/lib*.so.*.*
 %attr(0755,root,root) /lib/security/*.so
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
-%attr(4711,root,root) /sbin/pwdb_chkpwd
-%attr(0644,root,root) /usr/man/man8/*
+%attr(4755,root,root) /sbin/pwdb_chkpwd
+/usr/man/man8/*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) /lib/lib*.so
+%attr(755,root,root) /usr/lib/lib*.so
 /usr/include/security
 /usr/man/man3/*
 
@@ -193,6 +195,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root,root) /usr/lib/lib*.a
 
 %changelog
+* Wed Mar 31 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [0.66-9]
+- lib*.so links moved to /usr/lib,
+- removed ps %doc.
+ 
 * Sat Mar  21 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
   [0.66-3]
 - still more fixes in pam_unix
