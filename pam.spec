@@ -13,18 +13,16 @@ Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
-Version:	0.77.3
-Release:	11
+Version:	0.77.4
+Release:	1
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
 #Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 Source0:	%{name}-pld-%{version}.tar.gz
-# Source0-md5:	d4f46fd262bbb0f1abc1614d53574d94
+# Source0-md5:	a617f2c16d999a5883889607fdb19096
 Source1:	system-auth.pamd
-Patch0:		%{name}-consoles.patch
-Patch1:		%{name}-selinux-1.patch
-Patch2:		%{name}-userdb.patch
+Patch0:		%{name}-selinux-1.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -242,9 +240,7 @@ ModuЁ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
-%patch0 -p1
-%{?with_selinux:%patch1 -p1}
-%patch2 -p1
+%{?with_selinux:%patch0 -p1}
 
 %build
 find . -name Makefile.am | xargs %{__perl} -pi -e 's#modulesdir.*=.*\@prefix\@/lib#modulesdir = \@libdir\@#g'
