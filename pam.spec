@@ -217,7 +217,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/lib*.a
 
 %changelog
-* Tue Apr 20 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
+* Tue Apr 23 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
   [0.66-12]
 - new version of pam_unix modules - nasty BUG FIXED!
 - added remember patch. Ever wondered how to stop lusers from having
