@@ -110,6 +110,7 @@ install ${RPM_SOURCE_DIR}/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
 
 strip $RPM_BUILD_ROOT/lib/lib*.so.*.*
 strip --strip-debug $RPM_BUILD_ROOT/lib/security/*.so
+strip $RPM_BUILD_ROOT/sbin/pwdb_chkpwd
 mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
 
 install doc/man/* $RPM_BUILD_ROOT/usr/man/man3
@@ -157,6 +158,7 @@ rm -rf $RPM_BUILD_ROOT
 - added static and devel subpackages,
 - added ignore errors during "make install" (-i switch),
 - added striping shared libraries,
+- added striping /sbin/pwdb_chkpwd,
 - added striping debug info on all modules,
 - added "Obsoletes: pamconfig" (now it is not neccessary),
 - added %attr and %defattr macros in %files (allow build package from
