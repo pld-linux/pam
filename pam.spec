@@ -5,10 +5,10 @@ Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	21
+Release:	24
 Copyright:	GPL or BSD
 Group:		Base
-%define		date	19990527
+%define		date	19990604
 Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildPrereq:	/usr/bin/nsgmls
@@ -93,19 +93,19 @@ make -C doc
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security,usr/{include/security,lib,man/man{3,8}}}
+install -d $RPM_BUILD_ROOT/{etc/pam.d,lib/security,usr/{include/security,lib,share/man/man{3,8}}}
 
 make install FAKEROOT=$RPM_BUILD_ROOT
 
 install conf/other.pamd $RPM_BUILD_ROOT/etc/pam.d/other
 
-install doc/man/pam.8 $RPM_BUILD_ROOT/usr/man/man8
-install doc/man/*.3 $RPM_BUILD_ROOT/usr/man/man3
-chmod u+w $RPM_BUILD_ROOT/usr/man/man3/*
-echo ".so pam.8" > $RPM_BUILD_ROOT/usr/man/man8/pam.conf.8
-echo ".so pam.8" > $RPM_BUILD_ROOT/usr/man/man8/pam.d.8
-echo ".so pam_start.3" > $RPM_BUILD_ROOT/usr/man/man3/pam_end.3
-echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/man/man3/pam_close_session.3
+install doc/man/pam.8 $RPM_BUILD_ROOT/usr/share/man/man8
+install doc/man/*.3 $RPM_BUILD_ROOT/usr/share/man/man3
+chmod u+w $RPM_BUILD_ROOT/usr/share/man/man3/*
+echo ".so pam.8" > $RPM_BUILD_ROOT/usr/share/man/man8/pam.conf.8
+echo ".so pam.8" > $RPM_BUILD_ROOT/usr/share/man/man8/pam.d.8
+echo ".so pam_start.3" > $RPM_BUILD_ROOT/usr/share/man/man3/pam_end.3
+echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/share/man/man3/pam_close_session.3
 
 # make sure the modules built...
 [ -f $RPM_BUILD_ROOT/lib/security/pam_deny.so ] || {
@@ -126,7 +126,7 @@ ln -sf ../../lib/libpam_misc.so.0 $RPM_BUILD_ROOT/usr/lib/libpam_misc.so
 
 mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
 
-gzip -9fn $RPM_BUILD_ROOT/usr/man/man[38]/* Copyright \
+gzip -9fn $RPM_BUILD_ROOT/usr/share/man/man[358]/* Copyright \
 	doc/txts/*.txt doc/specs/*.{raw,txt}
 
 rm -f doc/{ps,txts}/{README,*.log}
@@ -144,8 +144,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc Copyright.gz doc/{html,txts,specs/*.gz}
 %dir /etc/pam.d
 %dir /sbin/pam_filter
+%dir /var/lock/console
+%dir /etc/security/console.apps
 %config /etc/pam.d/other
 %config /etc/security/*.conf
+%config /etc/security/consoles
 %attr(0600,root,root) %config(noreplace) /etc/security/opasswd
 %attr(0755,root,root) /lib/lib*.so.*.*
 %attr(0755,root,root) /lib/security/*.so
@@ -153,19 +156,28 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4755,root,root) /sbin/pwdb_chkpwd
 %attr(4755,root,root) /sbin/unix_chkpwd
 /sbin/pam_pwdb_helper
-/usr/man/man8/*
+/usr/share/man/man5/*
+/usr/share/man/man8/*
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/lib/lib*.so
 /usr/include/security
-/usr/man/man3/*
+/usr/share/man/man3/*
 
 %files static
 %defattr(644,root,root,755)
 /usr/lib/lib*.a
 
 %changelog
+* Thu Jun  3 1999 Jan Rêkorajski <baggins@pld.org.pl>
+  [0.66-24]
+- added pam_console module - stripped version
+
+* Thu May 27 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
+  [0.66-21]
+- spec cleanup
+
 * Fri May 14 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
   [0.66-20]
 - added unix_chkpwd and pam_pwdb_helper symlink
