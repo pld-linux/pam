@@ -21,6 +21,7 @@ BuildRequires:	skey-devel
 BuildRequires:	opie-devel
 BuildRequires:	libwrap-devel
 BuildRequires:	libcap-devel
+BuildRequires:	db3-devel
 BuildRequires:	flex
 BuildRequires:	bison
 Requires:	cracklib
