@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.72.4
-Release:	1
+Release:	2
 License:	GPL or BSD
 Group:		Base
 Group(de):	Gründsätzlich
@@ -26,10 +26,10 @@ Requires:	cracklib
 Requires:	cracklib-dicts
 Requires:	make
 Requires:	awk
-Obsoletes:	pamconfig
-Obsoletes:	pam_make
 Provides:	pam-pld
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	pamconfig
+Obsoletes:	pam_make
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible,
@@ -107,7 +107,7 @@ Requires:	%{name} = %{version}
 Requires:	pwdb >= 0.54-2
 
 %description pam_pwdb
-pam_pwdb module
+pam_pwdb module.
 
 %package pam_radius
 Summary:	pam_radius module
@@ -118,7 +118,7 @@ Requires:	%{name} = %{version}
 Requires:	pwdb >= 0.54-2
 
 %description pam_radius
-pam_radius module
+pam_radius module.
 
 %package pam_skey
 Summary:	pam_skey module
@@ -129,7 +129,7 @@ Requires:	%{name} = %{version}
 Requires:	skey
 
 %description pam_skey
-pam_skey module
+pam_skey module.
 
 %package pam_opie
 Summary:	pam_opie module
@@ -140,7 +140,7 @@ Requires:	%{name} = %{version}
 Requires:	opie
 
 %description pam_opie
-pam_opie module
+pam_opie module.
 
 %package pam_tcpd
 Summary:	pam_tcpd module
@@ -151,7 +151,7 @@ Requires:	%{name} = %{version}
 Requires:	libwrap
 
 %description pam_tcpd
-pam_tcpd module
+pam_tcpd module.
 
 %package pam_cap
 Summary:	pam_cap module
@@ -162,7 +162,7 @@ Requires:	%{name} = %{version}
 Requires:	libcap
 
 %description pam_cap
-pam_cap module
+pam_cap module.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
@@ -183,14 +183,7 @@ ln -sf /lib/libpam.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /lib/libpam_misc.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 ln -sf /lib/libpamc.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
-strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
-	$RPM_BUILD_ROOT/lib/security/*.so
-
-# Removed due to chicken-egg problem
-#	$RPM_BUILD_ROOT/sbin/pam_tally \
-
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[358]/* Copyright \
-	doc/txts/*.txt doc/specs/*.{raw,txt}
+gzip -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
 
 rm -f doc/{ps,txts}/{README,*.log} \
 	doc/{html,txts}/Makefile*
