@@ -1,0 +1,8 @@
+diff -urN aaa/pam-pld-0.77.3/modules/pam_console/consoles pam-pld-0.77.3/modules/pam_console/consoles
+--- aaa/pam-pld-0.77.3/modules/pam_console/consoles	2003-09-26 13:30:15.000000000 +0200
++++ pam-pld-0.77.3/modules/pam_console/consoles	2003-11-20 14:03:03.000000000 +0100
+@@ -22,3 +22,4 @@
+ vc/10                                                                                 
+ vc/11                                                                                 
+ vc/12                                                                                 
++:0
