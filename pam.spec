@@ -8,6 +8,7 @@ Version:	0.66
 Release:	13
 Copyright:	GPL or BSD
 Group:		Base
+Group(pl):	Podstawy
 Source0:	ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
 Source1:	other.pamd
 Source2:	ftp://sysadm.dntis.ro/pub/devel/pam/pam_make-0.1.tar.gz
