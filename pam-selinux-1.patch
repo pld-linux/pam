@@ -1535,7 +1535,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/support.h pam-pld-0.77.3/modules/p
  
 diff -urN pam-pld-0.77.3.org/modules/pam_unix/unix_chkpwd.c pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c
 --- pam-pld-0.77.3.org/modules/pam_unix/unix_chkpwd.c	2003-12-27 01:14:07.000000000 +0100
-+++ pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c	2003-12-27 02:58:53.004382600 +0100
++++ pam-pld-0.77.3/modules/pam_unix/unix_chkpwd.c	2003-12-27 03:49:54.472968632 +0100
 @@ -27,13 +27,24 @@
  #include <syslog.h>
  #include <unistd.h>
@@ -1775,11 +1775,11 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/unix_chkpwd.c pam-pld-0.77.3/modul
  
 -	if (isatty(STDIN_FILENO)) {
 -
-+	if (isatty(STDIN_FILENO) || argc != 3 ) {
++	if (isatty(STDIN_FILENO) || argc != 3) {
  		_log_err(LOG_NOTICE
  		      ,"inappropriate use of Unix helper binary [UID=%d]"
  			 ,getuid());
-@@ -258,19 +455,43 @@
+@@ -258,19 +455,26 @@
  		return UNIX_FAILED;
  	}
  
@@ -1809,29 +1809,12 @@ diff -urN pam-pld-0.77.3.org/modules/pam_unix/unix_chkpwd.c pam-pld-0.77.3/modul
 +         /* if the caller specifies the username, verify that user
 +            matches it */
 +         if (strcmp(user, argv[1])) {
-+           return UNIX_FAILED;
++	   force_failure = 1;
 +         }
 +        }
-+
-+       option=argv[2];
-+
-+       if (strncmp(argv[2], "verify", 8) == 0) {
-+         /* Get the account information from the shadow file */
-+         return _verify_account(argv[1]);
-+       }
-+
-+       if (strncmp(option, "shadow", 8) == 0) {
-+         /* Attempting to change the password */
-+         return _update_shadow(argv[1]);
-+        }
-+       /* read the nullok/nonull option */
-+       if (strncmp(option, "nullok", 8) == 0)
-+         nullok = 1;
-+       else
-+         nullok = 0;
  
 -	/* read the nullok/nonull option */
-+        /* read the password from stdin (a pipe from the pam_unix module) */
++        /* read the nullok/nonull option */
  
  	npass = read(STDIN_FILENO, option, 8);
  
