@@ -6,7 +6,7 @@ Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(es):	Módulos de autentificación plugables (PAM)
 Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authentication
-Summary(pl):	Modularny system autentykacji
+Summary(pl):	Modularny system uwierzytelniania
 Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(ru):	éÎÔÓÔÒÕÍÅÎÔ, ÏÂÅÓÐÅÞÉ×ÁÀÝÉÊ ÁÕÔÅÎÔÉÆÉËÁÃÉÀ ÄÌÑ ÐÒÉÌÏÖÅÎÉÊ
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
@@ -29,7 +29,7 @@ BuildRequires:	db-devel
 BuildRequires:	flex
 BuildRequires:	libcap-devel
 BuildRequires:	libtool >= 1:1.4.2-9
-BuildRequires:	libwrap-devel
+BuildRequires:	libwrap-devel >= 7.6-32
 BuildRequires:	opie-devel
 BuildRequires:	pwdb-devel
 BuildRequires:	skey-devel
@@ -74,11 +74,11 @@ sans recompiler aucune application.
 
 %description -l pl
 PAM (Pluggable Authentication Modules) jest silnym i ³atwo
-dostosowywalnym do potrzeb systemem autentykacji, który umo¿liwia
-administratorowi indywidualne konfigurowanie poszczególnych serwisów,
+dostosowywalnym do potrzeb systemem uwierzytelniania, który umo¿liwia
+administratorowi indywidualne konfigurowanie poszczególnych us³ug,
 które s± dostosowane i zlinkowane z bibliotekami PAM, bez pó¼niejszej
-ich rekompilacji w momencie zmiany sposobu autentykacji tych¿e
-serwisów.
+ich rekompilacji w momencie zmiany sposobu uwierzytelniania tych¿e
+us³ug.
 
 %description -l pt_BR
 PAM (Módulos de Autenticação Plugáveis) é um poderoso, flexível e
@@ -111,7 +111,7 @@ PAM (Pluggable Authentication Modules) - ÜÔÏ ÍÏÝÎÁÑ, ÇÉÂËÁÑ,
 
 %package devel
 Summary:	PAM header files
-Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
+Summary(pl):	Pliki nag³ówkowe i dokumentacja programisty do PAM
 Summary(pt_BR):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 Summary(ru):	âÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM
@@ -123,7 +123,7 @@ Requires:	FHS >= 2.2-9
 Header files for developing PAM based applications.
 
 %description devel -l pl
-Pliki nag³ówkowe i dokumentacja do PAM.
+Pliki nag³ówkowe i dokumentacja programisty do PAM.
 
 %description devel -l pt_BR
 Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
@@ -211,7 +211,7 @@ Summary:	pam_tcpd module
 Summary(pl):	Modu³ pam_tcpd
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}
-Requires:	libwrap
+Requires:	libwrap >= 7.6-32
 
 %description pam_tcpd
 pam_tcpd module.
@@ -251,7 +251,8 @@ rm -f missing
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/lib
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 rm -f doc/{ps,txts}/{README,*.log} \
 	doc/{html,txts}/Makefile*
