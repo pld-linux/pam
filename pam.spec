@@ -79,9 +79,6 @@ Requires:	%{name} = %{version}
 %description devel
 Header files for developing PAM based applications.
 
-%description devel
-Header files for developing PAM based applications.
-
 %description devel -l pl
 Pliki nag³ówkowe i dokumentacja do PAM.
 
@@ -195,26 +192,26 @@ Modu³ pam_cap.
 %patch0 -p1
 
 %build
-%{__libtoolize} --copy --force
+libtoolize --copy --force
 %configure \
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
 %{__make}
 
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
-%{__install} -d $RPM_BUILD_ROOT/lib
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/lib
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-%{__mv} -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
-%{__ln_s} -f /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-%{__ln_s} -f /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-%{__ln_s} -f /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
+ln -s -f /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -s -f /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -s -f /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
-%{_-gzip} -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
+gzip -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
 
-%{__rm} -f doc/{ps,txts}/{README,*.log} \
+rm -f doc/{ps,txts}/{README,*.log} \
 	doc/{html,txts}/Makefile*
 
 :> $RPM_BUILD_ROOT/etc/security/opasswd
@@ -224,7 +221,7 @@ Modu³ pam_cap.
 %postun -p /sbin/ldconfig
 
 %clean
-%{__rm} -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
