@@ -61,7 +61,7 @@ Header files for developing PAM based applications.
 %package static
 Summary:     PAM static libraries
 Group:       Libraries
-Requires:    %{name}-devel-%{version}
+Requires:    %{name}-devel = %{version}
 
 %description static
 PAM static libraries.
