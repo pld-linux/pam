@@ -11,7 +11,6 @@ Group:		Base
 Group(de):	Gründsätzlich
 Group(pl):	Podstawowe
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
-Patch0:         pam-pam_acces.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
 BuildRequires:	sgml-tools
@@ -167,7 +166,6 @@ pam_cap module.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
-%patch0 -p1
 
 %build
 %configure \
