@@ -1,0 +1,12 @@
+diff -Nuard pam-pld-0.77.3.orig/modules/pam_userdb/Makefile.am pam-pld-0.77.3/modules/pam_userdb/Makefile.am
+--- pam-pld-0.77.3.orig/modules/pam_userdb/Makefile.am	2003-09-26 13:30:16.000000000 +0200
++++ pam-pld-0.77.3/modules/pam_userdb/Makefile.am	2004-03-24 12:46:58.212495728 +0100
+@@ -8,7 +8,7 @@
+ modules_LTLIBRARIES	= pam_userdb.la
+ endif
+ 
+-pam_userdb_la_SOURCES	= pam_userdb.c
++pam_userdb_la_SOURCES	= pam_userdb.c conv.c
+ 
+ EXTRA_pam_userdb_la_SOURCES	= conv.c
+ 
