@@ -13,7 +13,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.77.3
-Release:	3
+Release:	4
 Epoch:		0
 License:	GPL/BSD
 Group:		Base
@@ -263,7 +263,7 @@ rm -f doc/{ps,txts}/{README,*.log} \
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib
 
-install pamcrypt/md5.h $RPM_BUILD_ROOT%{_includedir}/security
+install pamcrypt/.libs/libpamcrypt.a $RPM_BUILD_ROOT/%{_libdir}
 
 cd $RPM_BUILD_ROOT/lib
 ln -sf /lib/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
