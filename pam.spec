@@ -10,7 +10,7 @@ Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.75.0
-Release:	0.1
+Release:	0.2
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
@@ -229,9 +229,9 @@ install -d $RPM_BUILD_ROOT/lib
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
-ln -sf /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -sf /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-ln -sf /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+ln -sf /lib/libpam.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/libpam_misc.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -sf /lib/libpamc.so.0.75.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
 gzip -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
 
