@@ -1,7 +1,6 @@
 #
 # Conditional build:
 # _with_pwexport		- enable pam_pwexport module (needs hacked pam_unix)
-# _with_configurable_pam_mail	- add global configuration file for pam_mail
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(es):	Módulos de autentificación plugables (PAM)
@@ -12,13 +11,11 @@ Summary(ru):	éÎÔÓÔÒÕÍÅÎÔ, ÏÂÅÓÐÅÞÉ×ÁÀÝÉÊ ÁÕÔÅÎÔÉÆÉËÁÃÉÀ ÄÌÑ ÐÒÉÌÏÖÅÎÉÊ
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
-Version:	0.75.7
+Version:	0.75.8
 Release:	1
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
-%{?_with_configurable_pam_mail:Source1:	%{name}-pam_mail.conf}
-%{?_with_configurable_pam_mail:Patch0:	%{name}-configurable_pam_mail.patch}
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -232,14 +229,9 @@ Modu³ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
-%{?_with_configurable_pam_mail:%patch0 -p0}
 
 %build
 rm -rf missing
-%{__libtoolize}
-aclocal
-%{__autoconf}
-%{__automake}
 %configure \
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
@@ -267,8 +259,6 @@ rm -f doc/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-%{?_with_configurable_pam_mail:install %{SOURCE1} $RPM_BUILD_ROOT/etc/security/pam_mail.conf}
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -291,7 +281,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 size mtime) /etc/security/consoles
 %config(noreplace) %verify(not md5 size mtime) /etc/security/trigram*
 %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist
-%{?_with_configurable_pam_mail:%config(noreplace) %verify(not md5 size mtime) /etc/security/pam_mail.conf}
+%config(noreplace) %verify(not md5 size mtime) /etc/security/pam_mail.conf
 %attr(0600,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/opasswd
 %attr(0755,root,root) /lib/lib*.so.*.*
 %attr(0755,root,root) /lib/security/pam_access.so
