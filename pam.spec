@@ -20,7 +20,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.78.1
-Release:	1
+Release:	2
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -263,6 +263,7 @@ find . -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
 %{__aclocal}
 %{__autoconf}
 %{__automake}
+CFLAGS="%{rpmcflags} -D_FILE_OFFSET_BITS=64"
 %configure \
 	%{!?with_cap:ac_cv_lib_cap_cap_init=no} \
 	%{!?with_opie:ac_cv_lib_opie_opieverify=no} \
@@ -271,7 +272,6 @@ find . -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
 	%{!?with_tcpd:libwrap=no} \
 	%{?with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
-
 %{__make}
 
 %install
