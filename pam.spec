@@ -4,7 +4,7 @@ Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authen
 Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.72.1
+Version:	0.72.2
 Release:	1
 Copyright:	GPL or BSD
 Group:		Base
@@ -142,6 +142,7 @@ pam_cap module
 %setup -q -n %{name}-pld-%{version}
 
 %build
+LDFLAGS="-s"; export LDFLAGS
 %configure \
 	--enable-strong-crypto
 make
@@ -152,18 +153,9 @@ install -d $RPM_BUILD_ROOT%{_libdir}
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
-touch $RPM_BUILD_ROOT/etc/security/blacklist
-
-ln -sf /lib/libpam.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -sf /lib/libpamc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
-ln -sf /lib/libpam_misc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-
-mv $RPM_BUILD_ROOT/lib/lib*.{la,a} $RPM_BUILD_ROOT%{_libdir}/
+mv $RPM_BUILD_ROOT/lib/lib*.{la,a,so} $RPM_BUILD_ROOT%{_libdir}/
 
 strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
-	$RPM_BUILD_ROOT%{_sbindir}/pwgen_trigram \
-	$RPM_BUILD_ROOT/sbin/pwdb_chkpwd \
-	$RPM_BUILD_ROOT/sbin/unix_chkpwd \
 	$RPM_BUILD_ROOT/lib/security/*.so
 
 # Removed due to chicken-egg problem
@@ -172,10 +164,11 @@ strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
 gzip -9fn $RPM_BUILD_ROOT%{_mandir}/man[358]/* Copyright \
 	doc/txts/*.txt doc/specs/*.{raw,txt}
 
-rm -f doc/{ps,txts}/{README,*.log}
-rm -f doc/{html,txts}/Makefile*
+rm -f doc/{ps,txts}/{README,*.log} \
+	doc/{html,txts}/Makefile*
 
-touch $RPM_BUILD_ROOT/etc/security/opasswd
+:> $RPM_BUILD_ROOT/etc/security/opasswd
+:> $RPM_BUILD_ROOT/etc/security/blacklist
 
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
