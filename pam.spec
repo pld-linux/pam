@@ -26,29 +26,32 @@ Provides:	pam-pld
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-PAM (Pluggable Authentication Modules) is a powerful, flexible, extensible
-authentication system which allows the system administrator to configure
-authentication services individually for every pam-compliant application
-without recompiling any of the applications.
+PAM (Pluggable Authentication Modules) is a powerful, flexible,
+extensible authentication system which allows the system administrator
+to configure authentication services individually for every
+pam-compliant application without recompiling any of the applications.
 
 %description -l de
-PAM (Pluggable Authentication Modules) ist ein leistungsfähiges, flexibles
-und erweiterbares Authentifizierungssystem, mit dem der Systemverwalter
-Authentifizierungs-Dienste individuell für jede pam-kompatible Anwendung
-konfigurieren kann, ohne diese neu kompilieren zu müssen.
+PAM (Pluggable Authentication Modules) ist ein leistungsfähiges,
+flexibles und erweiterbares Authentifizierungssystem, mit dem der
+Systemverwalter Authentifizierungs-Dienste individuell für jede
+pam-kompatible Anwendung konfigurieren kann, ohne diese neu
+kompilieren zu müssen.
 
 %description -l fr
-PAM (Pluggable Authentication Modules) est un systéme d'authentification
-puissant, souple et extensible permettant à l'administrateur système de
-configurer les individuellement les services d'authentification pour chaque
-application conforme à PAM, sans recompiler aucune application.
+PAM (Pluggable Authentication Modules) est un systéme
+d'authentification puissant, souple et extensible permettant à
+l'administrateur système de configurer les individuellement les
+services d'authentification pour chaque application conforme à PAM,
+sans recompiler aucune application.
 
 %description -l pl
-PAM (Pluggable Authentication Modules) jest silnym i ³atwo dostosowywalnym
-do potrzeb systemem autentykacji, który umo¿liwia administratorowi
-indywidualne konfigurowanie poszczególnych serwisów, które s± dostosowane i
-zlinkowane z bibliotekami PAM bez pó¼niejszej ich rekompilacji w momencie
-zmiany sposobu autentykacji tych¿e serwisów.
+PAM (Pluggable Authentication Modules) jest silnym i ³atwo
+dostosowywalnym do potrzeb systemem autentykacji, który umo¿liwia
+administratorowi indywidualne konfigurowanie poszczególnych serwisów,
+które s± dostosowane i zlinkowane z bibliotekami PAM bez pó¼niejszej
+ich rekompilacji w momencie zmiany sposobu autentykacji tych¿e
+serwisów.
 
 %description -l tr
 PAM (Pluggable Authentication Modules) sistem yöneticilerinin
