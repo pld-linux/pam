@@ -11,13 +11,11 @@ Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
-Version:	0.75.6
+Version:	0.75.7
 Release:	1
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
-Patch0:		%{name}-am16.patch
-Patch1:		%{name}-lt14d.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -231,8 +229,6 @@ ModuЁ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
-%patch0 -p1
-%patch1 -p1
 
 %build
 rm -rf missing
