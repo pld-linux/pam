@@ -1,27 +1,30 @@
 Summary:     Pluggable Authentication Modules: modular, incremental authentication
 Summary(de): Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(fr): PAM : Pluggable Authentication Modules: modular, incremental authentication
+Summary(pl): Modularny system autentypacji
 Summary(tr): Modüler, artýmsal doðrulama birimleri
 Name:        pam
-Version:     0.64
-Release:     4
+Version:     0.65
+Release:     2
 Copyright:   GPL or BSD
 Group:       Base
 Source:      ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.gz
 Source1:     other.pamd
-Patch1:      Linux-PAM-0.56-dirs.patch
-Patch2:      Linux-PAM-0.56-prompt.patch
-Patch3:      Linux-PAM-0.56-nopasswd+.patch
-Patch4:      Linux-PAM-0.64-bothconfs.patch
-Patch5:      Linux-PAM-0.56-nopedantic.patch
-Patch6:      Linux-PAM-0.57-rhlock.patch
-Patch7:      Linux-PAM-0.59-strerror.patch
-Patch8:      Linux-PAM-0.64-pwdb.patch
-Patch9:      Linux-PAM-0.64-glibc.patch
-Patch10:     Linux-PAM-0.64-alpha.patch
-Patch11:     Linux-PAM-0.64-shlib.patch
-Patch12:     Linux-PAM-0.64-sgml.patch
-Patch13:     Linux-PAM-0.64-makefile.patch
+Patch1:      Linux-PAM-dirs.patch
+Patch2:      Linux-PAM-prompt.patch
+Patch3:      Linux-PAM-nopasswd+.patch
+Patch4:      Linux-PAM-bothconfs.patch
+Patch5:      Linux-PAM-nopedantic.patch
+Patch6:      Linux-PAM-rhlock.patch
+Patch7:      Linux-PAM-strerror.patch
+Patch8:      Linux-PAM-pwdb.patch
+Patch9:      Linux-PAM-glibc.patch
+Patch10:     Linux-PAM-alpha.patch
+Patch11:     Linux-PAM-shlib.patch
+Patch12:     Linux-PAM-sgml.patch
+Patch13:     Linux-PAM-makefile.patch
+Patch14:     Linux-PAM-shadow_faillog.patch
+Patch15:     Linux-PAM-new_options.patch
 URL:         http://parc.power.net/morgan/Linux-PAM/index.html
 Requires:    cracklib, cracklib-dicts, pwdb >= 0.54-2
 Obsoletes:   pamconfig
@@ -45,6 +48,13 @@ puissant, souple et extensible permettant à l'administrateur système de
 configurer les individuellement les services d'authentification pour chaque
 application conforme à PAM, sans recompiler aucune application.
 
+%description -l pl
+PAM (Pluggable Authentication Modules) jest silnym i ³atwo dostosowywalnym
+do potrzeb systemem autentykacji, który umo¿liwia administratorowi
+indywidualne konfigurowanie poszczególnych serwisów, które s± dostosowane i
+zlinkowane z bibliotekami PAM bez pó¼niejszej ich rekompilacji w momencie
+zmiany sposobu autentykacji tych¿e serwisów.
+
 %description -l tr
 PAM (Pluggable Authentication Modules) sistem yöneticilerinin uygulamalardan
 herhangi birini yeniden derlemeksizin bütün PAM uyumlu uygulamalar için
@@ -53,20 +63,35 @@ bir doðrulama sistemidir.
 
 %package devel
 Summary:     PAM header files
+Summary(pl): Pliki nag³ówkowe i dokumentacja do PAM
 Group:       Libraries
+Group(pl):   Biblioteki
+Requires:    %{name} = %{version}
 
 %description devel
 Header files for developing PAM based applications.
 
+%description devel
+Header files for developing PAM based applications.
+
+%description devel -l pl
+Pliki nag³ówkowe i dokumentacja do PAM.
+
 %package static
 Summary:     PAM static libraries
+Summary(pl): Biblioteki statyczne PAM
 Group:       Libraries
+Group(pl):   Biblioteki
 Requires:    %{name}-devel = %{version}
 
 %description static
 PAM static libraries.
 
+%description static -l pl
+Biblioteki statyczne PAM.
+
 %prep
+%setup -q -n Linux-PAM-%{version}
 %setup -q -n Linux-PAM-%{version}
 %patch1 -p1 -b .dirs
 %patch2 -p1 -b .prompt
@@ -83,9 +108,13 @@ PAM static libraries.
 %patch11 -p1 -b .shlib
 %patch12 -p1 -b .shml
 %patch13 -p1 -b .makefile
+%patch14 -p1 -b .shadow_faillog
+%patch15 -p1 -b new_options
 
+%ifos Linux
 rm -f default.defs
 ln -s defs/redhat.defs default.defs
+%endif
 
 %build
 touch .freezemake
@@ -142,6 +171,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644, root, root) /usr/lib/lib*.a
 
 %changelog
+* Mon Nov 30 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [0.65-2]
+- added %ifos Linux .. %endif around setting up default.defs,
+- added pl translation.
+
+* Mon Nov 30 1998 Robert Mi³kowski <milek@rudy.mif.pg.gda.pl>
+- changeg format of /var/log/faillog to one from
+  shadow-utils,
+- added new option "per_user" for pam_tally module.
+
 * Sun Aug 22 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [0.64-4]
 - added -q %setup parameter,
