@@ -4,11 +4,11 @@ Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authen
 Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
-Version:	0.69
-Release:	4
+Version:	0.70
+Release:	1
 Copyright:	GPL or BSD
 Group:		Base
-%define		date	19990914
+%define		date	19991011
 Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.%{date}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
@@ -128,6 +128,7 @@ strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
 	$RPM_BUILD_ROOT/lib/security/*.so
 
 ln -sf /lib/libpam.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/libpamc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 ln -sf /lib/libpam_misc.so.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 
 mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT%{_libdir}
