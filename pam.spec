@@ -17,7 +17,8 @@ Release:	1
 Epoch:		0
 License:	GPL/BSD
 Group:		Base
-Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
+#Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
+Source0:	%{name}-pld-%{version}.tar.gz
 # Source0-md5:	2fdfda47ecd6d04b32e9047c31248a6a
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
