@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.72.2
-Release:	1
+Release:	2
 Copyright:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.tar.gz
@@ -154,6 +154,9 @@ install -d $RPM_BUILD_ROOT%{_libdir}
 make install DESTDIR=$RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT/lib/lib*.{la,a,so} $RPM_BUILD_ROOT%{_libdir}/
+ln -sf /lib/libpam.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/libpam_misc.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -sf /lib/libpamc.so.0.72.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
 strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
 	$RPM_BUILD_ROOT/lib/security/*.so
