@@ -1,7 +1,7 @@
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authentication
-Summary(pl):	Modularny system autentypacji
+Summary(pl):	Modularny system autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.69
