@@ -195,26 +195,26 @@ Modu³ pam_cap.
 %patch0 -p1
 
 %build
-libtoolize --copy --force
+%{__libtoolize} --copy --force
 %configure \
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
 %{__make}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/lib
+%{__rm} -rf $RPM_BUILD_ROOT
+%{__install} -d $RPM_BUILD_ROOT/lib
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
-ln -sf /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -sf /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-ln -sf /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+%{__mv} -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
+%{__ln_s} -f /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
+%{__ln_s} -f /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+%{__ln_s} -f /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 
-gzip -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
+%{_-gzip} -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
 
-rm -f doc/{ps,txts}/{README,*.log} \
+%{__rm} -f doc/{ps,txts}/{README,*.log} \
 	doc/{html,txts}/Makefile*
 
 :> $RPM_BUILD_ROOT/etc/security/opasswd
@@ -224,7 +224,7 @@ rm -f doc/{ps,txts}/{README,*.log} \
 %postun -p /sbin/ldconfig
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+%{__rm} -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
@@ -233,16 +233,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir /sbin/pam_filter
 %dir /var/lock/console
 %dir /etc/security/console.apps
-%config /etc/pam.d/other
-%config /etc/security/access.conf
-%config /etc/security/pam_env.conf
-%config /etc/security/group.conf
-%config /etc/security/limits.conf
-%config /etc/security/time.conf
-%config /etc/security/consoles
-%config /etc/security/trigram*
-%config(noreplace) /etc/security/blacklist
-%attr(0600,root,root) %config(noreplace) /etc/security/opasswd
+%config %verify(not md5 size mtime) /etc/pam.d/other
+%config %verify(not md5 size mtime) /etc/security/access.conf
+%config %verify(not md5 size mtime) /etc/security/pam_env.conf
+%config %verify(not md5 size mtime) /etc/security/group.conf
+%config %verify(not md5 size mtime) /etc/security/limits.conf
+%config %verify(not md5 size mtime) /etc/security/time.conf
+%config %verify(not md5 size mtime) /etc/security/consoles
+%config %verify(not md5 size mtime) /etc/security/trigram*
+%config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist
+%attr(0600,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/opasswd
 %attr(0755,root,root) /lib/lib*.so.*.*
 %attr(0755,root,root) /lib/security/pam_access.so
 %attr(0755,root,root) /lib/security/pam_console.so
@@ -322,5 +322,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files pam_cap
 %defattr(644,root,root,755)
-%config /etc/security/capability.conf
+%config %verify(not md5 size mtime) /etc/security/capability.conf
 %attr(755,root,root) /lib/security/pam_cap.so
