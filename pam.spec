@@ -5,14 +5,16 @@ Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	9
+Release:	10
 Copyright:	GPL or BSD
 Group:		Base
 Source0:	ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
 Source1:	other.pamd
 Source2:	ftp://sysadm.dntis.ro/pub/devel/pam/pam_make-0.1.tar.gz
-%define		date 990323
+%define		date 990327
 Source3:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_unix-%{date}.tar.gz
+Source4:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/pam_homedir-0.1.tar.gz
+Source5:	ftp://ftp.debian.org/pub/debian/dists/unstable/main/source/admin/libpam-motd_0.1.tar.gz
 Patch0:		Linux-PAM-Makefile.patch
 Patch1:		Linux-PAM-defs.patch
 Patch2:		Linux-PAM-deflimit.patch
@@ -30,6 +32,9 @@ Patch13:	Linux-PAM-tally-fstat.patch
 Patch14:	Linux-PAM-Maildir.patch
 Patch15:	Linux-PAM-pam_make.patch
 Patch16:	Linux-PAM-cleanup.patch
+Patch17:	Linux-PAM-motd.patch
+Patch18:	Linux-PAM-stringh.patch
+Patch19:	Linux-PAM-crypt16.patch
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 Requires:	cracklib, cracklib-dicts, pwdb >= 0.54-2
 Obsoletes:	pamconfig, pam_make
@@ -112,11 +117,18 @@ Biblioteki statyczne PAM.
 %patch12 -p1
 %patch13 -p1
 %patch14 -p1
-tar zxf %{SOURCE2} -C $RPM_BUILD_DIR/Linux-PAM/modules/
+tar zxf %{SOURCE2} -C modules/
 %patch15 -p1
 %patch16 -p1
-rm -rf $RPM_BUILD_DIR/Linux-PAM/modules/pam_unix
-tar zxf %{SOURCE3} -C $RPM_BUILD_DIR/Linux-PAM/modules/
+rm -rf modules/pam_unix
+tar zxf %{SOURCE3} -C modules/
+tar zxf %{SOURCE4} -C modules/
+tar zxf %{SOURCE5} -C modules/
+mv modules/libpam-motd-0.1 modules/pam_motd
+%patch17 -p1
+%patch18 -p1
+# If you need pam_pwdb to understand Ultrix passwords, uncoment this
+#%patch19 -p1
 
 ln -sf defs/linux-pld.defs default.defs
 ln -sf libpam/include include
@@ -195,6 +207,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root,root) /usr/lib/lib*.a
 
 %changelog
+* Fri Apr  9 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
+  [0.66-10]
+- pam_unix minor update (now understands Ultrix crypt16() passwords)
+- added pam_motd module from Debian distribution
+- added pam_homedir by me (based on pam_mkhomedir from Debian)
+- minor spec cleanup
+- added stringh patch, it fixes wrong include directives in
+  tally and securetty modules
+- crypt16 patch, it makes pam_pwdb understand Ultrix crypt16()
+  passwords. It is not applied, added only because somebody may
+  really need this - like me ;).
+
 * Wed Mar 31 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [0.66-9]
 - lib*.so links moved to /usr/lib,
