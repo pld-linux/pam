@@ -6,9 +6,9 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.72.3
 Release:	1
-Copyright:	GPL or BSD
+License:	GPL or BSD
 Group:		Base
-Source0:	ftp://ftp.pld.org.pl/packages/pam-pld-%{version}.tar.gz
+Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	sp
 BuildRequires:	sgml-tools
@@ -51,15 +51,16 @@ zlinkowane z bibliotekami PAM bez pó¼niejszej ich rekompilacji w momencie
 zmiany sposobu autentykacji tych¿e serwisów.
 
 %description -l tr
-PAM (Pluggable Authentication Modules) sistem yöneticilerinin uygulamalardan
-herhangi birini yeniden derlemeksizin bütün PAM uyumlu uygulamalar için
-doðrulama hizmetlerini ayarlamalarýna yardýmcý olan, güclü, esnek ve kapsamlý
-bir doðrulama sistemidir.
+PAM (Pluggable Authentication Modules) sistem yöneticilerinin
+uygulamalardan herhangi birini yeniden derlemeksizin bütün PAM uyumlu
+uygulamalar için doðrulama hizmetlerini ayarlamalarýna yardýmcý olan,
+güclü, esnek ve kapsamlý bir doðrulama sistemidir.
 
 %package devel
 Summary:	PAM header files
 Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
 Group:		Development/Libraries
+Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 
@@ -76,6 +77,7 @@ Pliki nag³ówkowe i dokumentacja do PAM.
 Summary:	PAM static libraries
 Summary(pl):	Biblioteki statyczne PAM
 Group:		Development/Libraries
+Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
 Requires:	%{name}-devel = %{version}
 
@@ -165,7 +167,7 @@ strip --strip-unneeded $RPM_BUILD_ROOT/lib/lib*.so.*.* \
 # Removed due to chicken-egg problem
 #	$RPM_BUILD_ROOT/sbin/pam_tally \
 
-gzip -9fn $RPM_BUILD_ROOT%{_mandir}/man[358]/* Copyright \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[358]/* Copyright \
 	doc/txts/*.txt doc/specs/*.{raw,txt}
 
 rm -f doc/{ps,txts}/{README,*.log} \
