@@ -174,24 +174,3 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/lib*.a
-
-%changelog
-* Thu Jul 01 1999 Jan Rêkorajski <baggins@pld.org.pl>
-  [0.67-1]
-- updated to Linux-PAM 0.67 with lots of patches from forthcoming 0.68
-
-* Thu Jun  3 1999 Jan Rêkorajski <baggins@pld.org.pl>
-  [0.66-24]
-- added pam_console module - stripped version
-
-* Thu May 27 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
-  [0.66-21]
-- spec cleanup
-
-* Fri May 14 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
-  [0.66-20]
-- added unix_chkpwd and pam_pwdb_helper symlink
-
-* Thu May 13 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [0.66-19]
-- initial version which bases on on pam from RedHat.
