@@ -5,7 +5,7 @@ Summary(pl):	Modularny system autentypacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	10
+Release:	11
 Copyright:	GPL or BSD
 Group:		Base
 Source0:	ftp://linux.kernel.org/linux/libs/pam/pre/Linux-PAM-%{version}.tar.bz2
@@ -204,9 +204,14 @@ rm -rf $RPM_BUILD_ROOT
 /usr/man/man3/*
 
 %files static
-%attr(644,root,root) /usr/lib/lib*.a
+%defattr(644,root,root)
+/usr/lib/lib*.a
 
 %changelog
+* Wed Apr 21 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [0.66-11]
+- recompiles on new rpm.
+
 * Fri Apr  9 1999 Jan Rêkorajski <baggins@hunter.mimuw.edu.pl>
   [0.66-10]
 - pam_unix minor update (now understands Ultrix crypt16() passwords)
