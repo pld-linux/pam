@@ -153,7 +153,7 @@ pam_cap module
 LDFLAGS="-s"; export LDFLAGS
 %configure \
 	--enable-strong-crypto
-make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
