@@ -13,10 +13,6 @@ Version:	0.74.3
 Release:	5
 License:	GPL or BSD
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
 Patch0:		%{name}-rlimit_locks.patch
 Patch1:		%{name}-makefile.diff
@@ -99,13 +95,6 @@ Summary:	PAM header files
 Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
 Summary(pt_BR):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
-Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description devel
@@ -121,13 +110,6 @@ Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 Summary:	PAM static libraries
 Summary(pl):	Biblioteki statyczne PAM
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
-Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-devel = %{version}
 
 %description static
@@ -140,10 +122,6 @@ Biblioteki statyczne PAM.
 Summary:	pam_pwdb module
 Summary(pl):	Modu³ pam_pwdb
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	pwdb >= 0.54-2
 
@@ -157,10 +135,6 @@ Modu³ pam_pwdb.
 Summary:	pam_radius module
 Summary(pl):	Modu³ pam_radius
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	pwdb >= 0.54-2
 
@@ -174,10 +148,6 @@ Modu³ pam_radius.
 Summary:	pam_skey module
 Summary(pl):	Modu³ pam_skey
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	skey
 
@@ -191,10 +161,6 @@ Modu³ pam_skey.
 Summary:	pam_opie module
 Summary(pl):	Modu³ pam_opie
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	opie
 
@@ -208,10 +174,6 @@ Modu³ pam_opie.
 Summary:	pam_tcpd module
 Summary(pl):	Modu³ pam_tcpd
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	libwrap
 
@@ -225,10 +187,6 @@ Modu³ pam_tcpd.
 Summary:	pam_cap module
 Summary(pl):	Modu³ pam_cap
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
 Requires:	%{name} = %{version}
 Requires:	libcap
 
