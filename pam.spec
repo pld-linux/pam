@@ -39,6 +39,7 @@ BuildRequires:	pwdb-devel
 BuildRequires:	skey-devel
 BuildRequires:	sgml-tools
 BuildRequires:	sp
+BuildRequires:	tetex-latex
 %{?with_selinux:BuildRequires:	libselinux-devel}
 Requires:	awk
 Requires:	cracklib
