@@ -1,49 +1,50 @@
 #
 # Conditional build:
-# _with_pwexport	- enable pam_pwexport module (needs hacked pam_unix)
+# _with_pwexport		- enable pam_pwexport module (needs hacked pam_unix)
+#
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(es):	Módulos de autentificación plugables (PAM)
 Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authentication
-Summary(pl):	Modularny system autentykacji
+Summary(pl):	Modularny system uwierzytelniania
 Summary(pt_BR):	Módulos de autenticação plugáveis (PAM)
+Summary(ru):	éÎÔÓÔÒÕÍÅÎÔ, ÏÂÅÓÐÅÞÉ×ÁÀÝÉÊ ÁÕÔÅÎÔÉÆÉËÁÃÉÀ ÄÌÑ ÐÒÉÌÏÖÅÎÉÊ
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
+Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
-Version:	0.74.3
+Version:	0.77.3
 Release:	3
-License:	GPL or BSD
+Epoch:		0
+License:	GPL/BSD
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
-Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
-Patch0:		%{name}-rlimit_locks.patch
-Patch1:		%{name}-makefile.diff
-Patch2:		%{name}-am15.patch
+#Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
+Source0:	%{name}-pld-%{version}.tar.gz
+# Source0-md5:	d4f46fd262bbb0f1abc1614d53574d94
+Source1:	system-auth.pamd
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
-BuildRequires:	sp
-BuildRequires:	sgml-tools
-BuildRequires:	pwdb-devel
-BuildRequires:	cracklib-devel
-BuildRequires:	skey-devel
-BuildRequires:	opie-devel
-BuildRequires:	libwrap-devel
-BuildRequires:	libcap-devel
-BuildRequires:	db3-devel
-BuildRequires:	flex
-BuildRequires:	bison
-BuildRequires:	libtool
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	bison
+BuildRequires:	cracklib-devel
+BuildRequires:	db3-devel
+BuildRequires:	flex
+BuildRequires:	libcap-devel
+BuildRequires:	libtool >= 1:1.4.2-9
+BuildRequires:	libwrap-devel >= 7.6-32
+BuildRequires:	opie-devel
+BuildRequires:	pwdb-devel
+BuildRequires:	skey-devel
+BuildRequires:	sgml-tools
+BuildRequires:	sp
+Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
 Requires:	make
-Requires:	awk
 Provides:	pam-pld
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	pamconfig
 Obsoletes:	pam_make
+Obsoletes:	pam-doc
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible,
@@ -74,11 +75,11 @@ sans recompiler aucune application.
 
 %description -l pl
 PAM (Pluggable Authentication Modules) jest silnym i ³atwo
-dostosowywalnym do potrzeb systemem autentykacji, który umo¿liwia
-administratorowi indywidualne konfigurowanie poszczególnych serwisów,
-które s± dostosowane i zlinkowane z bibliotekami PAM bez pó¼niejszej
-ich rekompilacji w momencie zmiany sposobu autentykacji tych¿e
-serwisów.
+dostosowywalnym do potrzeb systemem uwierzytelniania, który umo¿liwia
+administratorowi indywidualne konfigurowanie poszczególnych us³ug,
+które s± dostosowane i zlinkowane z bibliotekami PAM, bez pó¼niejszej
+ich rekompilacji w momencie zmiany sposobu uwierzytelniania tych¿e
+us³ug.
 
 %description -l pt_BR
 PAM (Módulos de Autenticação Plugáveis) é um poderoso, flexível e
@@ -87,47 +88,60 @@ sistema configurar serviços de autenticação individualmente para cada
 aplicação pam compatível, sem necessidade de recompilar qualquer uma
 das aplicações.
 
+%description -l uk
+PAM (Pluggable Authentication Modules) - ÃÅ ÐÏÔÕÖÎÁ, ÇÎÕÞËÁ, ÚÄÁÔÎÁ ÄÏ
+ÒÏÚÛÉÒÅÎÎÑ ÓÉÓÔÅÍÁ ÁÕÔÅÎÔÉËÁÃ¦§, ÑËÁ ÄÏÚ×ÏÌÑ¤ ÓÉÓÔÅÍÎÏÍÕ
+ÁÄÍ¦Î¦ÓÔÒÁÔÏÒÕ ÎÁÌÁÇÏÄÖÕ×ÁÔÉ ÓÅ×¦ÓÉ Á×ÔÏÒÉÚÁÃ¦§ ÄÏÓÔÕÐÕ (ÁÕÔÅÎÔÉËÁÃ¦§)
+¦ÎÄÉ×¦ÄÕÁÌØÎÏ ÄÌÑ ËÏÖÎÏ§ pam-ÓÕÍ¦ÓÎÏ§ ÐÒÏÇÒÁÍÉ ÂÅÚ ÎÅÏÂÈ¦ÄÎÏÓÔ¦
+ÐÅÒÅËÏÍÐ¦ÌÑÃ¦§ ÓÁÍÏ§ ÐÒÏÇÒÁÍÉ. ãÅ ÂÁÚÏ×ÉÊ ÍÅÈÁÎ¦ÚÍ ÁÕÔÅÎÔÉËÁÃ¦§ × KSI
+Linux.
+
 %description -l tr
 PAM (Pluggable Authentication Modules) sistem yöneticilerinin
 uygulamalardan herhangi birini yeniden derlemeksizin bütün PAM uyumlu
 uygulamalar için doðrulama hizmetlerini ayarlamalarýna yardýmcý olan,
 güclü, esnek ve kapsamlý bir doðrulama sistemidir.
 
+%description -l ru
+PAM (Pluggable Authentication Modules) - ÜÔÏ ÍÏÝÎÁÑ, ÇÉÂËÁÑ,
+ÒÁÓÛÉÒÑÅÍÁÑ ÓÉÓÔÅÍÁ ÁÕÔÅÎÔÉËÁÃÉÉ, ÐÏÚ×ÏÌÑÀÝÁÑ ÓÉÓÔÅÍÎÏÍÕ
+ÁÄÍÉÎÉÓÔÒÁÔÏÒÕ ËÏÎÆÉÇÕÒÉÒÏ×ÁÔØ ÓÅÒ×ÉÓÙ Á×ÔÏÒÉÚÁÃÉÉ ÄÏÓÔÕÐÁ
+(ÁÕÔÅÎÔÉËÁÃÉÉ) ÉÎÄÉ×ÉÄÕÁÌØÎÏ ÄÌÑ ËÁÖÄÏÊ pam-ÓÏ×ÍÅÓÔÉÍÏÊ ÐÒÏÇÒÁÍÍÙ ÂÅÚ
+ÎÅÏÂÈÏÄÉÍÏÓÔÉ ÐÅÒÅËÏÍÐÉÌÌÑÃÉÉ ÓÁÍÏÊ ÐÒÏÇÒÁÍÍÙ. üÔÏ ÂÁÚÏ×ÙÊ ÍÅÈÁÎÉÚÍ
+ÁÕÔÅÎÔÉËÁÃÉÉ × KSI Linux.
+
 %package devel
 Summary:	PAM header files
-Summary(pl):	Pliki nag³ówkowe i dokumentacja do PAM
+Summary(pl):	Pliki nag³ówkowe i dokumentacja programisty do PAM
 Summary(pt_BR):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
+Summary(ru):	âÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM
+Summary(uk):	â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
-Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
+Requires:	FHS >= 2.2-9
 
 %description devel
 Header files for developing PAM based applications.
 
 %description devel -l pl
-Pliki nag³ówkowe i dokumentacja do PAM.
+Pliki nag³ówkowe i dokumentacja programisty do PAM.
 
 %description devel -l pt_BR
 Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 
+%description devel -l ru
+üÔÏÔ ÐÁËÅÔ ÓÏÄÅÒÖÉÔ ÈÅÄÅÒÙ É ÂÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM.
+
+%description devel -l uk
+ãÅÊ ÐÁËÅÔ Í¦ÓÔÉÔØ ÈÅÄÅÒÉ ÔÁ Â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM.
+
 %package static
 Summary:	PAM static libraries
 Summary(pl):	Biblioteki statyczne PAM
+Summary(ru):	óÔÁÔÉÞÅÓËÉÅ ÂÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM
+Summary(uk):	óÔÁÔÉÞÎ¦ Â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
-Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description static
 PAM static libraries.
@@ -135,15 +149,17 @@ PAM static libraries.
 %description static -l pl
 Biblioteki statyczne PAM.
 
+%description static -l ru
+üÔÏÔ ÐÁËÅÔ ÓÏÄÅÒÖÉÔ ÓÔÁÔÉÞÅÓËÉÅ ÂÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ ÄÌÑ PAM.
+
+%description static -l uk
+ãÅÊ ÐÁËÅÔ Í¦ÓÔÉÔØ ÓÔÁÔÉÞÎ¦ Â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ ÄÌÑ PAM.
+
 %package pam_pwdb
 Summary:	pam_pwdb module
 Summary(pl):	Modu³ pam_pwdb
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	pwdb >= 0.54-2
 
 %description pam_pwdb
@@ -156,11 +172,7 @@ Modu³ pam_pwdb.
 Summary:	pam_radius module
 Summary(pl):	Modu³ pam_radius
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	pwdb >= 0.54-2
 
 %description pam_radius
@@ -173,11 +185,7 @@ Modu³ pam_radius.
 Summary:	pam_skey module
 Summary(pl):	Modu³ pam_skey
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	skey
 
 %description pam_skey
@@ -190,11 +198,7 @@ Modu³ pam_skey.
 Summary:	pam_opie module
 Summary(pl):	Modu³ pam_opie
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	opie
 
 %description pam_opie
@@ -207,12 +211,8 @@ Modu³ pam_opie.
 Summary:	pam_tcpd module
 Summary(pl):	Modu³ pam_tcpd
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
-Requires:	%{name} = %{version}
-Requires:	libwrap
+Requires:	%{name} = %{epoch}:%{version}
+Requires:	libwrap >= 7.6-32
 
 %description pam_tcpd
 pam_tcpd module.
@@ -224,11 +224,7 @@ Modu³ pam_tcpd.
 Summary:	pam_cap module
 Summary(pl):	Modu³ pam_cap
 Group:		Base
-Group(de):	Gründsätzlich
-Group(es):	Base
-Group(pl):	Podstawowe
-Group(pt_BR):	Base
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	libcap
 
 %description pam_cap
@@ -239,21 +235,16 @@ Modu³ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
-%patch0 -p1
-%patch1 -p0
-%patch2 -p1
 
 %build
-rm -rf missing
-libtoolize --copy --force
-aclocal
-autoconf
-automake -a -c
+rm -f missing
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__automake}
 %configure \
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
-
-ln -sf ../libtool modules/libtool
 
 %{__make}
 
@@ -261,14 +252,8 @@ ln -sf ../libtool modules/libtool
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/lib
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
-
-mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib/
-ln -sf /lib/libpam.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam.so
-ln -sf /lib/libpam_misc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
-ln -sf /lib/libpamc.so.0.74.0 $RPM_BUILD_ROOT%{_libdir}/libpamc.so
-
-gzip -9nf Copyright doc/txts/*.txt doc/specs/*.{raw,txt}
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 rm -f doc/{ps,txts}/{README,*.log} \
 	doc/{html,txts}/Makefile*
@@ -276,33 +261,47 @@ rm -f doc/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/lib
+
+install pamcrypt/.libs/libpamcrypt.a $RPM_BUILD_ROOT/%{_libdir}
+
+cd $RPM_BUILD_ROOT/lib
+ln -sf /lib/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
+ln -sf /lib/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
+ln -sf /lib/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
+
+cp %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/system-auth
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
-%doc Copyright.gz doc/{html,txts,specs/*.gz}
+%doc Copyright doc/{html,txts,specs/*.{raw,txt}}
 %dir /etc/pam.d
 %dir /sbin/pam_filter
 %dir /var/lock/console
 %dir /etc/security/console.apps
-%config %verify(not md5 size mtime) /etc/pam.d/other
-%config %verify(not md5 size mtime) /etc/security/access.conf
-%config %verify(not md5 size mtime) /etc/security/pam_env.conf
-%config %verify(not md5 size mtime) /etc/security/group.conf
-%config %verify(not md5 size mtime) /etc/security/limits.conf
-%config %verify(not md5 size mtime) /etc/security/time.conf
-%config %verify(not md5 size mtime) /etc/security/consoles
-%config %verify(not md5 size mtime) /etc/security/trigram*
+%config(noreplace) %verify(not md5 size mtime) /etc/pam.d/other
+%config(noreplace) %verify(not md5 size mtime) /etc/pam.d/system-auth
+%config(noreplace) %verify(not md5 size mtime) /etc/security/access.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/pam_env.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/group.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/limits.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/time.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/consoles
+%config(noreplace) %verify(not md5 size mtime) /etc/security/trigram*
 %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist
+%config(noreplace) %verify(not md5 size mtime) /etc/security/pam_mail.conf
 %attr(0600,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/opasswd
 %attr(0755,root,root) /lib/lib*.so.*.*
 %attr(0755,root,root) /lib/security/pam_access.so
 %attr(0755,root,root) /lib/security/pam_console.so
 %attr(0755,root,root) /lib/security/pam_cracklib.so
+%attr(0755,root,root) /lib/security/pam_debug.so
 %attr(0755,root,root) /lib/security/pam_deny.so
 %attr(0755,root,root) /lib/security/pam_env.so
 %attr(0755,root,root) /lib/security/pam_filter.so
@@ -337,8 +336,8 @@ rm -rf $RPM_BUILD_ROOT
 %{?_with_pwexport:%attr(0755,root,root) /lib/security/pam_pwexport.so}
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/unix_chkpwd
-# Removed due to chicken-egg problem
-# %attr(755,root,root) /sbin/pam_tally
+%attr(755,root,root) %{_bindir}/pam_pwgen
+%attr(755,root,root) %{_sbindir}/pam_tally
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
 %{_mandir}/man5/*
 %{_mandir}/man8/*
@@ -347,7 +346,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.la
-%{_includedir}/security
+%{_includedir}/security/*.h
 %{_mandir}/man3/*
 
 %files static
@@ -378,5 +377,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files pam_cap
 %defattr(644,root,root,755)
-%config %verify(not md5 size mtime) /etc/security/capability.conf
+%config(noreplace) %verify(not md5 size mtime) /etc/security/capability.conf
 %attr(755,root,root) /lib/security/pam_cap.so
