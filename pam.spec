@@ -11,7 +11,7 @@ Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
-Version:	0.77.0
+Version:	0.77.1
 Release:	1
 License:	GPL/BSD
 Group:		Base
@@ -322,8 +322,8 @@ rm -rf $RPM_BUILD_ROOT
 %{?_with_pwexport:%attr(0755,root,root) /lib/security/pam_pwexport.so}
 %attr(0755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/unix_chkpwd
-# Removed due to chicken-egg problem
-# %attr(755,root,root) /sbin/pam_tally
+%attr(755,root,root) %{_bindir}/pam_pwgen
+%attr(755,root,root) %{_sbindir}/pam_tally
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
 %{_mandir}/man5/*
 %{_mandir}/man8/*
