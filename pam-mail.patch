@@ -1,0 +1,11 @@
+--- pam-pld-0.78.0/modules/pam_mail/pam_mail.c.orig	2004-10-01 16:49:14.000000000 +0200
++++ pam-pld-0.78.0/modules/pam_mail/pam_mail.c	2004-11-21 05:46:21.901804088 +0100
+@@ -36,7 +36,7 @@
+ #define MAIL_ENV_NAME			"MAIL"
+ #define MAIL_ENV_FORMAT			MAIL_ENV_NAME "=%s"
+ #define YOUR_MAIL_VERBOSE_FORMAT	"You have %s mail in %s."
+-#define YOUR_MAIL_STANDARD_FORMAT	"You have %s mail."
++#define YOUR_MAIL_STANDARD_FORMAT	"You have %smail."
+ #define NO_MAIL_STANDARD_FORMAT		"No mail." 
+ 
+ /*
