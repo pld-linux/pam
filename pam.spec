@@ -208,18 +208,6 @@ automake -a -c
 	%{?_with_pwexport:--enable-want-pwexport-module} \
 	--enable-strong-crypto
 
-ln -sf ../libtool modules/libtool
-ln -sf libpam/include include
-ln -sf ../../../libpam_misc/include/security/pam_misc.h include/security/pam_misc.h
-ln -sf ../../../libpamc/include/security/pam_client.h include/security/pam_client.h
-ln -sf ../../../libpam/include/security/_pam_compat.h libpam_misc/include/security/_pam_compat.h
-ln -sf ../../../libpam/include/security/_pam_macros.h libpam_misc/include/security/_pam_macros.h
-ln -sf ../../../libpam/include/security/_pam_types.h libpam_misc/include/security/_pam_types.h
-ln -sf ../../../libpam/include/security/pam_appl.h libpam_misc/include/security/pam_appl.h
-ln -sf ../../../libpam/include/security/pam_malloc.h libpam_misc/include/security/pam_malloc.h
-ln -sf ../../../libpam/include/security/pam_modules.h libpam_misc/include/security/pam_modules.h
-
-
 %{__make}
 
 # avoid relinking libpam_misc to allow building w/o pam-devel installed
