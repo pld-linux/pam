@@ -1,6 +1,7 @@
 #
 # Conditional build:
-# _with_pwexport	- enable pam_pwexport module (needs hacked pam_unix)
+# _with_pwexport		- enable pam_pwexport module (needs hacked pam_unix)
+# _with_configurable_pam_mail	- add global configuration file for pam_mail
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(es):	Módulos de autentificación plugables (PAM)
@@ -16,6 +17,7 @@ Release:	1
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld.org.pl/packages/%{name}-pld-%{version}.tar.gz
+%{?_with_configurable_pam_mail:Patch0:	%{name}-configurable_pam_mail.patch}
 URL:		http://parc.power.net/morgan/Linux-PAM/index.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -229,6 +231,7 @@ Modu³ pam_cap.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
+%{?_with_configurable_pam_mail:%patch0 -p0}
 
 %build
 rm -rf missing
