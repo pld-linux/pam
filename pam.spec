@@ -7,7 +7,9 @@ Summary(es):	MСdulos de autentificaciСn plugables (PAM)
 Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authentication
 Summary(pl):	Modularny system autentykacji
 Summary(pt_BR):	MСdulos de autenticaГЦo plugАveis (PAM)
+Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
+Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.75.6
 Release:	1
@@ -81,16 +83,34 @@ sistema configurar serviГos de autenticaГЦo individualmente para cada
 aplicaГЦo pam compatМvel, sem necessidade de recompilar qualquer uma
 das aplicaГУes.
 
+%description -l uk
+PAM (Pluggable Authentication Modules) - це потужна, гнучка, здатна до
+розширення система аутентикац╕╖, яка дозволя╓ системному
+адм╕н╕стратору налагоджувати сев╕си авторизац╕╖ доступу (аутентикац╕╖)
+╕ндив╕дуально для кожно╖ pam-сум╕сно╖ програми без необх╕дност╕
+перекомп╕ляц╕╖ само╖ програми. Це базовий механ╕зм аутентикац╕╖ в KSI
+Linux.
+
 %description -l tr
 PAM (Pluggable Authentication Modules) sistem yЖneticilerinin
 uygulamalardan herhangi birini yeniden derlemeksizin bЭtЭn PAM uyumlu
 uygulamalar iГin doПrulama hizmetlerini ayarlamalarЩna yardЩmcЩ olan,
 gЭclЭ, esnek ve kapsamlЩ bir doПrulama sistemidir.
 
+%description -l ru
+PAM (Pluggable Authentication Modules) - это мощная, гибкая,
+расширяемая система аутентикации, позволяющая системному
+администратору конфигурировать сервисы авторизации доступа
+(аутентикации) индивидуально для каждой pam-совместимой программы без
+необходимости перекомпилляции самой программы. Это базовый механизм
+аутентикации в KSI Linux.
+
 %package devel
 Summary:	PAM header files
 Summary(pl):	Pliki nagЁСwkowe i dokumentacja do PAM
 Summary(pt_BR):	Bibliotecas e arquivos de inclusЦo para desenvolvimento com PAM
+Summary(ru):	Библиотеки разработчика для PAM
+Summary(uk):	Б╕бл╕отеки програм╕ста для PAM
 Group:		Development/Libraries
 Requires:	%{name} = %{version}
 
@@ -103,9 +123,17 @@ Pliki nagЁСwkowe i dokumentacja do PAM.
 %description devel -l pt_BR
 Bibliotecas e arquivos de inclusЦo para desenvolvimento com PAM
 
+%description devel -l ru
+Этот пакет содержит хедеры и библиотеки разработчика для PAM.
+
+%description devel -l uk
+Цей пакет м╕стить хедери та б╕бл╕отеки програм╕ста для PAM.
+
 %package static
 Summary:	PAM static libraries
 Summary(pl):	Biblioteki statyczne PAM
+Summary(ru):	Статические библиотеки разработчика для PAM
+Summary(uk):	Статичн╕ б╕бл╕отеки програм╕ста для PAM
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}
 
@@ -114,6 +142,12 @@ PAM static libraries.
 
 %description static -l pl
 Biblioteki statyczne PAM.
+
+%description static -l ru
+Этот пакет содержит статические библиотеки разработчика для PAM.
+
+%description static -l uk
+Цей пакет м╕стить статичн╕ б╕бл╕отеки програм╕ста для PAM.
 
 %package pam_pwdb
 Summary:	pam_pwdb module
