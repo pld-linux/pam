@@ -55,13 +55,13 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modu
 +pam_selinux_la_SOURCES	= pam_selinux.c
 +pam_selinux_check_la_SOURCES = pam_selinux_check.c
 +
++man_MANS		= pam_selinux.8 pam_selinux_check.8
++
 +else
 +
 +EXTRA_pam_selinux_la_SOURCES = pam_selinux.c
 +EXTRA_pam_selinux_check_la_SOURCES = pam_selinux_check.c
-+
-+man_MANS		= pam_selinux.8 pam_selinux_check.8
-+
++EXTRA_mans = pam_selinux.8 pam_selinux_check.8
 +endif
 +
 +TITLE			= pam_selinux
@@ -81,7 +81,7 @@ diff -urN pam-pld-0.77.3.org/modules/pam_selinux/Makefile.am pam-pld-0.77.3/modu
 +pam_selinux_la_LDFLAGS	= -avoid-version -module
 +pam_selinux_check_la_LDFLAGS= -avoid-version -module
 +
-+EXTRA_DIST		= README
++EXTRA_DIST		= README $(EXTRA_mans)
 +
 +CLEANFILES		= *~ $(TITLE).so $(TITLE)_check.so
 +
