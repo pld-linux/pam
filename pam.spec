@@ -102,13 +102,13 @@ make install FAKEROOT=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/other
 
-install doc/man/pam.8 $RPM_BUILD_ROOT/usr/share/man/man8
-install doc/man/*.3 $RPM_BUILD_ROOT/usr/share/man/man3
-chmod u+w $RPM_BUILD_ROOT/usr/share/man/man3/*
-echo ".so pam.8" > $RPM_BUILD_ROOT/usr/share/man/man8/pam.conf.8
-echo ".so pam.8" > $RPM_BUILD_ROOT/usr/share/man/man8/pam.d.8
-echo ".so pam_start.3" > $RPM_BUILD_ROOT/usr/share/man/man3/pam_end.3
-echo ".so pam_open_session.3" > $RPM_BUILD_ROOT/usr/share/man/man3/pam_close_session.3
+install doc/man/pam.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install doc/man/*.3 $RPM_BUILD_ROOT%{_mandir}/man3
+chmod u+w $RPM_BUILD_ROOT%{_mandir}/man3/*
+echo ".so pam.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.conf.8
+echo ".so pam.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.d.8
+echo ".so pam_start.3" > $RPM_BUILD_ROOT%{_mandir}/man3/pam_end.3
+echo ".so pam_open_session.3" > $RPM_BUILD_ROOT%{_mandir}/man3/pam_close_session.3
 
 # make sure the modules built...
 [ -f $RPM_BUILD_ROOT/lib/security/pam_deny.so ] || {
@@ -129,7 +129,7 @@ ln -sf ../../lib/libpam_misc.so.0 $RPM_BUILD_ROOT/usr/lib/libpam_misc.so
 
 mv $RPM_BUILD_ROOT/lib/lib*.a $RPM_BUILD_ROOT/usr/lib/
 
-gzip -9fn $RPM_BUILD_ROOT/usr/share/man/man[38]/* Copyright \
+gzip -9fn $RPM_BUILD_ROOT%{_mandir}/man[38]/* Copyright \
 	doc/txts/*.txt doc/specs/*.{raw,txt}
 
 rm -f doc/{ps,txts}/{README,*.log}
@@ -156,13 +156,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4755,root,root) /sbin/pwdb_chkpwd
 %attr(4755,root,root) /sbin/unix_chkpwd
 /sbin/pam_pwdb_helper
-/usr/share/man/man8/*
+%{_mandir}/man8/*
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/lib/lib*.so
 /usr/include/security
-/usr/share/man/man3/*
+%{_mandir}/man3/*
 
 %files static
 %defattr(644,root,root,755)
