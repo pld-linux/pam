@@ -309,7 +309,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc Copyright %{?with_doc:doc/{html,txts,specs/*.{raw,txt}}}
+%doc CHANGELOG ChangeLog Copyright doc/CREDITS %{?with_doc:doc/{html,txts,specs/*.{raw,txt}}}
 %dir /etc/pam.d
 %dir /sbin/pam_filter
 %dir /var/lock/console
