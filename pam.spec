@@ -5,10 +5,11 @@ Summary(pl):	Pluggable Authentication Modules: modu³y autentykacji
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Name:		pam
 Version:	0.66
-Release:	5d
+Release:	6
 Copyright:	GPL or BSD
 Group:		Libraries
 Group(pl):	Biblioteki
+Url:		http://parc.power.net/morgan/Linux-PAM/index.html
 ########	ftp://linux.kernel.org/linux/libs/pam/pre/
 Source0:	Linux-PAM-0.66.tar.bz2
 Source1:	other.pamd
@@ -30,12 +31,11 @@ Patch14:	%{name}-faillog.patch
 Patch15:	%{name}-umask.patch
 Patch16:	%{name}-deflimit.patch
 Patch17:	%{name}-priority.patch
-Buildroot:	/tmp/%{name}-%{version}-root
-Url:		http://parc.power.net/morgan/Linux-PAM/index.html
 Prereq:		/sbin/ldconfig
 Requires:	cracklib
 Requires:	cracklib-dicts
 Requires:	pwdb 
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible,
@@ -147,29 +147,34 @@ rm -rf $RPM_BUILD_ROOT
 %attr(750,root,root) %dir /etc/pam.d
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/other
 
-%attr(755,root,root) /lib/*.so.*
+%attr(755,root,root) /lib/lib*.so.*
 
 %dir /sbin/pam_filter
 %attr(755,root,root) /sbin/pam_filter/*
 
-%attr(755,root,root) /sbin/pwdb_chkpwd
-%attr(755,root,root) /lib/security/*
+%attr(4711,root,root) /sbin/pwdb_chkpwd
+%attr(0755,root,root) /lib/security/*
 
 %attr(750,root,root) %dir /etc/security
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/security/*.conf
-%attr(644,root, man) /usr/man/man[38]/*
+/usr/man/man[38]/*
 
 %files devel
 %defattr(644,root,root,755)
 
-%attr(755,root,root) /lib/*.so
-
+%attr(755,root,root) /lib/lib*.so
 /lib/*.a
 
 %dir /usr/include/security
 /usr/include/security/*
 
 %changelog
+* Fri Mar 12 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [0.66-6]
+- removed man group from man pages. 
+- addedd suid root for /sbin/pwdb_chkpwd at this time,
+  Beware ! -- programs with suid root are extremaly dangerus.  
+
 * Sun Feb 14 1999 Marcin Korzonek <mkorz@shadow.eu.org>
   [0.66-5d]
 - added pam-priority patch (setting priority for user processes 
