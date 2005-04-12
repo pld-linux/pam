@@ -29,6 +29,7 @@ Source0:	%{name}-pld-%{version}.tar.gz
 # Source0-md5:	3da2cb9cc165235f0b6c99458a840b37
 Source1:	system-auth.pamd
 Patch0:		%{name}-selinux-1.patch
+Patch1:		%{name}-gcc4.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -253,6 +254,7 @@ Modu³ pam_cap.
 %prep
 %setup -q -n %{name}-pld-%{version}
 %{?with_selinux:%patch0 -p1}
+%patch1 -p1
 
 %{!?with_doc:sed -i -e '/all-local:/d' doc/Makefile.am}
 
