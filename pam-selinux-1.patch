@@ -422,14 +422,14 @@ diff -urN pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.6/
      }
  
      if (fstat (fileno (opwfile), &st) == -1)
-@@ -371,8 +498,20 @@
+@@ -371,8 +371,20 @@
  	err = 1;
      }
  
 -    if (!err) {
 +done:
-+	if (!err)
-	if (!rename(OPW_TMPFILE, OLD_PASSWORDS_FILE)) {
++    if (!err)
+ 	if (!rename(OPW_TMPFILE, OLD_PASSWORDS_FILE)) {
 +#ifdef WITH_SELINUX
 +	if (SELINUX_ENABLED) {
 +	    if (setfscreatecon(prev_context)) {
@@ -441,7 +441,7 @@ diff -urN pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.6/
 +	}
 +#endif
 +	if (!err) {
- 	return PAM_SUCCESS;
+ 	    return PAM_SUCCESS;
  	}
      }
 @@ -390,16 +529,36 @@
@@ -486,14 +486,14 @@ diff -urN pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.6/
      }
  
      if (fstat (fileno (opwfile), &st) == -1)
-@@ -448,9 +607,22 @@
+@@ -449,9 +461,22 @@
  	err = 1;
      }
  
 +done:
      if (!err) {
  	if (!rename(PW_TMPFILE, "/etc/passwd")) {
- 	_log_err(LOG_NOTICE, pamh, "password changed for %s", forwho);
+ 	    _log_err(LOG_NOTICE, pamh, "password changed for %s", forwho);
 +	}
 +#ifdef WITH_SELINUX
 +	if (SELINUX_ENABLED) {
@@ -506,7 +506,7 @@ diff -urN pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.6/
 +	}
 +#endif
 +	if (!err) {
- 	return PAM_SUCCESS;
+ 	    return PAM_SUCCESS;
  	}
      }
 @@ -467,20 +639,43 @@
@@ -560,7 +560,7 @@ diff -urN pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.6/
      }
  
      if (fstat (fileno (opwfile), &st) == -1)
-@@ -528,9 +723,23 @@
+@@ -530,9 +555,23 @@
  	err = 1;
      }
  
@@ -581,7 +581,7 @@ diff -urN pam-pld-0.77.6.orig/modules/pam_unix/pam_unix_passwd.c pam-pld-0.77.6/
 +#endif
 +    
 +	if (!err) {
- 	return PAM_SUCCESS;
+ 	    return PAM_SUCCESS;
  	}
      }
 @@ -564,6 +773,8 @@
