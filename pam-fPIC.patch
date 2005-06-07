@@ -1,10 +1,24 @@
---- pam-pld-0.79.1/modules/pammodutil/Makefile.am~	2005-06-07 19:11:44.913016172 +0200
-+++ pam-pld-0.79.1/modules/pammodutil/Makefile.am	2005-06-07 19:14:21.396123991 +0200
+diff -ur -x Makefile.in pam-pld-0.79.1/configure.in pam-pld-0.79.1-PIC/configure.in
+--- pam-pld-0.79.1/configure.in	2005-06-07 19:55:22.223075560 +0200
++++ pam-pld-0.79.1-PIC/configure.in	2005-06-07 19:55:17.972721712 +0200
+@@ -71,7 +71,8 @@
+ 	  
+ AM_PROG_LIBTOOL
+ 
+-PICFLAG=$pic_flag
++AC_LIBTOOL_PROG_COMPILER_PIC
++PICFLAG=$lt_lt_prog_compiler_pic
+ AC_SUBST(PICFLAG)
+ 
+ AC_MSG_CHECKING([whether to build shared modules])
+diff -ur -x Makefile.in pam-pld-0.79.1/modules/pammodutil/Makefile.am pam-pld-0.79.1-PIC/modules/pammodutil/Makefile.am
+--- pam-pld-0.79.1/modules/pammodutil/Makefile.am	2005-06-07 17:36:21.000000000 +0200
++++ pam-pld-0.79.1-PIC/modules/pammodutil/Makefile.am	2005-06-07 19:24:22.393812584 +0200
 @@ -10,6 +10,8 @@
  			modutil_getlogin.c modutil_getpwnam.c modutil_getpwuid.c \
  			modutil_getspnam.c modutil_ingroup.c modutil_ioloop.c
  
-+libpammodutil_a_CFLAGS	= -fPIC
++libpammodutil_a_CFLAGS	= $(PICFLAG)
 +
  INCLUDES		= -I$(top_srcdir)/modules/pammodutil/include -I$(top_srcdir)/include
  
