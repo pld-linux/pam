@@ -7,7 +7,7 @@ diff -ur -x Makefile.in pam-pld-0.79.1/configure.in pam-pld-0.79.1-PIC/configure
  
 -PICFLAG=$pic_flag
 +AC_LIBTOOL_PROG_COMPILER_PIC
-+PICFLAG=$lt_lt_prog_compiler_pic
++PICFLAG=$lt_prog_compiler_pic
  AC_SUBST(PICFLAG)
  
  AC_MSG_CHECKING([whether to build shared modules])
