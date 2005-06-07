@@ -19,18 +19,16 @@ Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
-Version:	0.79.0
-Release:	3
+Version:	0.79.1
+Release:	1
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
-#Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
-Source0:	%{name}-pld-%{version}.tar.gz
-# Source0-md5:	3da2cb9cc165235f0b6c99458a840b37
+Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
+# Source0-md5:	fc029c41d960eeaf9736df3aeb2d41b2
 Source1:	system-auth.pamd
 Patch0:		%{name}-selinux-1.patch
 Patch1:		%{name}-gcc4.patch
-Patch2:		%{name}-pam_userdb-nullptrs.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -256,7 +254,6 @@ ModuЁ pam_cap.
 %setup -q -n %{name}-pld-%{version}
 %{?with_selinux:%patch0 -p1}
 %patch1 -p1
-%patch2 -p1
 
 %{!?with_doc:sed -i -e '/all-local:/d' doc/Makefile.am}
 
@@ -381,12 +378,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.la
+%{_libdir}/libpammodutil.a
 %{_includedir}/security/*.h
 %{_mandir}/man3/*
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/lib*.a
+%{_libdir}/libpam.a
+%{_libdir}/libpamc.a
+%{_libdir}/libpam_misc.a
 
 %if %{with pwdb}
 %files pam_pwdb
