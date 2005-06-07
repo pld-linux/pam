@@ -20,7 +20,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.79.1
-Release:	1
+Release:	2
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -255,7 +255,7 @@ ModuЁ pam_cap.
 %setup -q -n %{name}-pld-%{version}
 %{?with_selinux:%patch0 -p1}
 %patch1 -p1
-%patch2 -p1
+#%patch2 -p1
 
 %{!?with_doc:sed -i -e '/all-local:/d' doc/Makefile.am}
 
