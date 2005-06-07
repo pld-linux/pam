@@ -1,0 +1,11 @@
+--- pam-pld-0.79.1/modules/pammodutil/Makefile.am~	2005-06-07 19:11:44.913016172 +0200
++++ pam-pld-0.79.1/modules/pammodutil/Makefile.am	2005-06-07 19:14:21.396123991 +0200
+@@ -10,6 +10,8 @@
+ 			modutil_getlogin.c modutil_getpwnam.c modutil_getpwuid.c \
+ 			modutil_getspnam.c modutil_ingroup.c modutil_ioloop.c
+ 
++libpammodutil_a_CFLAGS	= -fPIC
++
+ INCLUDES		= -I$(top_srcdir)/modules/pammodutil/include -I$(top_srcdir)/include
+ 
+ CLEANFILES		= *~ include/*~ libpammodutil.a
