@@ -46,19 +46,19 @@ diff -urN pam-pld-0.77.6.orig/modules/pam_unix/Makefile.am pam-pld-0.77.6/module
  
  if NSLLIB_PRESENT
  if CRACKLIB_PRESENT
--pam_unix_la_LIBADD	= -lnsl -lcrack ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
-+pam_unix_la_LIBADD	= -lnsl -lcrack $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
+-pam_unix_la_LIBADD	= -lnsl -lcrack ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
++pam_unix_la_LIBADD	= -lnsl -lcrack $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
  else
--pam_unix_la_LIBADD	= -lnsl ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
-+pam_unix_la_LIBADD	= -lnsl $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
+-pam_unix_la_LIBADD	= -lnsl ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
++pam_unix_la_LIBADD	= -lnsl $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
  endif
  else
  if CRACKLIB_PRESENT
--pam_unix_la_LIBADD	= -lcrack ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
-+pam_unix_la_LIBADD	= -lcrack $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
+-pam_unix_la_LIBADD	= -lcrack ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
++pam_unix_la_LIBADD	= -lcrack $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
  else
--pam_unix_la_LIBADD	= ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
-+pam_unix_la_LIBADD	= $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
+-pam_unix_la_LIBADD	= ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
++pam_unix_la_LIBADD	= $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
  endif
  endif
  
@@ -66,9 +66,9 @@ diff -urN pam-pld-0.77.6.orig/modules/pam_unix/Makefile.am pam-pld-0.77.6/module
  sbin_PROGRAMS		= unix_chkpwd
  
  unix_chkpwd_SOURCES	= unix_chkpwd.c
--unix_chkpwd_LDADD	= ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
+-unix_chkpwd_LDADD	= ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
 +unix_chkpwd_CFLAGS	= $(LIBSELINUX_DEFS)
-+unix_chkpwd_LDADD	= $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.la
++unix_chkpwd_LDADD	= $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
  
  EXTRA_DIST		= README CHANGELOG
  
