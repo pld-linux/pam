@@ -29,6 +29,7 @@ Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 Source1:	system-auth.pamd
 Patch0:		%{name}-selinux-1.patch
 Patch1:		%{name}-gcc4.patch
+Patch2:		%{name}-fPIC.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -254,6 +255,7 @@ Modu³ pam_cap.
 %setup -q -n %{name}-pld-%{version}
 %{?with_selinux:%patch0 -p1}
 %patch1 -p1
+%patch2 -p1
 
 %{!?with_doc:sed -i -e '/all-local:/d' doc/Makefile.am}
 
