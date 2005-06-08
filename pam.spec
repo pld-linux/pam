@@ -20,7 +20,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.79.1
-Release:	3
+Release:	4
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -261,6 +261,7 @@ ModuЁ pam_cap.
 
 %build
 find . -name Makefile.am | xargs %{__perl} -pi -e 's#modulesdir.*=.*\@prefix\@/lib#modulesdir = \@libdir\@#g'
+find . -name Makefile.am | xargs %{__perl} -pi -e 's#pammodutildir.*=.*\@prefix\@/lib#pammodutildir = \@libdir\@#g'
 find . -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
 %{__libtoolize}
 %{__aclocal}
