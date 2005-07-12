@@ -26,7 +26,7 @@ Epoch:		0
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
-# Source0-md5:	6bcbbe817a9dc76696ad789c8c52ff1e
+# Source0-md5:	B0RKEN817a9dc76696ad789c8c52ff1e
 Source1:	system-auth.pamd
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
