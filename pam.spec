@@ -4,6 +4,7 @@
 %bcond_without	cap		# don't build pam_cap module
 %bcond_without	doc		# don't build documentation
 %bcond_without	opie		# don't build pam_opie module
+%bcond_with   	prelude		# build without Prelude IDS support
 %bcond_without	pwdb		# don't build pam_pwdb and pam_radius modules
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	skey		# don't build pam_skey module
@@ -19,18 +20,14 @@ Summary(ru):	éÎÔÓÔÒÕÍÅÎÔ, ÏÂÅÓÐÅÞÉ×ÁÀÝÉÊ ÁÕÔÅÎÔÉÆÉËÁÃÉÀ ÄÌÑ ÐÒÉÌÏÖÅÎÉÊ
 Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
-Version:	0.79.1
-Release:	5
+Version:	0.79.2
+Release:	1
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
-# Source0-md5:	fc029c41d960eeaf9736df3aeb2d41b2
+# Source0-md5:	6bcbbe817a9dc76696ad789c8c52ff1e
 Source1:	system-auth.pamd
-Patch0:		%{name}-selinux-1.patch
-Patch1:		%{name}-gcc4.patch
-Patch2:		%{name}-fPIC.patch
-Patch3:		%{name}-allow_root_ttyS0.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -40,6 +37,7 @@ BuildRequires:	db-devel
 BuildRequires:	flex
 %{?with_cap:BuildRequires:	libcap-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
+%{?with_prelude:BuildRequires:	libprelude-devel}
 BuildRequires:	libtool >= 2:1.5
 %{?with_tcpd:BuildRequires:	libwrap-devel >= 7.6-32}
 %{?with_opie:BuildRequires:	opie-devel}
@@ -252,12 +250,19 @@ pam_cap module.
 %description pam_cap -l pl
 Modu³ pam_cap.
 
+%package pam_selinux
+Summary:	PAM module - SELinux support
+Summary(pl):	Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa
+Group:		Base
+
+%description pam_selinux
+PAM module - SELinux support.
+
+%description pam_selinux -l pl
+Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
+
 %prep
 %setup -q -n %{name}-pld-%{version}
-%{?with_selinux:%patch0 -p1}
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %{!?with_doc:sed -i -e '/all-local:/d' doc/Makefile.am}
 
@@ -277,6 +282,8 @@ CFLAGS="%{rpmcflags} -D_FILE_OFFSET_BITS=64"
 	%{!?with_skey:ac_cv_lib_skey_skeyaccess=no} \
 	%{!?with_tcpd:libwrap=no} \
 	%{?with_pwexport:--enable-want-pwexport-module} \
+	%{!?with_selinux:--disable-selinux} \
+	%{!?with_prelude:--disable-prelude} \
 	--enable-strong-crypto
 %{__make}
 
@@ -377,7 +384,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/pam_tally
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
 %{_mandir}/man5/*
-%{_mandir}/man8/*
+%{_mandir}/man8/pam.*
+%{_mandir}/man8/pam_localuser*
+%{_mandir}/man8/pam_succeed_if*
+%{_mandir}/man8/pam_xauth*
 
 %files devel
 %defattr(644,root,root,755)
@@ -428,4 +438,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 size mtime) /etc/security/capability.conf
 %attr(755,root,root) /%{_lib}/security/pam_cap.so
+%endif
+
+%if %{with selinux}
+%files pam_selinux
+%defattr(644,root,root,755)
+%doc README
+%attr(755,root,root) /%{_lib}/security/pam_selinux.so
+%attr(755,root,root) %{_sbindir}/pam_selinux_check
+#TODO: %config(noreplace) %verify(not size mtime md5) /etc/pam.d/pam_selinux_check
+%{_mandir}/man8/pam_selinux*.8*
 %endif
