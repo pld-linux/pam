@@ -21,7 +21,7 @@ Summary(tr):	Mod¸ler, art˝msal dorulama birimleri
 Summary(uk):	∂Œ”‘“’Õ≈Œ‘, ›œ ⁄¡¬≈⁄–≈ﬁ’§ ¡’‘≈Œ‘…∆¶À¡√¶¿ ƒÃ— –“œ«“¡Õ
 Name:		pam
 Version:	0.79.2
-Release:	1.1
+Release:	1.2
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -262,7 +262,6 @@ Modu≥ PAM pozwalaj±cy na zmianÍ kontekstÛw SELinuksa.
 
 %build
 find doc/ -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
-CFLAGS="%{rpmcflags} -D_FILE_OFFSET_BITS=64"
 %configure \
 	%{!?with_doc:--without-docs} \
 	%{!?with_cap:--disable-cap} \
@@ -312,7 +311,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGELOG ChangeLog Copyright doc/CREDITS %{?with_doc:doc/{html,txts,specs/*.{raw,txt}}}
+%doc CHANGELOG ChangeLog Copyright doc/CREDITS %{?with_doc:doc/{html,txts,ps/*.ps,specs/*.{raw,txt}}}
 %dir /etc/pam.d
 %dir /sbin/pam_filter
 %dir /var/lock/console
