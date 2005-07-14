@@ -21,7 +21,7 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.79.2
-Release:	1
+Release:	1.1
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -29,8 +29,6 @@ Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 # Source0-md5:	1e10b2c27b35a9fa8af319d0a8a71dce
 Source1:	system-auth.pamd
 URL:		http://www.kernel.org/pub/linux/libs/pam/
-BuildRequires:	autoconf
-BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
 BuildRequires:	db-devel
@@ -50,8 +48,6 @@ BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-metafont
 BuildRequires:	tetex-tex-babel
-%else
-BuildRequires:	sed >= 4.0
 %endif
 Requires:	awk
 Requires:	cracklib
@@ -264,27 +260,21 @@ Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
 %prep
 %setup -q -n %{name}-pld-%{version}
 
-%{!?with_doc:sed -i -e '/all-local:/d' doc/Makefile.am}
-
 %build
-find . -name Makefile.am | xargs %{__perl} -pi -e 's#modulesdir.*=.*\@prefix\@/lib#modulesdir = \@libdir\@#g'
-find . -name Makefile.am | xargs %{__perl} -pi -e 's#pammodutildir.*=.*\@prefix\@/lib#pammodutildir = \@libdir\@#g'
-find . -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__automake}
+find doc/ -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
 CFLAGS="%{rpmcflags} -D_FILE_OFFSET_BITS=64"
 %configure \
-	%{!?with_cap:ac_cv_lib_cap_cap_init=no} \
-	%{!?with_opie:ac_cv_lib_opie_opieverify=no} \
-	%{!?with_pwdb:ac_cv_lib_pwdb_pwdb_posix_getlogin=no} \
-	%{!?with_skey:ac_cv_lib_skey_skeyaccess=no} \
-	%{!?with_tcpd:libwrap=no} \
+	%{!?with_doc:--without-docs} \
+	%{!?with_cap:--disable-cap} \
+	%{!?with_opie:--disable-opie} \
+	%{!?with_pwdb:--disable-pwdb} \
+	%{!?with_skey:--disable-skey} \
+	%{!?with_tcpd:--disable-tcpd} \
 	%{?with_pwexport:--enable-want-pwexport-module} \
 	%{!?with_selinux:--disable-selinux} \
 	%{!?with_prelude:--disable-prelude} \
 	--enable-strong-crypto
+
 %{__make}
 
 %install
