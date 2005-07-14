@@ -20,13 +20,13 @@ Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
 Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
-Version:	0.79.2
-Release:	1.2
+Version:	0.80.0
+Release:	1
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
 Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
-# Source0-md5:	1e10b2c27b35a9fa8af319d0a8a71dce
+# Source0-md5:	330683490b44e2fe584efb0b1bf52fbd
 Source1:	system-auth.pamd
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	bison
