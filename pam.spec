@@ -4,7 +4,7 @@
 %bcond_without	cap		# don't build pam_cap module
 %bcond_without	doc		# don't build documentation
 %bcond_without	opie		# don't build pam_opie module
-%bcond_with   	prelude		# build without Prelude IDS support
+%bcond_with	prelude		# build without Prelude IDS support
 %bcond_without	pwdb		# don't build pam_pwdb and pam_radius modules
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	skey		# don't build pam_skey module
