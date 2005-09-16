@@ -1,3 +1,5 @@
+# TODO
+# - something wrong for doc/ps,pdf generation on my build host. remove completely duplicated doc formats?
 #
 # Conditional build:
 %bcond_with	pwexport	# enable pam_pwexport module (needs hacked pam_unix)
@@ -21,7 +23,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.80.1
-Release:	1
+Release:	1.4
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -49,6 +51,7 @@ BuildRequires:	tetex-format-latex
 BuildRequires:	tetex-metafont
 BuildRequires:	tetex-tex-babel
 %endif
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	awk
 Requires:	cracklib
 Requires:	cracklib-dicts
@@ -122,6 +125,13 @@ PAM (Pluggable Authentication Modules) - это мощная, гибкая,
 (аутентикации) индивидуально для каждой pam-совместимой программы без
 необходимости перекомпилляции самой программы. Это базовый механизм
 аутентикации в PLD Linux.
+
+%package libs
+Summary:	PAM modules and libraries
+Group:		Libraries
+
+%description libs
+Core PAM modules and libraries.
 
 %package devel
 Summary:	PAM header files
@@ -283,8 +293,10 @@ install -d $RPM_BUILD_ROOT/%{_lib}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -f doc/{ps,txts}/{README,*.log} \
-	doc/{html,txts}/Makefile*
+rm -rf docs
+cp -a doc docs
+rm -f docs/{ps,txts}/{README,*.log} \
+	docs/{html,txts}/Makefile*
 
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
@@ -302,16 +314,33 @@ cp %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/system-auth
 
 # useless - shut up check-files
 rm -f $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
+rm -f $RPM_BUILD_ROOT%{_libdir}/libpamcrypt.a
+
+%if %{without selinux}
+rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_check,%{_mandir}/man8/pam_selinux*.8*}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGELOG ChangeLog Copyright doc/CREDITS %{?with_doc:doc/{html,txts,ps/*.ps,specs/*.{raw,txt}}}
+%doc CHANGELOG ChangeLog Copyright doc/CREDITS
+%if %{with doc}
+%doc docs/{html,txts,specs/*.{raw,txt}}
+# FIXME: doesn't build for me! missing BR!:
+#builder@pld-i686 ps $  sgml2latex -o ps ../psgml2latex -o ps ../pam
+#Processing file ../pam
+#load_char_maps: no entity maps found
+#parse_data: no entity map for `[lowbar]'
+#sh: latex: not found
+#sh: latex: not found
+#dvips: ! DVI file can't be opened.
+#%doc docs/ps/*.ps
+%endif
 %dir /etc/pam.d
 %dir /sbin/pam_filter
 %dir /var/lock/console
@@ -328,6 +357,19 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist
 %config(noreplace) %verify(not md5 size mtime) /etc/security/pam_mail.conf
 %attr(600,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/opasswd
+%attr(755,root,root) /sbin/pam_filter/upperLOWER
+%attr(4755,root,root) /sbin/unix_chkpwd
+%attr(755,root,root) %{_bindir}/pam_pwgen
+%attr(755,root,root) %{_sbindir}/pam_tally
+%attr(755,root,root) %{_sbindir}/pwgen_trigram
+%{_mandir}/man5/*
+%{_mandir}/man8/pam.*
+%{_mandir}/man8/pam_localuser*
+%{_mandir}/man8/pam_succeed_if*
+%{_mandir}/man8/pam_xauth*
+
+%files libs
+%defattr(644,root,root,755)
 %attr(755,root,root) /%{_lib}/lib*.so.*.*
 %attr(755,root,root) /%{_lib}/security/pam_access.so
 %attr(755,root,root) /%{_lib}/security/pam_console.so
@@ -367,16 +409,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /%{_lib}/security/pam_wheel.so
 %attr(755,root,root) /%{_lib}/security/pam_xauth.so
 %{?with_pwexport:%attr(755,root,root) /%{_lib}/security/pam_pwexport.so}
-%attr(755,root,root) /sbin/pam_filter/upperLOWER
-%attr(4755,root,root) /sbin/unix_chkpwd
-%attr(755,root,root) %{_bindir}/pam_pwgen
-%attr(755,root,root) %{_sbindir}/pam_tally
-%attr(755,root,root) %{_sbindir}/pwgen_trigram
-%{_mandir}/man5/*
-%{_mandir}/man8/pam.*
-%{_mandir}/man8/pam_localuser*
-%{_mandir}/man8/pam_succeed_if*
-%{_mandir}/man8/pam_xauth*
 
 %files devel
 %defattr(644,root,root,755)
