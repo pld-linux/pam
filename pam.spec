@@ -128,10 +128,14 @@ PAM (Pluggable Authentication Modules) - ‹‘œ Õœ›Œ¡—, «…¬À¡—,
 
 %package libs
 Summary:	PAM modules and libraries
+Summary(pl):	Modu≥y i biblioteki PAM
 Group:		Libraries
 
 %description libs
 Core PAM modules and libraries.
+
+%description libs -l pl
+Modu≥y i biblioteki PAM.
 
 %package devel
 Summary:	PAM header files
