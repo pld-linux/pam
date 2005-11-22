@@ -23,7 +23,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.80.1
-Release:	2
+Release:	3
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -61,6 +61,8 @@ Obsoletes:	pamconfig
 Obsoletes:	pam_make
 Obsoletes:	pam-doc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		specflags	-fno-strict-aliasing
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible,
