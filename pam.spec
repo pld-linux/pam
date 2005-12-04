@@ -36,8 +36,8 @@ BuildRequires:	cracklib-devel
 BuildRequires:	db-devel
 BuildRequires:	flex
 %{?with_cap:BuildRequires:	libcap-devel}
-%{?with_selinux:BuildRequires:	libselinux-devel}
 %{?with_prelude:BuildRequires:	libprelude-devel}
+%{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:1.5
 %{?with_tcpd:BuildRequires:	libwrap-devel >= 7.6-32}
 %{?with_opie:BuildRequires:	opie-devel}
@@ -351,18 +351,18 @@ rm -rf $RPM_BUILD_ROOT
 %dir /sbin/pam_filter
 %dir /var/lock/console
 %dir /etc/security/console.apps
-%config(noreplace) %verify(not md5 size mtime) /etc/pam.d/other
-%config(noreplace) %verify(not md5 size mtime) /etc/pam.d/system-auth
-%config(noreplace) %verify(not md5 size mtime) /etc/security/access.conf
-%config(noreplace) %verify(not md5 size mtime) /etc/security/pam_env.conf
-%config(noreplace) %verify(not md5 size mtime) /etc/security/group.conf
-%config(noreplace) %verify(not md5 size mtime) /etc/security/limits.conf
-%config(noreplace) %verify(not md5 size mtime) /etc/security/time.conf
-%config(noreplace) %verify(not md5 size mtime) /etc/security/consoles
-%config(noreplace) %verify(not md5 size mtime) /etc/security/trigram*
-%config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist
-%config(noreplace) %verify(not md5 size mtime) /etc/security/pam_mail.conf
-%attr(600,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/opasswd
+%config(noreplace) %verify(not md5 mtime size) /etc/pam.d/other
+%config(noreplace) %verify(not md5 mtime size) /etc/pam.d/system-auth
+%config(noreplace) %verify(not md5 mtime size) /etc/security/access.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/pam_env.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/group.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/limits.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/time.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/consoles
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram*
+%config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist
+%config(noreplace) %verify(not md5 mtime size) /etc/security/pam_mail.conf
+%attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/opasswd
 %attr(755,root,root) /sbin/pam_filter/upperLOWER
 %attr(4755,root,root) /sbin/unix_chkpwd
 %attr(755,root,root) %{_bindir}/pam_pwgen
@@ -463,7 +463,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with cap}
 %files pam_cap
 %defattr(644,root,root,755)
-%config(noreplace) %verify(not md5 size mtime) /etc/security/capability.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/capability.conf
 %attr(755,root,root) /%{_lib}/security/pam_cap.so
 %endif
 
