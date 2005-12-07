@@ -42,9 +42,9 @@ BuildRequires:	libtool >= 2:1.5
 %{?with_tcpd:BuildRequires:	libwrap-devel >= 7.6-32}
 %{?with_opie:BuildRequires:	opie-devel}
 %{?with_pwdb:BuildRequires:	pwdb-devel}
+BuildRequires:	sgml-tools
 %{?with_skey:BuildRequires:	skey-devel}
 %if %{with doc}
-BuildRequires:	sgml-tools
 BuildRequires:	sp
 BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-format-latex
