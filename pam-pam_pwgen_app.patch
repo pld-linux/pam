@@ -2,16 +2,55 @@ Index: pam/modules/pam_pwgen/pam_pwgen_app.c
 ===================================================================
 RCS file: /cvsroot/pam/modules/pam_pwgen/pam_pwgen_app.c,v
 retrieving revision 1.3
-retrieving revision 1.4
-diff -u -r1.3 -r1.4
+retrieving revision 1.5
+diff -u -r1.3 -r1.5
 --- pam/modules/pam_pwgen/pam_pwgen_app.c	14 May 2004 12:40:15 -0000	1.3
-+++ pam/modules/pam_pwgen/pam_pwgen_app.c	20 Feb 2006 14:09:37 -0000	1.4
-@@ -326,7 +326,7 @@
++++ pam/modules/pam_pwgen/pam_pwgen_app.c	20 Feb 2006 15:33:58 -0000	1.5
+@@ -322,35 +322,36 @@
+ 	int genpw;
+ 	struct tris_data *tr;
+ 	struct stat st;
++	char **av = argv+1;
+ 
  	strcpy(tri_file, DEFAULT_TRIGRAM_FILE);
  
  	/* step through arguments */
 -	for (; argc-- > 1; ++argv) {
-+	for (; --argc > 1; ++argv) {
++	for (; *av; ++av) {
  		char *ep = NULL;
  
  		/* generic options */
+ 
+-		if (!strncmp(*argv, "minlen=", 7)) {
+-			min_length = strtol(*argv + 7, &ep, 10);
++		if (!strncmp(*av, "minlen=", 7)) {
++			min_length = strtol(*av + 7, &ep, 10);
+ 			if (!ep || (min_length < 5))
+ 				min_length = 5;
+ 			if (min_length > 64)
+ 				min_length = 64;
+-		} else if (!strncmp(*argv, "count=", 6)) {
+-			pw_count = strtol(*argv + 6, &ep, 10);
++		} else if (!strncmp(*av, "count=", 6)) {
++			pw_count = strtol(*av + 6, &ep, 10);
+ 			if (!ep || (pw_count < 5))
+ 				pw_count = 5;
+ 			if (pw_count > 100)
+ 				pw_count = 100;
+-		} else if (!strncmp(*argv, "trifile=", 7)) {
+-			strncpy(tri_file, *argv + 7, 128);
+-		} else if (!strncmp(*argv, "upper=", 6)) {
+-			upper = strtol(*argv + 6, &ep, 10);
++		} else if (!strncmp(*av, "trifile=", 7)) {
++			strncpy(tri_file, *av + 7, 128);
++		} else if (!strncmp(*av, "upper=", 6)) {
++			upper = strtol(*av + 6, &ep, 10);
+ 			if (!ep || (upper < 0))
+ 				upper = 0;
+-		} else if (!strncmp(*argv, "digit=", 6)) {
+-			digit = strtol(*argv + 6, &ep, 10);
++		} else if (!strncmp(*av, "digit=", 6)) {
++			digit = strtol(*av + 6, &ep, 10);
+ 			if (!ep || (digit < 0))
+ 				digit = 0;
+ 		} else {
