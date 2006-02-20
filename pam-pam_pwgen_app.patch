@@ -10,7 +10,7 @@ diff -u -r1.3 -r1.5
  	int genpw;
  	struct tris_data *tr;
  	struct stat st;
-+	char **av = argv+1;
++	char **av = argv;
  
  	strcpy(tri_file, DEFAULT_TRIGRAM_FILE);
  
