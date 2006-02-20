@@ -41,8 +41,8 @@ diff -u -r1.3 -r1.5
 -			strncpy(tri_file, *argv + 7, 128);
 -		} else if (!strncmp(*argv, "upper=", 6)) {
 -			upper = strtol(*argv + 6, &ep, 10);
-+		} else if (!strncmp(*av, "trifile=", 7)) {
-+			strncpy(tri_file, *av + 7, 128);
++		} else if (!strncmp(*av, "trifile=", 8)) {
++			strncpy(tri_file, *av + 8, 128);
 +		} else if (!strncmp(*av, "upper=", 6)) {
 +			upper = strtol(*av + 6, &ep, 10);
  			if (!ep || (upper < 0))
