@@ -10,13 +10,13 @@ diff -u -r1.3 -r1.5
  	int genpw;
  	struct tris_data *tr;
  	struct stat st;
-+	char **av = argv;
++	char **av;
  
  	strcpy(tri_file, DEFAULT_TRIGRAM_FILE);
  
  	/* step through arguments */
 -	for (; argc-- > 1; ++argv) {
-+	for (; *av; ++av) {
++	for (av=argv+1; *av; av++) {
  		char *ep = NULL;
  
  		/* generic options */
