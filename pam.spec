@@ -23,7 +23,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.80.1
-Release:	8
+Release:	9
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -133,6 +133,7 @@ PAM (Pluggable Authentication Modules) - это мощная, гибкая,
 Summary:	PAM modules and libraries
 Summary(pl):	ModuЁy i biblioteki PAM
 Group:		Libraries
+Conflicts:	%{name} < 0:0.80.1-2
 
 %description libs
 Core PAM modules and libraries.
