@@ -133,7 +133,7 @@ PAM (Pluggable Authentication Modules) - это мощная, гибкая,
 Summary:	PAM modules and libraries
 Summary(pl):	ModuЁy i biblioteki PAM
 Group:		Libraries
-Conflicts:	%{name} < 0:0.80.1-2
+Conflicts:	pam < 0:0.80.1-2
 
 %description libs
 Core PAM modules and libraries.
