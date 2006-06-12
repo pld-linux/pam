@@ -31,6 +31,7 @@ Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 # Source0-md5:	df374f625e7178f43a263a32e376dd46
 Source1:	system-auth.pamd
 Patch0:		%{name}-pam_pwgen_app.patch
+Patch1:		%{name}-modutil_mem_limit.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
@@ -133,7 +134,7 @@ PAM (Pluggable Authentication Modules) - ‹‘œ Õœ›Œ¡—, «…¬À¡—,
 Summary:	PAM modules and libraries
 Summary(pl):	Modu≥y i biblioteki PAM
 Group:		Libraries
-Conflicts:	pam < 0:0.80.1-2
+Conflicts:	%{name} < 0:0.80.1-2
 
 %description libs
 Core PAM modules and libraries.
@@ -278,6 +279,7 @@ Modu≥ PAM pozwalaj±cy na zmianÍ kontekstÛw SELinuksa.
 %prep
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 find doc/ -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
