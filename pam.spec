@@ -23,7 +23,7 @@ Summary(tr):	Modüler, artımsal doğrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, İÏ ÚÁÂÅÚĞÅŞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ĞÒÏÇÒÁÍ
 Name:		pam
 Version:	0.80.1
-Release:	9
+Release:	10
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -31,6 +31,7 @@ Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 # Source0-md5:	df374f625e7178f43a263a32e376dd46
 Source1:	system-auth.pamd
 Patch0:		%{name}-pam_pwgen_app.patch
+Patch1:		%{name}-modutil_mem_limit.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
@@ -278,6 +279,7 @@ Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
 %prep
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 find doc/ -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
