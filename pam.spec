@@ -280,6 +280,11 @@ Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
 %patch0 -p1
 
 %build
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 find doc/ -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
 %configure \
 	%{!?with_doc:--without-docs} \
