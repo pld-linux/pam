@@ -32,6 +32,8 @@ Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 Source1:	system-auth.pamd
 Patch0:		%{name}-pam_pwgen_app.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
 BuildRequires:	db-devel
@@ -278,6 +280,8 @@ Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
 %prep
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
+mkdir m4
+%{!?with_prelude:echo 'AC_DEFUN([AM_PATH_LIBPRELUDE],[/bin/true])' > m4/prelude.m4}
 
 %build
 %{__libtoolize}
