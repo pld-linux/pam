@@ -23,7 +23,7 @@ Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
 Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
 Name:		pam
 Version:	0.80.1
-Release:	11
+Release:	12
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -151,7 +151,7 @@ Summary(ru):	Библиотеки разработчика для PAM
 Summary(uk):	Б╕бл╕отеки програм╕ста для PAM
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	FHS >= 2.2-9
+Requires:	filesystem >= 3.0-11
 
 %description devel
 Header files for developing PAM based applications.
