@@ -23,7 +23,7 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.80.1
-Release:	12
+Release:	13
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -31,6 +31,7 @@ Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 # Source0-md5:	df374f625e7178f43a263a32e376dd46
 Source1:	system-auth.pamd
 Patch0:		%{name}-pam_pwgen_app.patch
+Patch1:		%{name}-modutil_mem_limit.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -280,6 +281,7 @@ Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
 %prep
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
+%patch1 -p1
 mkdir m4
 %{!?with_prelude:echo 'AC_DEFUN([AM_PATH_LIBPRELUDE],[/bin/true])' > m4/prelude.m4}
 
