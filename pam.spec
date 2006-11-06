@@ -152,7 +152,7 @@ Summary(ru):	Библиотеки разработчика для PAM
 Summary(uk):	Б╕бл╕отеки програм╕ста для PAM
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	filesystem >= 3.0-11
+Requires:	filesystem >= 2.0-1
 
 %description devel
 Header files for developing PAM based applications.
