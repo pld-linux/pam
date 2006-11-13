@@ -336,7 +336,7 @@ cp %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/system-auth
 rm -f $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
 rm -f $RPM_BUILD_ROOT%{_libdir}/libpamcrypt.a
 
-%if %{without selinux}
+%if !%{with selinux}
 rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_check,%{_mandir}/man8/pam_selinux*.8*}
 %endif
 
