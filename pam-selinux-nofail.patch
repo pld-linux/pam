@@ -1,0 +1,78 @@
+--- Linux-PAM-0.99.2.1/modules/pam_selinux/pam_selinux.c.nofail	2005-11-29 10:22:05.000000000 +0100
++++ Linux-PAM-0.99.2.1/modules/pam_selinux/pam_selinux.c	2005-12-15 14:12:54.000000000 +0100
+@@ -327,6 +327,8 @@
+   int num_contexts = 0;
+   const void *username = NULL;
+   const void *tty = NULL;
++  char *seuser=NULL;
++  char *level=NULL;
+ 
+   /* Parse arguments. */
+   for (i = 0; i < argc; i++) {
+@@ -361,7 +363,18 @@
+                    username == NULL) {
+     return PAM_AUTH_ERR;
+   }
+-  num_contexts = get_ordered_context_list(username, 0, &contextlist);
++
++  if (getseuserbyname(username, &seuser, &level)==0) {
++	  num_contexts = get_ordered_context_list_with_level(seuser, 
++							     level,
++							     NULL, 
++							     &contextlist);
++	  if (debug)
++		  pam_syslog(pamh, LOG_DEBUG, "Username= %s SELinux User = %s Level= %s",
++			 (const char *)username, seuser, level);
++	  free(seuser);
++	  free(level);
++  }
+   if (num_contexts > 0) {
+     if (multiple && (num_contexts > 1) && has_tty) {
+       user_context = select_context(pamh,contextlist, debug);
+@@ -376,13 +389,19 @@
+       if (user_context == NULL) {
+ 	pam_syslog (pamh, LOG_ERR, "Unable to get valid context for %s",
+ 		    (const char *)username);
+-	return PAM_AUTH_ERR;
++        if (security_getenforce() == 1)
++          return PAM_AUTH_ERR;
++        else
++          return PAM_SUCCESS;
+       }
+     } else {
+         pam_syslog (pamh, LOG_ERR,
+ 		    "Unable to get valid context for %s, No valid tty",
+ 		    (const char *)username);
+-	return PAM_AUTH_ERR;
++        if (security_getenforce() == 1)
++          return PAM_AUTH_ERR;
++        else
++          return PAM_SUCCESS;
+     }
+   }
+   if (getexeccon(&prev_user_context)<0) {
+@@ -420,8 +439,10 @@
+     pam_syslog(pamh, LOG_ERR,
+ 	       "Error!  Unable to set %s executable context %s.",
+ 	       (const char *)username, user_context);
+-    freecon(user_context);
+-    return PAM_AUTH_ERR;
++    if (security_getenforce() == 1) {
++       freecon(user_context);
++       return PAM_AUTH_ERR;
++    }
+   } else {
+     if (debug)
+       pam_syslog(pamh, LOG_NOTICE, "set %s security context to %s",
+@@ -471,7 +492,10 @@
+   if (status) {
+     pam_syslog(pamh, LOG_ERR, "Error!  Unable to set executable context %s.",
+ 	       prev_user_context);
+-    return PAM_AUTH_ERR;
++    if (security_getenforce() == 1)
++       return PAM_AUTH_ERR;
++    else
++       return PAM_SUCCESS;
+   }
+ 
+   if (debug)

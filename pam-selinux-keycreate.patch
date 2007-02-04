@@ -1,0 +1,42 @@
+--- Linux-PAM-0.99.6.2/modules/pam_selinux/pam_selinux.c.keycreate	2006-08-31 17:26:46.000000000 +0200
++++ Linux-PAM-0.99.6.2/modules/pam_selinux/pam_selinux.c	2006-08-31 19:01:05.000000000 +0200
+@@ -391,6 +391,28 @@
+       pam_syslog(pamh, LOG_NOTICE, "set %s security context to %s",
+ 		 (const char *)username, user_context);
+   }
++#ifdef HAVE_SETKEYCREATECON
++  ret = setkeycreatecon(user_context);
++  if (ret==0 && verbose) {
++    char msg[PATH_MAX];
++    snprintf(msg, sizeof(msg),
++	     _("Key Creation Context %s Assigned"), user_context);
++    verbose_message(pamh, msg, debug);
++  }
++  if (ret) {
++    pam_syslog(pamh, LOG_ERR,
++	       "Error!  Unable to set %s key creation context %s.",
++	       (const char *)username, user_context);
++    if (security_getenforce() == 1) {
++       freecon(user_context);
++       return PAM_AUTH_ERR;
++    }
++  } else {
++    if (debug)
++      pam_syslog(pamh, LOG_NOTICE, "set %s key creation context to %s",
++		 (const char *)username, user_context);
++  }
++#endif
+   freecon(user_context);
+ 
+   return PAM_SUCCESS;
+--- Linux-PAM-0.99.6.2/configure.in.keycreate	2006-08-31 17:26:46.000000000 +0200
++++ Linux-PAM-0.99.6.2/configure.in	2006-08-31 18:59:52.000000000 +0200
+@@ -397,7 +397,7 @@
+ AC_CHECK_FUNCS(strcspn strdup strspn strstr strtol uname)
+ AC_CHECK_FUNCS(getpwnam_r getpwuid_r getgrnam_r getgrgid_r getspnam_r)
+ AC_CHECK_FUNCS(getgrouplist getline getdelim)
+-AC_CHECK_FUNCS(inet_ntop inet_pton ruserok_af)
++AC_CHECK_FUNCS(inet_ntop inet_pton ruserok_af setkeycreatecon)
+ 
+ AC_CHECK_FUNCS(unshare, [UNSHARE=yes], [UNSHARE=no])
+ AM_CONDITIONAL([HAVE_UNSHARE], [test "$UNSHARE" = yes])

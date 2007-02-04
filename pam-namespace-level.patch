@@ -1,0 +1,250 @@
+--- Linux-PAM-0.99.7.0/modules/pam_namespace/pam_namespace.c.level	2007-01-19 08:33:11.000000000 -0500
++++ Linux-PAM-0.99.7.0/modules/pam_namespace/pam_namespace.c	2007-01-19 08:33:11.000000000 -0500
+@@ -244,23 +244,29 @@
+     }
+     strcpy(poly.dir, dir);
+     strcpy(poly.instance_prefix, instance_prefix);
+-    if (strcmp(method, "user") == 0)
+-        poly.method = USER;
++
++    poly.method = NONE;
++    if (strcmp(method, "user") == 0) 
++	    poly.method = USER;
++
+ #ifdef WITH_SELINUX
+-    else if (strcmp(method, "context") == 0) {
++    if (strcmp(method, "level") == 0) {
+         if (idata->flags & PAMNS_CTXT_BASED_INST)
+-            poly.method = CONTEXT;
++            poly.method = LEVEL;
+ 	else
+             poly.method = USER;
+-    } else if (strcmp(method, "both") == 0) {
++    }
++
++    if (strcmp(method, "context") == 0) {
+         if (idata->flags & PAMNS_CTXT_BASED_INST)
+-            poly.method = BOTH;
++            poly.method = CONTEXT;
+ 	else
+             poly.method = USER;
+     }
+ 
+ #endif
+-    else {
++
++    if ( poly.method == NONE) {
+         pam_syslog(idata->pamh, LOG_NOTICE, "Illegal method");
+         goto skipping;
+     }
+@@ -448,19 +454,23 @@
+ 		return PAM_SESSION_ERR;
+ 	}
+ 
++	if (polyptr->method == USER) return PAM_SUCCESS;
++
++	rc = getexeccon(&scon);
++	if (rc < 0 || scon == NULL) {
++		pam_syslog(idata->pamh, LOG_ERR, 
++			   "Error getting exec context, %m");
++		return PAM_SESSION_ERR;
++	}
++
+ 	/*
+ 	 * If polyinstantiating based on security context, get current
+ 	 * process security context, get security class for directories,
+ 	 * and ask the policy to provide security context of the
+ 	 * polyinstantiated instance directory.
+ 	 */
+-	if ((polyptr->method == CONTEXT) || (polyptr->method == BOTH)) {
+-		rc = getexeccon(&scon);
+-		if (rc < 0 || scon == NULL) {
+-			pam_syslog(idata->pamh, LOG_ERR,
+-					"Error getting exec context, %m");
+-			return PAM_SESSION_ERR;
+-		}
++
++	if (polyptr->method == CONTEXT) {
+ 		tclass = string_to_security_class("dir");
+ 
+ 		if (security_compute_member(scon, *origcon, tclass,
+@@ -473,7 +483,48 @@
+ 			pam_syslog(idata->pamh, LOG_DEBUG,
+ 					"member context returned by policy %s", *i_context);
+ 		freecon(scon);
++		return PAM_SUCCESS;
+ 	}
++
++	/*
++	 * If polyinstantiating based on security level, get current
++	 * process security context, get security class for directories,
++	 * and change the directories MLS Level to match process.
++	 */
++
++	if (polyptr->method == LEVEL) {
++		context_t scontext = NULL;
++		context_t fcontext = NULL;
++		rc = PAM_SESSION_ERR;
++
++		scontext = context_new(scon);
++		if (! scontext) {
++			pam_syslog(idata->pamh, LOG_ERR, "out of memory");
++			goto fail;
++		}
++		fcontext = context_new(*origcon);
++		if (! fcontext) {
++			pam_syslog(idata->pamh, LOG_ERR, "out of memory");
++			goto fail;
++		}
++		if (context_range_set(fcontext, context_range_get(scontext)) != 0) {
++			pam_syslog(idata->pamh, LOG_ERR, "Unable to set MLS Componant of context");
++			goto fail;
++		}
++		*i_context=strdup(context_str(fcontext));
++		if (! *i_context) {
++			pam_syslog(idata->pamh, LOG_ERR, "out of memory");
++			goto fail;
++		}
++
++		rc = PAM_SUCCESS;
++ fail:
++		context_free(scontext);
++		context_free(fcontext);
++		freecon(scon);
++		return rc;
++	}
++	/* Should never get here */
+ 	return PAM_SUCCESS;
+ }
+ #endif
+@@ -514,19 +565,14 @@
+     	    break;
+ 
+ #ifdef WITH_SELINUX
++    	case LEVEL:
+         case CONTEXT:
+-	    if (asprintf(i_name, "%s", *i_context) < 0) {
+-		*i_name = NULL;
+-		rc = PAM_SESSION_ERR;
+-	    }
+-    	    break;
+-
+-    	case BOTH:
+ 	    if (asprintf(i_name, "%s_%s", *i_context, idata->user) < 0) {
+ 		*i_name = NULL;
+ 		rc = PAM_SESSION_ERR;
+ 	    }
+     	    break;
++
+ #endif /* WITH_SELINUX */
+ 
+     	default:
+@@ -1158,7 +1204,7 @@
+ #ifdef WITH_SELINUX
+     if (is_selinux_enabled())
+         idata.flags |= PAMNS_SELINUX_ENABLED;
+-    if (ctxt_based_inst_needed())
++    if (ctxt_based_inst_needed()) 
+         idata.flags |= PAMNS_CTXT_BASED_INST;
+ #endif
+ 
+--- Linux-PAM-0.99.7.0/modules/pam_namespace/namespace.conf.level	2006-06-27 09:07:43.000000000 -0400
++++ Linux-PAM-0.99.7.0/modules/pam_namespace/namespace.conf	2007-01-19 08:33:11.000000000 -0500
+@@ -4,12 +4,10 @@
+ #
+ # Uncommenting the following three lines will polyinstantiate
+ # /tmp, /var/tmp and user's home directories. /tmp and /var/tmp will
+-# be polyinstantiated based on both security context as well as user
+-# name, whereas home directory will be polyinstantiated based on
+-# security context only. Polyinstantion will not be performed for
+-# user root and adm for directories /tmp and /var/tmp, whereas home
+-# directories will be polyinstantiated for all users. The user name
+-# and/or context is appended to the instance prefix.
++# be polyinstantiated based on the MLS level part of the security context as well as user
++# name, Polyinstantion will not be performed for user root and adm for directories 
++# /tmp and /var/tmp, whereas home directories will be polyinstantiated for all users. 
++# The user name and context is appended to the instance prefix.
+ #
+ # Note that instance directories do not have to reside inside the
+ # polyinstantiated directory. In the examples below, instances of /tmp
+@@ -25,6 +23,6 @@
+ # caution, as it will reduce security and isolation achieved by
+ # polyinstantiation.
+ #
+-#/tmp     /tmp-inst/       	both      root,adm
+-#/var/tmp /var/tmp/tmp-inst/   	both      root,adm
+-#$HOME    $HOME/$USER.inst/inst- context
++#/tmp     /tmp-inst/       	level      root,adm
++#/var/tmp /var/tmp/tmp-inst/   	level      root,adm
++#$HOME    $HOME/$USER.inst/     level
+--- Linux-PAM-0.99.7.0/modules/pam_namespace/pam_namespace.h.level	2007-01-19 08:33:11.000000000 -0500
++++ Linux-PAM-0.99.7.0/modules/pam_namespace/pam_namespace.h	2007-01-19 08:33:11.000000000 -0500
+@@ -63,6 +63,7 @@
+ 
+ #ifdef WITH_SELINUX
+ #include <selinux/selinux.h>
++#include <selinux/context.h>
+ #endif
+ 
+ #ifndef CLONE_NEWNS
+@@ -93,9 +94,10 @@
+  * or both
+  */
+ enum polymethod {
++    NONE,
+     USER,
+     CONTEXT,
+-    BOTH,
++    LEVEL,
+ };
+ 
+ /*
+--- Linux-PAM-0.99.7.0/modules/pam_namespace/namespace.conf.5.xml.level	2006-06-27 09:07:43.000000000 -0400
++++ Linux-PAM-0.99.7.0/modules/pam_namespace/namespace.conf.5.xml	2007-01-19 08:33:11.000000000 -0500
+@@ -22,7 +22,7 @@
+     <para>
+       This module allows setup of private namespaces with polyinstantiated
+       directories. Directories can be polyinstantiated based on user name
+-      or, in the case of SELinux, user name, security context or both.  If an
++      or, in the case of SELinux, user name, sensitivity level or complete security context.  If an
+       executable script <filename>/etc/security/namespace.init</filename>
+       exists, it is used to initialize the namespace every time a new instance
+       directory is setup. The script receives the polyinstantiated
+@@ -72,10 +72,10 @@
+     <para>
+       The third field, <replaceable>method</replaceable>, is the method
+       used for polyinstantiation. It can take 3 different values; "user"
+-      for polyinstantiation based on user name, "context" for
+-      polyinstantiation based on process security context, and "both"
+-      for polyinstantiation based on both user name and security context.
+-      Methods "context" and "both" are only available with SELinux. This
++      for polyinstantiation based on user name, "level" for 
++      polyinstantiation based on process MLS level and user name, and "context" for
++      polyinstantiation based on process security context and user name
++      Methods "context" and "level" are only available with SELinux. This
+       field cannot be blank.
+     </para>
+ 
+@@ -98,9 +98,9 @@
+     <literallayout>
+       # The following three lines will polyinstantiate /tmp,
+       # /var/tmp and user's home directories. /tmp and /var/tmp
+-      # will be polyinstantiated based on both security context
++      # will be polyinstantiated based on the security level
+       # as well as user name, whereas home directory will be
+-      # polyinstantiated based on security context only.
++      # polyinstantiated based on the full security context and user name.
+       # Polyinstantiation will not be performed for user root
+       # and adm for directories /tmp and /var/tmp, whereas home
+       # directories will be polyinstantiated for all users.
+@@ -112,8 +112,8 @@
+       # will reside within the directories that are being
+       # polyinstantiated.
+       #
+-      /tmp     /tmp-inst/       	both      root,adm
+-      /var/tmp /var/tmp/tmp-inst/   	both      root,adm
++      /tmp     /tmp-inst/               level      root,adm
++      /var/tmp /var/tmp/tmp-inst/   	level      root,adm
+       $HOME    $HOME/$USER.inst/inst- context
+     </literallayout>
+ 

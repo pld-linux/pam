@@ -1,0 +1,8 @@
+--- Linux-PAM-0.99.6.2/modules/pam_namespace/namespace.init.preserve-uid	2006-06-27 15:07:43.000000000 +0200
++++ Linux-PAM-0.99.6.2/modules/pam_namespace/namespace.init	2006-10-13 10:51:03.000000000 +0200
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/sh -p
+ # This is only a boilerplate for the instance initialization script.
+ # It receives polydir path as $1 and the instance path as $2.
+ #
