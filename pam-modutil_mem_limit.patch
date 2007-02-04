@@ -1,12 +1,12 @@
-diff -ur pam-pld-0.80.1.orig/modules/pammodutil/pammodutil.h pam-pld-0.80.1/modules/pammodutil/pammodutil.h
---- pam-pld-0.80.1.orig/modules/pammodutil/pammodutil.h	2005-06-07 16:30:27.000000000 +0200
-+++ pam-pld-0.80.1/modules/pammodutil/pammodutil.h	2006-06-07 08:48:49.000000000 +0200
+diff -ur Linux-PAM-0.99.7.1/libpam/pam_modutil_private.h~ Linux-PAM-0.99.7.1/libpam/pam_modutil_private.h
+--- Linux-PAM-0.99.7.1/libpam/pam_modutil_private.h~	2005-06-07 16:30:27.000000000 +0200
++++ Linux-PAM-0.99.7.1/libpam/pam_modutil_private.h	2006-06-07 08:48:49.000000000 +0200
 @@ -12,7 +12,7 @@
- #include "security/_pam_modutil.h"
+ #include <security/pam_modutil.h>
  
  #define PWD_INITIAL_LENGTH     0x100
 -#define PWD_ABSURD_PWD_LENGTH  0x8000
 +#define PWD_ABSURD_PWD_LENGTH  0x20000
  
- /* This is a simple cleanup, it just free()s the 'data' memory */
- extern void _pammodutil_cleanup(pam_handle_t *pamh, void *data,
+ extern void
+ pammodutil_cleanup(pam_handle_t *pamh, void *data,
