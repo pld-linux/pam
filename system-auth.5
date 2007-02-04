@@ -1,0 +1,61 @@
+.TH SYSTEM-AUTH 5 "2006 Feb 3" "Red Hat" "Linux-PAM Manual"
+.SH NAME
+
+system-auth \- Common configuration file for PAMified services
+
+.SH SYNOPSIS
+.B /etc/pam.d/system-auth
+.sp 2
+.SH DESCRIPTION
+
+The purpose of this configuration file is to provide common 
+configuration file for all applications and service daemons
+calling PAM library.
+
+.sp
+The
+.BR system-auth
+configuration file is included from all individual service configuration
+files with the help of the
+.BR include
+directive.
+
+.SH NOTES
+There should be no
+.BR sufficient
+modules in the
+.BR session
+part of
+.BR system-auth
+file because individual services may add session modules after
+.BR include
+of the
+.BR system-auth
+file. Execution of these modules would be skipped if there were sufficient
+modules in
+.BR system-auth
+file.
+
+.sp
+Conversely there should not be any modules after
+.BR include
+directive in the individual service files in
+.BR auth account
+and
+.BR password
+sections otherwise they could be bypassed.
+
+.SH BUGS
+.sp 2
+None known.
+
+.SH "SEE ALSO"
+pam(8), config-util(5)
+
+The three
+.BR Linux-PAM
+Guides, for
+.BR "system administrators" ", "
+.BR "module developers" ", "
+and
+.BR "application developers" ". "
