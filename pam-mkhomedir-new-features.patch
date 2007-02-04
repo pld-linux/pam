@@ -1,0 +1,367 @@
+diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/Makefile.am Linux-PAM-0.99.7.1/modules/pam_mkhomedir/Makefile.am
+--- Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/Makefile.am	2006-06-01 20:53:15.000000000 +0200
++++ Linux-PAM-0.99.7.1/modules/pam_mkhomedir/Makefile.am	2007-02-03 22:09:37.950620500 +0100
+@@ -25,6 +25,10 @@
+ securelib_LTLIBRARIES = pam_mkhomedir.la
+ pam_mkhomedir_la_SOURCES = pam_mkhomedir.c
+ 
++install-exec-local:
++	$(LN_S) pam_mkhomedir.so $(DESTDIR)$(SECUREDIR)/pam_homedir.so
++	echo ".so pam_mkhomedir.8" > $(DESTDIR)$(man8dir)/pam_homedir.8
++
+ if ENABLE_REGENERATE_MAN
+ noinst_DATA = README
+ README: pam_mkhomedir.8.xml
+diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8 Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.8
+--- Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8	2006-06-02 17:37:39.000000000 +0200
++++ Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.8	2007-02-03 22:09:37.958621000 +0100
+@@ -14,7 +14,7 @@
+ pam_mkhomedir \- PAM module to create users home directory
+ .SH "SYNOPSIS"
+ .HP 17
+-\fBpam_mkhomedir.so\fR [silent] [umask=\fImode\fR] [skel=\fIskeldir\fR]
++\fBpam_mkhomedir.so\fR [silent] [umask=\fImode\fR] [defmode=\fImode\fR] [minmode=\fImode\fR] [chmod] [notfound=[\fIcreate\fR|\fIdeny\fR|\fIignore\fR]] [skel=\fIskeldir\fR]
+ .SH "DESCRIPTION"
+ .PP
+ The pam_mkhomedir PAM module will create a users home directory if it does not exist when the session begins. This allows users to be present in central database (such as NIS, kerberos or LDAP) without using a distributed file system or pre\-creating a large number of directories. The skeleton directory (usually
+@@ -22,6 +22,28 @@
+ The user file\-creation mask is set to
+ \fImask\fR. The default value of mask is 0022.
+ .TP 3n
++\fBdefmode=\fR\fB\fImode\fR\fR
++Default permissions for the home directory. The default value of
++\fImode\fR
++is 0755.
++.TP 3n
++\fBminmode=\fR\fB\fImode\fR\fR
++Minimal permissions for the home directory. The default value of
++\fImode\fR
++is 0755.
++.TP 3n
++\fBchmod\fR
++If this option is specified and home directory access permissions has more bits set than in minmode then do `chmod defmode $HOME`.
++.TP 3n
++\fBnotfound=[\fR\fB\fIcreate\fR\fR\fB|\fR\fB\fIdeny\fR\fR\fB|\fR\fB\fIignore\fR\fR\fB]\fR
++What to do if home directory is not found or it is not a directory.
++\fIcreate\fR
++\- default, make home directory;
++\fIdeny\fR
++\- deny access;
++\fIignore\fR
++\- do nothing
++.TP 3n
+ \fBskel=\fR\fB\fI/path/to/skel/directory\fR\fR
+ Indicate an alternative
+ \fIskel\fR
+diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.8.xml
+--- Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml	2006-05-30 15:03:09.000000000 +0200
++++ Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.8.xml	2007-02-03 22:09:37.942620000 +0100
+@@ -29,6 +29,18 @@
+         umask=<replaceable>mode</replaceable>
+       </arg>
+       <arg choice="opt">
++        defmode=<replaceable>mode</replaceable>
++      </arg>
++      <arg choice="opt">
++        minmode=<replaceable>mode</replaceable>
++      </arg>
++      <arg choice="opt">
++        chmod
++      </arg>
++      <arg choice="opt">
++        notfound=[<replaceable>create</replaceable>|<replaceable>deny</replaceable>|<replaceable>ignore</replaceable>]
++      </arg>
++      <arg choice="opt">
+         skel=<replaceable>skeldir</replaceable>
+       </arg>
+     </cmdsynopsis>
+@@ -82,6 +94,59 @@
+ 
+       <varlistentry>
+         <term>
++          <option>defmode=<replaceable>mode</replaceable></option>
++        </term>
++        <listitem>
++          <para>
++            Default permissions for the home directory.
++	    The default value of <replaceable>mode</replaceable> is
++            0755.
++          </para>
++        </listitem>
++      </varlistentry>
++
++      <varlistentry>
++        <term>
++          <option>minmode=<replaceable>mode</replaceable></option>
++        </term>
++        <listitem>
++          <para>
++            Minimal permissions for the home directory.
++	    The default value of <replaceable>mode</replaceable> is
++            0755.
++          </para>
++        </listitem>
++      </varlistentry>
++
++      <varlistentry>
++        <term>
++          <option>chmod</option>
++        </term>
++        <listitem>
++          <para>
++            If this option is specified and home directory access
++	    permissions has more bits set than in minmode then
++	    do `chmod defmode $HOME`.
++          </para>
++        </listitem>
++      </varlistentry>
++
++      <varlistentry>
++        <term>
++          <option>notfound=[<replaceable>create</replaceable>|<replaceable>deny</replaceable>|<replaceable>ignore</replaceable>]</option>
++        </term>
++        <listitem>
++          <para>
++            What to do if home directory is not found or it is not a directory.
++	    <replaceable>create</replaceable> - default, make home directory;
++	    <replaceable>deny</replaceable> - deny access;
++	    <replaceable>ignore</replaceable> - do nothing
++          </para>
++        </listitem>
++      </varlistentry>
++
++      <varlistentry>
++        <term>
+           <option>skel=<replaceable>/path/to/skel/directory</replaceable></option>
+         </term>
+         <listitem>
+diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.c
+--- Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c	2006-12-07 13:34:26.000000000 +0100
++++ Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.c	2007-02-03 22:09:37.890616750 +0100
+@@ -58,17 +58,43 @@
+ 
+ 
+ /* argument parsing */
+-#define MKHOMEDIR_DEBUG      020	/* keep quiet about things */
+-#define MKHOMEDIR_QUIET      040	/* keep quiet about things */
+-
+-static unsigned int UMask = 0022;
+-static char SkelDir[BUFSIZ] = "/etc/skel"; /* THIS MODULE IS NOT THREAD SAFE */
++#define MKHOMEDIR_DEBUG      0x10	/* keep quiet about things */
++#define MKHOMEDIR_QUIET      0x20	/* keep quiet about things */
++/* what to do, if home directory does not exist? */
++#define HOMEDIR_CREATE       0x40	/* create it */
++#define HOMEDIR_BARF         0x80	/* deny access */
++
++struct homedir_options {
++   unsigned int home_access;	/* create ~/ by default */
++   unsigned int default_mode;	/* 0755 access rights for home dir */
++   unsigned int minimal_mode;	/* 0755 but this is enough... */
++   unsigned int umask;		/* 0022 umask for ~/ files */
++   unsigned int do_chmod;	/* chmod user ~ if it has insecure permissions */
++#ifdef PATH_MAX
++   char skel_dir[PATH_MAX];
++#else
++   char skel_dir[BUFSIZ];
++#endif
++};
+ 
+ static int
+-_pam_parse (const pam_handle_t *pamh, int flags, int argc, const char **argv)
++_pam_parse (const pam_handle_t *pamh, struct homedir_options *opt,
++		int flags, int argc, const char **argv)
+ {
+    int ctrl = 0;
+ 
++   opt->home_access = HOMEDIR_CREATE;
++   opt->default_mode = 0755;
++   opt->minimal_mode = 0755;
++   opt->do_chmod = 0;
++#ifdef PATH_MAX
++   strncpy(opt->skel_dir, "/etc/skel", PATH_MAX-1);
++   opt->skel_dir[PATH_MAX-1] = '\0';
++#else
++   strncpy(opt->skel_dir, "/etc/skel", BUFSIZ-1);
++   opt->skel_dir[BUFSIZ-1] = '\0';
++#endif
++
+    /* does the appliction require quiet? */
+    if ((flags & PAM_SILENT) == PAM_SILENT)
+       ctrl |= MKHOMEDIR_QUIET;
+@@ -79,10 +105,35 @@
+       if (!strcmp(*argv, "silent")) {
+ 	 ctrl |= MKHOMEDIR_QUIET;
+       } else if (!strncmp(*argv,"umask=",6)) {
+-	 UMask = strtol(*argv+6,0,0);
++	 opt->umask = strtol(*argv+6,0,0);
++	 opt->default_mode = opt->minimal_mode = 0777 & ~(opt->umask);
++      } else if (!strncmp(*argv,"defmode=",8))
++	 opt->default_mode = strtol(*argv+8,0,0);
++      else if (!strncmp(*argv,"minmode=",8))
++	 opt->minimal_mode = strtol(*argv+8,0,0);
++      else if (!strncmp(*argv,"chmod",5))
++	 opt->do_chmod = 1;
++      else if (!strncmp(*argv,"notfound=",9))
++      {
++	 if (!strcmp(*argv + 9, "create"))
++	    opt->home_access = HOMEDIR_CREATE;
++	 else if (!strcmp(*argv + 9, "deny"))
++	    opt->home_access = HOMEDIR_BARF;
++	 else if (!strcmp(*argv + 9, "ignore"))
++	    opt->home_access &= ~(HOMEDIR_CREATE | HOMEDIR_BARF);
++	 else
++	 {
++	    pam_syslog(pamh, LOG_ERR, "unknown parameter for \"create\" option: %s", *argv + 9);
++	    opt->home_access = HOMEDIR_CREATE;
++	 }
+       } else if (!strncmp(*argv,"skel=",5)) {
+-	 strncpy(SkelDir,*argv+5,sizeof(SkelDir));
+-	 SkelDir[sizeof(SkelDir)-1] = '\0';
++#ifdef PATH_MAX
++	      strncpy(opt->skel_dir, *argv+5, PATH_MAX-1);
++	      opt->skel_dir[PATH_MAX-1] = '\0';
++#else
++	      strncpy(opt->skel_dir, *argv+5, BUFSIZ-1);
++	      opt->skel_dir[BUFSIZ-1] = '\0';
++#endif
+       } else {
+ 	 pam_syslog(pamh, LOG_ERR, "unknown option: %s", *argv);
+       }
+@@ -127,7 +178,7 @@
+ /* Do the actual work of creating a home dir */
+ static int
+ create_homedir (pam_handle_t * pamh, int ctrl,
+-		const struct passwd *pwd,
++		const struct passwd *pwd, struct homedir_options *opt,
+ 		const char *source, const char *dest)
+ {
+    char remark[BUFSIZ];
+@@ -292,7 +292,7 @@
+       /* If it's a directory, recurse. */
+       if (S_ISDIR(St.st_mode))
+       {
+-        retval = create_homedir (pamh, ctrl, pwd, newsource, newdest);
++        retval = create_homedir (pamh, ctrl, pwd, opt, newsource, newdest);
+ 
+ #ifndef PATH_MAX
+ 	 free(newsource); newsource = NULL;
+@@ -372,10 +423,10 @@
+ 	 return PAM_PERM_DENIED;
+       }
+ 
+-      /* Set the proper ownership and permissions for the module. We make
++      /* Set the proper ownership and permissions for the file. We make
+        	 the file a+w and then mask it with the set mask. This preseves
+        	 execute bits */
+-      if (fchmod(DestFd,(St.st_mode | 0222) & (~UMask)) != 0 ||
++      if (fchmod(DestFd,(St.st_mode | 0222) & (~opt->umask)) != 0 ||
+ 	  fchown(DestFd,pwd->pw_uid,pwd->pw_gid) != 0)
+       {
+          pam_syslog(pamh, LOG_DEBUG,
+@@ -435,7 +486,7 @@
+ 
+  go_out:
+ 
+-   if (chmod(dest,0777 & (~UMask)) != 0 ||
++   if (chmod(dest, opt->default_mode) != 0 ||
+        chown(dest,pwd->pw_uid,pwd->pw_gid) != 0)
+    {
+       pam_syslog(pamh, LOG_DEBUG,
+@@ -446,6 +497,71 @@
+    return retval;
+ }
+ 
++/* Do the actual work of creating a home dir */
++static int check_homedir(pam_handle_t * pamh, int ctrl,
++			 const struct passwd *pwd,
++			 struct homedir_options *opt)
++{
++   char remark[BUFSIZ];
++   struct stat stbuf;
++   
++   /* Stat the home directory, if something exists then we assume it is
++      correct and return a success */
++   if (stat(pwd->pw_dir, &stbuf) == 0) {
++      if (stbuf.st_mode & ~(opt->minimal_mode | S_IFDIR)) {
++	 /* Aieee, user did something bad to his/hers home */
++	 if (!S_ISDIR(stbuf.st_mode)) {
++	    /* This user home is really broken... */
++	    if (snprintf(remark, BUFSIZ, "Home directory '%s' is not a directory!",
++		     pwd->pw_dir) == -1)
++		return PAM_PERM_DENIED;
++
++	    make_remark(pamh, ctrl, remark);
++
++	    pam_syslog(pamh, LOG_DEBUG, "directory %s is not a directory (mode 0%o)", pwd->pw_dir, stbuf.st_mode);
++	    if (opt->home_access == HOMEDIR_BARF)
++	       return PAM_PERM_DENIED;
++	    else if (opt->home_access == HOMEDIR_CREATE) {
++	       pam_syslog(pamh, LOG_DEBUG, "trying to unlink directory %s", pwd->pw_dir);
++	       if (unlink(pwd->pw_dir) == -1) {
++		  pam_syslog(pamh, LOG_DEBUG, "failed to unlink directory %s", pwd->pw_dir);
++		  return PAM_PERM_DENIED;
++	       }
++	    } else
++	       return PAM_SUCCESS;
++	 } else {
++	    if (snprintf(remark, BUFSIZ, "Home directory '%s' has insecure permissions 0%o.",
++			pwd->pw_dir, stbuf.st_mode) == -1)
++	       return PAM_PERM_DENIED;
++
++	    make_remark(pamh, ctrl, remark);
++
++	    pam_syslog(pamh, LOG_DEBUG, "directory %s has insecure permissions 0%o", pwd->pw_dir, stbuf.st_mode);
++
++	    if (opt->do_chmod)
++	       if (chmod(pwd->pw_dir, opt->default_mode) < 0) {
++		  pam_syslog(pamh, LOG_DEBUG, "unable to chmod home directory %s", pwd->pw_dir);
++		  return PAM_PERM_DENIED;
++	       }
++	    return PAM_SUCCESS;
++	 }
++      } else
++	    return PAM_SUCCESS;
++   }
++
++   switch (opt->home_access) {
++      case HOMEDIR_CREATE:
++	   return create_homedir(pamh, ctrl, pwd, opt, opt->skel_dir, pwd->pw_dir);
++      case HOMEDIR_BARF:
++	   return PAM_PERM_DENIED;
++      default:
++	   return PAM_SUCCESS;
++   }
++
++   /* If we ever get here sue authors of the compiler */
++   return PAM_SERVICE_ERR;
++}
++
+ /* --- authentication management functions (only) --- */
+ 
+ PAM_EXTERN int
+@@ -456,9 +572,10 @@
+    const void *user;
+    const struct passwd *pwd;
+    struct stat St;
++   struct homedir_options opt;
+ 
+    /* Parse the flag values */
+-   ctrl = _pam_parse(pamh, flags, argc, argv);
++   ctrl = _pam_parse(pamh, &opt, flags, argc, argv);
+ 
+    /* Determine the user name so we can get the home directory */
+    retval = pam_get_item(pamh, PAM_USER, &user);
+@@ -476,12 +593,7 @@
+       return PAM_CRED_INSUFFICIENT;
+    }
+ 
+-   /* Stat the home directory, if something exists then we assume it is
+-      correct and return a success*/
+-   if (stat(pwd->pw_dir,&St) == 0)
+-      return PAM_SUCCESS;
+-
+-   return create_homedir(pamh,ctrl,pwd,SkelDir,pwd->pw_dir);
++   return check_homedir(pamh, ctrl, pwd, &opt);
+ }
+ 
+ /* Ignore */
