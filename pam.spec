@@ -9,7 +9,7 @@
 %bcond_without	doc		# don't build documentation
 %bcond_with	prelude		# build with Prelude IDS support
 %bcond_without	selinux		# build without SELinux support
-%bcond_with	audit		# build with Linux Auditing library support
+%bcond_without	audit		# build with Linux Auditing library support
 #
 %define		pam_pld_version	0.99.7.1-1
 #
@@ -71,6 +71,8 @@ BuildRequires:	libtool >= 2:1.5
 BuildRequires:	docbook-dtd43-xml
 BuildRequires:	docbook-dtd44-xml
 BuildRequires:	docbook-style-xsl >= 1.69.1
+# For building PDFs
+#BuildRequires:	fop
 BuildRequires:	libxml2-progs
 BuildRequires:	libxslt-progs
 BuildRequires:	w3m
