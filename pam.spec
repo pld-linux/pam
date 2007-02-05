@@ -326,6 +326,14 @@ rm -rf $RPM_BUILD_ROOT
 #	s/pam_homedir\.so/pam_mkhomedir.so/g
 #	/var/lock/console -> /var/run/console
 
+%post
+#if [ ! -a /var/log/faillog ] ; then
+#	install -m 600 /dev/null /var/log/faillog
+#fi
+if [ ! -a /var/log/tallylog ] ; then
+	install -m 600 /dev/null /var/log/tallylog
+fi
+
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
 
