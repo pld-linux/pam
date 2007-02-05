@@ -321,6 +321,11 @@ rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%triggerpostun libs -- %{name}-libs < 0.99.7.1
+#	s/pam_make\.so \(.*\)/pam_exec.so make -C \1/g
+#	s/pam_homedir\.so/pam_mkhomedir.so/g
+#	/var/lock/console -> /var/run/console
+
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
 
