@@ -267,7 +267,7 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c Linux-PA
         chown(dest,pwd->pw_uid,pwd->pw_gid) != 0)
     {
        pam_syslog(pamh, LOG_DEBUG,
-@@ -446,6 +497,64 @@
+@@ -446,6 +497,63 @@
     return retval;
  }
  
@@ -276,7 +276,6 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c Linux-PA
 +			 const struct passwd *pwd,
 +			 struct homedir_options *opt)
 +{
-+   char remark[BUFSIZ];
 +   struct stat stbuf;
 +   
 +   /* Stat the home directory, if something exists then we assume it is
@@ -332,10 +331,11 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c Linux-PA
  /* --- authentication management functions (only) --- */
  
  PAM_EXTERN int
-@@ -456,9 +572,10 @@
+@@ -456,10 +572,10 @@
+    int retval, ctrl;
     const void *user;
     const struct passwd *pwd;
-    struct stat St;
+-   struct stat St;
 +   struct homedir_options opt;
  
     /* Parse the flag values */
