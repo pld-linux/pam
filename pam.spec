@@ -343,8 +343,8 @@ fi
 %doc doc/txts/README*
 %if %{with doc}
 %doc doc/specs/*.txt
-%doc doc/{adg,mwg,sag}/Linux-PAM_*.txt
-%doc doc/{adg,mwg,sag,}/html
+%doc doc/sag/Linux-PAM_*.txt
+%doc doc/{sag,}/html
 %endif
 %dir %attr(755,root,root) /etc/pam.d
 %dir %attr(755,root,root) /etc/security/console.apps
@@ -435,6 +435,10 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
+%if %{with doc}
+%doc doc/{adg,mwg}/Linux-PAM_*.txt
+%doc doc/{adg,mwg,}/html
+%endif
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.la
 %{_includedir}/security/*.h
