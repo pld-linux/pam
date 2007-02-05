@@ -267,7 +267,7 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c Linux-PA
         chown(dest,pwd->pw_uid,pwd->pw_gid) != 0)
     {
        pam_syslog(pamh, LOG_DEBUG,
-@@ -446,6 +497,71 @@
+@@ -446,6 +497,64 @@
     return retval;
  }
  
@@ -286,11 +286,7 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c Linux-PA
 +	 /* Aieee, user did something bad to his/hers home */
 +	 if (!S_ISDIR(stbuf.st_mode)) {
 +	    /* This user home is really broken... */
-+	    if (snprintf(remark, BUFSIZ, "Home directory '%s' is not a directory!",
-+		     pwd->pw_dir) == -1)
-+		return PAM_PERM_DENIED;
-+
-+	    make_remark(pamh, ctrl, remark);
++	    pam_info(pamh, "Home directory '%s' is not a directory!", pwd->pw_dir);
 +
 +	    pam_syslog(pamh, LOG_DEBUG, "directory %s is not a directory (mode 0%o)", pwd->pw_dir, stbuf.st_mode);
 +	    if (opt->home_access == HOMEDIR_BARF)
@@ -304,11 +300,8 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c Linux-PA
 +	    } else
 +	       return PAM_SUCCESS;
 +	 } else {
-+	    if (snprintf(remark, BUFSIZ, "Home directory '%s' has insecure permissions 0%o.",
-+			pwd->pw_dir, stbuf.st_mode) == -1)
-+	       return PAM_PERM_DENIED;
-+
-+	    make_remark(pamh, ctrl, remark);
++	    pam_info(pamh, "Home directory '%s' has insecure permissions 0%o.",
++			pwd->pw_dir, stbuf.st_mode);
 +
 +	    pam_syslog(pamh, LOG_DEBUG, "directory %s has insecure permissions 0%o", pwd->pw_dir, stbuf.st_mode);
 +
