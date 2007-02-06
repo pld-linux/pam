@@ -1,0 +1,11 @@
+--- Linux-PAM-0.99.7.1/configure.in~	2007-02-06 00:04:35.000000000 +0100
++++ Linux-PAM-0.99.7.1/configure.in	2007-02-06 00:12:08.000000000 +0100
+@@ -354,7 +354,7 @@
+               fi
+         fi
+         if test -z "$LIBDB" ; then
+-            AC_CHECK_LIB([ndbm],[dbm_store], LIBDB="-lndbm", LIBDB="")
++            AC_CHECK_LIB([gdbm],[dbm_store], LIBDB="-lgdbm -lgdbm_compat", LIBDB="", [-lgdbm_compat])
+             if test ! -z "$LIBDB" ; then
+                 AC_CHECK_HEADERS(ndbm.h)
+             fi
