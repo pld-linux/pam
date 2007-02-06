@@ -11,7 +11,9 @@
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	audit		# build with Linux Auditing library support
 #
-%define		pam_pld_version	0.99.7.1-1
+%define		pam_pld_version	0.99.7.1-2
+#
+%define		_sbindir	/sbin
 #
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
@@ -24,7 +26,7 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.99.7.1
-Release:	0.1
+Release:	0.3
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2
@@ -32,7 +34,7 @@ Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{versio
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2.sign
 # Source1-md5:	259c57009369eda92a00d1a153776ac6
 Source2:	ftp://ftp.pld-linux.org/software/pam/pam-pld-%{pam_pld_version}.tar.gz
-# Source2-md5:	62ee3a41c59000c78a3d6aa024ee55bd
+# Source2-md5:	27f96a6baf0a31f82ef0d4b0f7f75e95
 Source3:	other.pamd
 Source4:	system-auth.pamd
 Source5:	config-util.pamd
@@ -56,14 +58,17 @@ Patch13:	%{name}-namespace-unmnt-override.patch
 Patch14:	%{name}-unix-nullcheck.patch
 Patch15:	%{name}-unix-blowfish.patch
 Patch16:	%{name}-mkhomedir-new-features.patch
+Patch17:	%{name}-db-gdbm.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.0.8}
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
-BuildRequires:	db-devel
+# gdbm due to db pulling libpthread
+BuildRequires:	gdbm-devel
 BuildRequires:	flex
+BuildRequires:	glibc-devel >= 2.5-0.4
 %{?with_prelude:BuildRequires:	libprelude-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
 BuildRequires:	libtool >= 2:1.5
@@ -87,10 +92,6 @@ Obsoletes:	pamconfig
 Obsoletes:	pam_make
 Obsoletes:	pam-doc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		specflags	-fno-strict-aliasing
-
-%define		_sbindir	/sbin
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible,
@@ -161,6 +162,7 @@ Summary:	PAM modules and libraries
 Summary(pl):	Modu³y i biblioteki PAM
 Group:		Libraries
 Conflicts:	pam < 0:0.80.1-2
+Requires:	glibc >= 2.5-0.4
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
 %{?with_selinux:Requires:	libselinux >= 1.33.2}
 
@@ -245,6 +247,7 @@ Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
 %patch14 -p1
 %patch15 -p1
 %patch16 -p1
+%patch17 -p1
 
 %build
 %{__libtoolize}
@@ -258,6 +261,7 @@ Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
 	--libdir=/%{_lib} \
 	--includedir=%{_includedir}/security \
 	--enable-isadir=../../%{_lib}/security \
+	--enable-db=gdbm \
 	%{!?with_selinux:--disable-selinux} \
 	%{!?with_prelude:--disable-prelude} \
 	%{!?with_audit:--disable-audit}
@@ -308,6 +312,35 @@ install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
 install %{SOURCE7} $RPM_BUILD_ROOT%{_mandir}/man5/system-auth.5
 install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man5/config-util.5
 
+# Make sure every module subdirectory gave us a module.  Yes, this is hackish.
+for dir in modules/pam_* ; do
+	if [ -d ${dir} ] ; then
+		if ! ls -1 $RPM_BUILD_ROOT/%{_lib}/security/`basename ${dir}`*.so ; then
+			echo ERROR `basename ${dir}` did not build a module.
+			exit 1
+		fi
+	fi
+done
+
+for module in $RPM_BUILD_ROOT/%{_lib}/security/pam*.so ; do
+# Check for module problems.  Specifically, check that every module we just
+# installed can actually be loaded by a minimal PAM-aware application.
+	if ! env LD_LIBRARY_PATH=$RPM_BUILD_ROOT/%{_lib} \
+			./dlopen.sh -ldl -lpam -L$RPM_BUILD_ROOT/%{_lib} ${module} ; then
+		echo ERROR module: ${module} cannot be loaded.
+		exit 1
+	fi
+# And for good measure, make sure that none of the modules pull in threading
+# libraries, which if loaded in a non-threaded application, can cause Very
+# Bad Things to happen.
+	if env LD_LIBRARY_PATH=$RPM_BUILD_ROOT/%{_lib} \
+			LD_PRELOAD=$RPM_BUILD_ROOT/%{_lib}/libpam.so ldd -r ${module} | \
+			fgrep -q libpthread ; then
+		echo ERROR module: ${module} pulls threading libraries.
+		exit 1
+	fi
+done
+
 # useless - shut up check-files
 rm -f $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
 rm -rf $RPM_BUILD_ROOT%{_datadir}/doc/Linux-PAM
@@ -350,20 +383,22 @@ fi
 %dir %attr(755,root,root) /etc/security/console.apps
 %dir %attr(755,root,root) /etc/security/console.perms.d
 %dir %attr(755,root,root) /var/run/console
-%config /etc/security/console.perms.d/50-default.perms
+%config(noreplace) %verify(not md5 mtime size) /etc/environment
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/other
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/system-auth
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/config-util
 %config(noreplace) %verify(not md5 mtime size) /etc/security/access.conf
-%config(noreplace) %verify(not md5 mtime size) /etc/security/pam_env.conf
-%config(noreplace) %verify(not md5 mtime size) /etc/security/group.conf
-%config(noreplace) %verify(not md5 mtime size) /etc/security/limits.conf
-%config(noreplace) %verify(not md5 mtime size) /etc/security/time.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.handlers
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.perms
+%config(noreplace) %verify(not md5 mtime size) /etc/security/group.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/limits.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/namespace.conf
+%attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/namespace.init
+%config(noreplace) %verify(not md5 mtime size) /etc/security/pam_env.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/time.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram*
-%config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist
-%config(noreplace) %verify(not md5 mtime size) /etc/environment
+%config /etc/security/console.perms.d/50-default.perms
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/opasswd
 %attr(4755,root,root) /sbin/unix_chkpwd
 %attr(755,root,root) %{_bindir}/pam_pwgen
@@ -410,6 +445,7 @@ fi
 %attr(755,root,root) /%{_lib}/security/pam_mail.so
 %attr(755,root,root) /%{_lib}/security/pam_mkhomedir.so
 %attr(755,root,root) /%{_lib}/security/pam_motd.so
+%attr(755,root,root) /%{_lib}/security/pam_namespace.so
 %attr(755,root,root) /%{_lib}/security/pam_nologin.so
 %attr(755,root,root) /%{_lib}/security/pam_permit.so
 %attr(755,root,root) /%{_lib}/security/pam_pwexport.so
