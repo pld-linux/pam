@@ -11,7 +11,7 @@
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	audit		# build with Linux Auditing library support
 #
-%define		pam_pld_version	0.99.7.1-2
+%define		pam_pld_version	0.99.7.1-3
 #
 %define		_sbindir	/sbin
 #
@@ -26,7 +26,7 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.99.7.1
-Release:	0.3
+Release:	0.4
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2
@@ -34,7 +34,7 @@ Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{versio
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2.sign
 # Source1-md5:	259c57009369eda92a00d1a153776ac6
 Source2:	ftp://ftp.pld-linux.org/software/pam/pam-pld-%{pam_pld_version}.tar.gz
-# Source2-md5:	27f96a6baf0a31f82ef0d4b0f7f75e95
+# Source2-md5:	04d42fee1701f78bdd115c0944a34238
 Source3:	other.pamd
 Source4:	system-auth.pamd
 Source5:	config-util.pamd
@@ -66,9 +66,9 @@ BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel
 # gdbm due to db pulling libpthread
-BuildRequires:	gdbm-devel
+BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	flex
-BuildRequires:	glibc-devel >= 2.5-0.4
+BuildRequires:	glibc-devel >= 2.5-0.5
 %{?with_prelude:BuildRequires:	libprelude-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
 BuildRequires:	libtool >= 2:1.5
@@ -162,7 +162,8 @@ Summary:	PAM modules and libraries
 Summary(pl):	Modu³y i biblioteki PAM
 Group:		Libraries
 Conflicts:	pam < 0:0.80.1-2
-Requires:	glibc >= 2.5-0.4
+Requires:	gdbm >= 1.8.3-7
+Requires:	glibc >= 2.5-0.5
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
 %{?with_selinux:Requires:	libselinux >= 1.33.2}
 
