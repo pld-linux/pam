@@ -279,8 +279,10 @@ install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/log}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%if %{with selinux}
 install modules/pam_selinux/.libs/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
 install modules/pam_selinux/pam_selinux_check.8 $RPM_BUILD_ROOT%{_mandir}/man8
+%endif
 
 mkdir -p doc/txts
 for r in modules/pam_*/README ; do
