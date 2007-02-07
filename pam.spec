@@ -162,6 +162,7 @@ Summary:	PAM modules and libraries
 Summary(pl):	Modu³y i biblioteki PAM
 Group:		Libraries
 Conflicts:	pam < 0:0.80.1-2
+Requires(triggerpostun):	sed
 Requires:	gdbm >= 1.8.3-7
 Requires:	glibc >= 2.5-0.5
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
@@ -297,9 +298,13 @@ echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 #:> $RPM_BUILD_ROOT/var/log/faillog
 :> $RPM_BUILD_ROOT/var/log/tallylog
 
-mv -f $RPM_BUILD_ROOT/%{_lib}/lib*.{la,a} $RPM_BUILD_ROOT/%{_libdir}
+mv -f $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT/%{_libdir}
 
 cd $RPM_BUILD_ROOT/%{_lib}
+for f in lib*.la ; do
+	sed -e 's|/%{_lib}/libpam|%{_libdir}/libpam|g' $f > $RPM_BUILD_ROOT/%{_libdir}/$f
+	rm -f $f
+done
 ln -sf /%{_lib}/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /%{_lib}/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 ln -sf /%{_lib}/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
@@ -356,9 +361,22 @@ rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_
 rm -rf $RPM_BUILD_ROOT
 
 %triggerpostun libs -- %{name}-libs < 0.99.7.1
-#	s/pam_make\.so \(.*\)/pam_exec.so make -C \1/g
-#	s/pam_homedir\.so/pam_mkhomedir.so/g
-#	/var/lock/console -> /var/run/console
+for f in /etc/pam.d/* ; do
+	case "$f" in
+	*rpmorig|*rpmnew|*rpmsave|*~|*.orig)
+		continue
+		;;
+	*)
+		echo cp -f "$f" "$f.rpmorig"
+		echo sed -e 's/pam_make\.so \(.*\)/pam_exec.so seteuid make -C \1/g' \
+		    -e 's/pam_homedir\.so/pam_mkhomedir.so/g' "$f.rpmorig" to "$f"
+		;;
+	esac
+done
+if [ -d /var/lock/console -a -d /var/run/console ]; then
+	echo cp -a /var/lock/console/* /var/run/console/
+	echo rm -rf /var/lock/console
+fi
 
 %post
 #if [ ! -a /var/log/faillog ] ; then
@@ -422,6 +440,7 @@ fi
 
 %files libs
 %defattr(644,root,root,755)
+%dir /%{_lib}/security/pam_filter
 %attr(755,root,root) /%{_lib}/lib*.so.*.*
 %attr(755,root,root) /%{_lib}/security/pam_access.so
 %attr(755,root,root) /%{_lib}/security/pam_console.so
