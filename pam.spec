@@ -282,6 +282,7 @@ install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/log}
 %if %{with selinux}
 install modules/pam_selinux/.libs/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
 install modules/pam_selinux/pam_selinux_check.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
 %endif
 
 mkdir -p doc/txts
@@ -315,13 +316,15 @@ cd -
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/other
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/pam.d/system-auth
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/config-util
-install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
 
 install %{SOURCE7} $RPM_BUILD_ROOT%{_mandir}/man5/system-auth.5
 install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man5/config-util.5
 
 # Make sure every module subdirectory gave us a module.  Yes, this is hackish.
 for dir in modules/pam_* ; do
+%if !%{with selinux}
+[ ${dir} = "modules/pam_selinux" ] && continue
+%endif
 	if [ -d ${dir} ] ; then
 		if ! ls -1 $RPM_BUILD_ROOT/%{_lib}/security/`basename ${dir}`*.so ; then
 			echo ERROR `basename ${dir}` did not build a module.
