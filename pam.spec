@@ -322,7 +322,7 @@ install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man5/config-util.5
 
 # Make sure every module subdirectory gave us a module.  Yes, this is hackish.
 for dir in modules/pam_* ; do
-%if !%{with selinux}
+%if %{without selinux}
 [ ${dir} = "modules/pam_selinux" ] && continue
 %endif
 	if [ -d ${dir} ] ; then
@@ -356,7 +356,7 @@ done
 rm -f $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
 rm -rf $RPM_BUILD_ROOT%{_datadir}/doc/Linux-PAM
 
-%if !%{with selinux}
+%if %{without selinux}
 rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_check,%{_mandir}/man8/pam_selinux*.8*}
 %endif
 
