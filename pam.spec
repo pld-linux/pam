@@ -1,9 +1,3 @@
-#
-# TODO:
-#	triggers:
-#		s/pam_make\.so \(.*\)/pam_exec.so make -C \1/g
-#		s/pam_homedir\.so/pam_mkhomedir.so/g
-#		/var/lock/console -> /var/run/console
 #		
 # Conditional build:
 %bcond_without	doc		# don't build documentation
@@ -26,7 +20,7 @@ Summary(tr):	Modüler, artýmsal doðrulama birimleri
 Summary(uk):	¶ÎÓÔÒÕÍÅÎÔ, ÝÏ ÚÁÂÅÚÐÅÞÕ¤ ÁÕÔÅÎÔÉÆ¦ËÁÃ¦À ÄÌÑ ÐÒÏÇÒÁÍ
 Name:		pam
 Version:	0.99.7.1
-Release:	0.4
+Release:	0.5
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2
@@ -59,12 +53,13 @@ Patch14:	%{name}-unix-nullcheck.patch
 Patch15:	%{name}-unix-blowfish.patch
 Patch16:	%{name}-mkhomedir-new-features.patch
 Patch17:	%{name}-db-gdbm.patch
+Patch18:	%{name}-exec-failok.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.0.8}
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
-BuildRequires:	cracklib-devel
+BuildRequires:	cracklib-devel >= 2.8.3
 # gdbm due to db pulling libpthread
 BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	flex
@@ -84,9 +79,7 @@ BuildRequires:	w3m
 %endif
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	awk
-Requires:	cracklib
-Requires:	cracklib-dicts
-Requires:	make
+Requires:	/usr/bin/make
 Provides:	pam-pld
 Obsoletes:	pamconfig
 Obsoletes:	pam_make
@@ -162,7 +155,9 @@ Summary:	PAM modules and libraries
 Summary(pl):	Modu³y i biblioteki PAM
 Group:		Libraries
 Conflicts:	pam < 0:0.80.1-2
-Requires(triggerpostun):	sed
+Requires(triggerpostun):	sed >= 4.0
+Requires:	cracklib >= 2.8.3
+Requires:	cracklib-dicts >= 2.8.3
 Requires:	gdbm >= 1.8.3-7
 Requires:	glibc >= 2.5-0.5
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
@@ -250,6 +245,7 @@ Modu³ PAM pozwalaj±cy na zmianê kontekstów SELinuksa.
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
+%patch18 -p1
 
 %build
 %{__libtoolize}
@@ -366,21 +362,21 @@ rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_
 rm -rf $RPM_BUILD_ROOT
 
 %triggerpostun libs -- %{name}-libs < 0.99.7.1
-for f in /etc/pam.d/* ; do
+for f in `grep -l "\(pam_make\|pam_homedir\)" /etc/pam.d/*` ; do
 	case "$f" in
 	*rpmorig|*rpmnew|*rpmsave|*~|*.orig)
 		continue
 		;;
 	*)
-		echo cp -f "$f" "$f.rpmorig"
-		echo sed -e 's/pam_make\.so \(.*\)/pam_exec.so seteuid make -C \1/g' \
-		    -e 's/pam_homedir\.so/pam_mkhomedir.so/g' "$f.rpmorig" to "$f"
+		cp -f "$f" "$f.rpmorig"
+		sed -i -e 's/pam_make\.so \(.*\)/pam_exec.so failok seteuid \/usr\/bin\/make -C \1/g' \
+		       -e 's/pam_homedir\.so/pam_mkhomedir.so/g' "$f"
 		;;
 	esac
 done
 if [ -d /var/lock/console -a -d /var/run/console ]; then
-	echo cp -a /var/lock/console/* /var/run/console/
-	echo rm -rf /var/lock/console
+	cp -a /var/lock/console/* /var/run/console/
+	rm -rf /var/lock/console
 fi
 
 %post
