@@ -10,14 +10,14 @@
 %define		_sbindir	/sbin
 #
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
-Summary(de.UTF-8):   Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
-Summary(es.UTF-8):   Módulos de autentificación plugables (PAM)
-Summary(fr.UTF-8):   PAM : Pluggable Authentication Modules: modular, incremental authentication
-Summary(pl.UTF-8):   Modularny system uwierzytelniania
-Summary(pt_BR.UTF-8):   Módulos de autenticação plugáveis (PAM)
-Summary(ru.UTF-8):   Интструмент, обеспечивающий аутентификацию для приложений
-Summary(tr.UTF-8):   Modüler, artımsal doğrulama birimleri
-Summary(uk.UTF-8):   Інструмент, що забезпечує аутентифікацію для програм
+Summary(de.UTF-8):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
+Summary(es.UTF-8):	Módulos de autentificación plugables (PAM)
+Summary(fr.UTF-8):	PAM : Pluggable Authentication Modules: modular, incremental authentication
+Summary(pl.UTF-8):	Modularny system uwierzytelniania
+Summary(pt_BR.UTF-8):	Módulos de autenticação plugáveis (PAM)
+Summary(ru.UTF-8):	Интструмент, обеспечивающий аутентификацию для приложений
+Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
+Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	0.99.7.1
 Release:	0.5
@@ -152,7 +152,7 @@ PAM (Pluggable Authentication Modules) - это мощная, гибкая,
 
 %package libs
 Summary:	PAM modules and libraries
-Summary(pl.UTF-8):   Moduły i biblioteki PAM
+Summary(pl.UTF-8):	Moduły i biblioteki PAM
 Group:		Libraries
 Conflicts:	pam < 0:0.80.1-2
 Requires(triggerpostun):	sed >= 4.0
@@ -171,10 +171,10 @@ Moduły i biblioteki PAM.
 
 %package devel
 Summary:	PAM header files
-Summary(pl.UTF-8):   Pliki nagłówkowe i dokumentacja programisty do PAM
-Summary(pt_BR.UTF-8):   Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
-Summary(ru.UTF-8):   Библиотеки разработчика для PAM
-Summary(uk.UTF-8):   Бібліотеки програміста для PAM
+Summary(pl.UTF-8):	Pliki nagłówkowe i dokumentacja programisty do PAM
+Summary(pt_BR.UTF-8):	Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
+Summary(ru.UTF-8):	Библиотеки разработчика для PAM
+Summary(uk.UTF-8):	Бібліотеки програміста для PAM
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	filesystem >= 3.0-11
@@ -196,9 +196,9 @@ Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 
 %package static
 Summary:	PAM static libraries
-Summary(pl.UTF-8):   Biblioteki statyczne PAM
-Summary(ru.UTF-8):   Статические библиотеки разработчика для PAM
-Summary(uk.UTF-8):   Статичні бібліотеки програміста для PAM
+Summary(pl.UTF-8):	Biblioteki statyczne PAM
+Summary(ru.UTF-8):	Статические библиотеки разработчика для PAM
+Summary(uk.UTF-8):	Статичні бібліотеки програміста для PAM
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
@@ -216,7 +216,7 @@ Biblioteki statyczne PAM.
 
 %package pam_selinux
 Summary:	PAM module - SELinux support
-Summary(pl.UTF-8):   Moduł PAM pozwalający na zmianę kontekstów SELinuksa
+Summary(pl.UTF-8):	Moduł PAM pozwalający na zmianę kontekstów SELinuksa
 Group:		Base
 
 %description pam_selinux
