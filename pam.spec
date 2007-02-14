@@ -382,11 +382,11 @@ fi
 
 %post
 #if [ ! -a /var/log/faillog ] ; then
-#	:> /var/log/faillog
+#	touch /var/log/faillog
 #	chmod 600 /var/log/faillog
 #fi
 if [ ! -a /var/log/tallylog ] ; then
-	:> /var/log/tallylog
+	touch /var/log/tallylog
 	chmod 600 /var/log/tallylog
 fi
 
