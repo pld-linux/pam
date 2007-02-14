@@ -77,6 +77,7 @@ BuildRequires:	libxml2-progs
 BuildRequires:	libxslt-progs
 BuildRequires:	w3m
 %endif
+Requires(post):	coreutils
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	awk
 Requires:	/usr/bin/make
@@ -381,10 +382,12 @@ fi
 
 %post
 #if [ ! -a /var/log/faillog ] ; then
-#	install -m 600 /dev/null /var/log/faillog
+#	:> /var/log/faillog
+#	chmod 600 /var/log/faillog
 #fi
 if [ ! -a /var/log/tallylog ] ; then
-	install -m 600 /dev/null /var/log/tallylog
+	:> /var/log/tallylog
+	chmod 600 /var/log/tallylog
 fi
 
 %post	libs -p /sbin/ldconfig
