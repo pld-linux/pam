@@ -376,7 +376,7 @@ for f in `grep -l "\(pam_make\|pam_homedir\)" /etc/pam.d/*` ; do
 	esac
 done
 if [ -d /var/lock/console -a -d /var/run/console ]; then
-	cp -a /var/lock/console/* /var/run/console/
+	cp -a /var/lock/console/* /var/run/console/ 2> /dev/null
 	rm -rf /var/lock/console
 fi
 
