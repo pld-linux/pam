@@ -63,7 +63,7 @@ BuildRequires:	cracklib-devel >= 2.8.3
 # gdbm due to db pulling libpthread
 BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	flex
-BuildRequires:	glibc-devel >= 2.5-0.5
+BuildRequires:	glibc-devel >= 6:2.5-0.5
 %{?with_prelude:BuildRequires:	libprelude-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
 BuildRequires:	libtool >= 2:1.5
@@ -160,7 +160,7 @@ Requires(triggerpostun):	sed >= 4.0
 Requires:	cracklib >= 2.8.3
 Requires:	cracklib-dicts >= 2.8.3
 Requires:	gdbm >= 1.8.3-7
-Requires:	glibc >= 2.5-0.5
+Requires:	glibc >= 6:2.5-0.5
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
 %{?with_selinux:Requires:	libselinux >= 1.33.2}
 
