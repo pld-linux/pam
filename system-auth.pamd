@@ -5,6 +5,7 @@ auth		required	pam_tally.so deny=0 file=/var/log/faillog onerr=succeed
 auth		required	pam_unix.so try_first_pass
 
 account		required	pam_tally.so file=/var/log/faillog onerr=succeed
+account		required	pam_time.so
 account		required	pam_unix.so
 
 # password	[success=1 ignore=reset abort=die default=bad]	pam_pwgen.so upper=1 digit=1
