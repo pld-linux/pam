@@ -20,7 +20,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	0.99.7.1
-Release:	0.7
+Release:	0.8
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2
@@ -293,6 +293,7 @@ cp -f doc/index.html doc/html/
 echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 
 :> $RPM_BUILD_ROOT/etc/security/opasswd
+:> $RPM_BUILD_ROOT/etc/security/blacklist
 
 #:> $RPM_BUILD_ROOT/var/log/faillog
 :> $RPM_BUILD_ROOT/var/log/tallylog
@@ -410,6 +411,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/system-auth
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/config-util
 %config(noreplace) %verify(not md5 mtime size) /etc/security/access.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.handlers
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.perms
 %config(noreplace) %verify(not md5 mtime size) /etc/security/group.conf
