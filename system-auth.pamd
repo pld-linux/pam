@@ -11,6 +11,7 @@ account		required	pam_unix.so
 password	required	pam_cracklib.so try_first_pass difok=2 minlen=8 dcredit=2 ocredit=2 retry=3
 password	required	pam_unix.so try_first_pass blowfish shadow use_authtok
 password	required	pam_exec.so failok seteuid /usr/bin/make -C /var/db
+# password	required	pam_exec.so failok seteuid /usr/bin/make -C /var/yp
 
 session		optional	pam_keyinit.so revoke
 session		required	pam_limits.so change_uid
