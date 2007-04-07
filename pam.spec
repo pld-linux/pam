@@ -304,11 +304,11 @@ echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 #:> $RPM_BUILD_ROOT/var/log/faillog
 :> $RPM_BUILD_ROOT/var/log/tallylog
 
-mv -f $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT/%{_libdir}
+mv -f $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}
 
 cd $RPM_BUILD_ROOT/%{_lib}
 for f in lib*.la ; do
-	sed -e 's|/%{_lib}/libpam|%{_libdir}/libpam|g' $f > $RPM_BUILD_ROOT/%{_libdir}/$f
+	sed -e 's|/%{_lib}/libpam|%{_libdir}/libpam|g' $f > $RPM_BUILD_ROOT%{_libdir}/$f
 	rm -f $f
 done
 ln -sf /%{_lib}/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
