@@ -163,6 +163,12 @@ Requires:	gdbm >= 1.8.3-7
 Requires:	glibc >= 6:2.5-0.5
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
 %{?with_selinux:Requires:	libselinux >= 1.33.2}
+Obsoletes:	pam-pam_cap
+Obsoletes:	pam-pam_opie
+Obsoletes:	pam-pam_pwdb
+Obsoletes:	pam-pam_radius
+Obsoletes:	pam-pam_skey
+Obsoletes:	pam-pam_tcpd
 
 %description libs
 Core PAM modules and libraries.
