@@ -184,6 +184,7 @@ Summary(ru.UTF-8):	Библиотеки разработчика для PAM
 Summary(uk.UTF-8):	Бібліотеки програміста для PAM
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+%{?with_audit:Requires:	audit-libs-devel >= 1.0.8}
 Requires:	filesystem >= 3.0-11
 
 %description devel
