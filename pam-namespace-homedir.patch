@@ -1,0 +1,122 @@
+initialize homedirs in namespace init script
+
+diff -up Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init.homedir Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init
+--- Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init.homedir	2007-08-24 10:40:46.000000000 +0200
++++ Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init	2007-08-24 15:33:52.000000000 +0200
+@@ -1,9 +1,24 @@
+ #!/bin/sh -p
+-# This is only a boilerplate for the instance initialization script.
+ # It receives polydir path as $1, the instance path as $2, 
+ # a flag whether the instance dir was newly created (0 - no, 1 - yes) in $3,
+ # and user name in $4.
+ #
++# The following section will copy the contents of /etc/skel if this is a
++# newly created home directory.
++if [ "$3" = 1 ]; then
++        user="$4"
++        passwd=$(getent passwd "$user")
++        homedir=$(echo "$passwd" | cut -f6 -d":")
++        if [ "$1" = "$homedir" ]; then
++                gid=$(echo "$passwd" | cut -f4 -d":")
++                cp -aT /etc/skel "$homedir"
++                [ -x /sbin/restorecon ] && /sbin/restorecon -R "$homedir"
++                chown -R "$user":"$gid" "$homedir"
++                mode=$(awk '/^UMASK/{gsub("#.*$", "", $2); printf "%o", and(0777,compl(strtonum("0" $2))); exit}' /etc/login.defs)
++                chmod ${mode:-700} "$homedir"
++        fi
++fi
++#
+ # If you intend to polyinstantiate /tmp and you also want to use the X windows
+ # environment, you will have to use this script to bind mount the socket that
+ # is used by the X server to communicate with its clients. X server places
+diff -up Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.c.ns-init Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.c
+--- Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.c.ns-init	2007-08-06 13:57:56.000000000 +0200
++++ Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.c	2007-08-06 14:06:52.000000000 +0200
+@@ -672,7 +672,7 @@ static int poly_name(const struct polydi
+ 	    hash = NULL;
+         } else {
+     	    char *newname;
+-    	    if (asprintf(&newname, "%.*s_%s", NAMESPACE_MAX_DIR_LEN-1-strlen(hash),
++    	    if (asprintf(&newname, "%.*s_%s", NAMESPACE_MAX_DIR_LEN-1-(int)strlen(hash),
+     		*i_name, hash) < 0) {
+     		goto fail;
+     	    }
+@@ -756,7 +756,7 @@ static int check_inst_parent(char *ipath
+ * directory as arguments.
+ */
+ static int inst_init(const struct polydir_s *polyptr, const char *ipath,
+-	   struct instance_data *idata)
++	   struct instance_data *idata, int newdir)
+ {
+ 	pid_t rc, pid;
+ 	sighandler_t osighand = NULL;
+@@ -786,7 +786,7 @@ static int inst_init(const struct polydi
+ 				}
+ #endif
+ 				if (execl(NAMESPACE_INIT_SCRIPT, NAMESPACE_INIT_SCRIPT,
+-							polyptr->dir, ipath, (char *)NULL) < 0)
++					polyptr->dir, ipath, newdir?"1":"0", idata->user, (char *)NULL) < 0)
+ 					exit(1);
+ 			} else if (pid > 0) {
+ 				while (((rc = waitpid(pid, &status, 0)) == (pid_t)-1) &&
+@@ -831,6 +831,7 @@ static int create_dirs(struct polydir_s 
+ {
+ 	struct stat statbuf, newstatbuf;
+ 	int rc, fd;
++	int newdir = 0;
+ 
+     /*
+      * stat the directory to polyinstantiate, so its owner-group-mode
+@@ -884,6 +885,7 @@ static int create_dirs(struct polydir_s 
+         }
+     }
+ 
++    newdir = 1;
+     /* Open a descriptor to it to prevent races */
+     fd = open(ipath, O_DIRECTORY | O_RDONLY);
+     if (fd < 0) {
+@@ -948,7 +950,7 @@ static int create_dirs(struct polydir_s 
+      */
+ 
+ inst_init:
+-	rc = inst_init(polyptr, ipath, idata);
++    rc = inst_init(polyptr, ipath, idata, newdir);
+     return rc;
+ }
+ 
+@@ -981,7 +983,7 @@ static int ns_setup(struct polydir_s *po
+             return PAM_SESSION_ERR;
+ 	}
+ 	/* we must call inst_init after the mount in this case */
+-	return inst_init(polyptr, "tmpfs", idata);
++	return inst_init(polyptr, "tmpfs", idata, 1);
+     }
+ 
+     /*
+diff -up Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.8.xml.ns-init Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.8.xml
+--- Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.8.xml.ns-init	2007-06-18 12:46:47.000000000 +0200
++++ Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.8.xml	2007-08-06 13:57:56.000000000 +0200
+@@ -60,7 +60,9 @@
+       script <filename>/etc/security/namespace.init</filename> exists, it
+       is used to initialize the namespace every time a new instance
+       directory is setup. The script receives the polyinstantiated
+-      directory path and the instance directory path as its arguments.
++      directory path, the instance directory path, flag whether the instance
++      directory was newly created (0 for no, 1 for yes), and the user name
++      as its arguments.
+     </para>
+ 
+     <para>
+diff -up Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init.ns-init Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init
+--- Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init.ns-init	2007-06-18 12:46:47.000000000 +0200
++++ Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init	2007-08-06 13:57:56.000000000 +0200
+@@ -1,6 +1,8 @@
+ #!/bin/sh -p
+ # This is only a boilerplate for the instance initialization script.
+-# It receives polydir path as $1 and the instance path as $2.
++# It receives polydir path as $1, the instance path as $2, 
++# a flag whether the instance dir was newly created (0 - no, 1 - yes) in $3,
++# and user name in $4.
+ #
+ # If you intend to polyinstantiate /tmp and you also want to use the X windows
+ # environment, you will have to use this script to bind mount the socket that
