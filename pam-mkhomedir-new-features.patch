@@ -142,7 +142,7 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.c Linux-PA
  
  
  /* argument parsing */
--#define MKHOMEDIR_DEBUG      020	/* keep quiet about things */
+-#define MKHOMEDIR_DEBUG      020	/* be verbose about things */
 -#define MKHOMEDIR_QUIET      040	/* keep quiet about things */
 -
 -static unsigned int UMask = 0022;
