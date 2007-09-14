@@ -17,14 +17,16 @@ diff -urN -x .libs -x .deps Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/README 
 diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.8 Linux-PAM-0.99.7.1/modules/pam_cracklib/pam_cracklib.8
 --- Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.8	2006-08-24 12:04:29.000000000 +0200
 +++ Linux-PAM-0.99.7.1/modules/pam_cracklib/pam_cracklib.8	2007-02-04 19:59:32.105794691 +0100
-@@ -167,6 +198,10 @@
- .TP 3n
- \fBdictpath=\fR\fB\fI/path/to/dict\fR\fR
+@@ -167,6 +198,12 @@
+ .RS 4
  Path to the cracklib dictionaries.
-+.TP 3n
+ .RE
++.PP
 +\fBenforce=[\fR\fB\fInone\fR\fR\fB|\fR\fB\fIusers\fR\fR\fB|\fR\fB\fIall\fR\fR\fB]\fR
++.RS 4
 +The module can be configured to warn of weak passwords only, but not actually enforce strong passwords. The default,
 +\fInone\fR, setting will enforce strong passwords for non\-root users only.
++.RE
  .SH "MODULE SERVICES PROVIDED"
  .PP
  Only he
@@ -56,7 +58,7 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c Linux-PAM-
 --- Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c	2006-11-07 12:00:24.000000000 +0100
 +++ Linux-PAM-0.99.7.1/modules/pam_cracklib/pam_cracklib.c	2007-02-04 19:59:27.217516126 +0100
 @@ -93,6 +93,7 @@
- 	int oth_credit;
+         int min_class;
  	int use_authtok;
  	int try_first_pass;
 +	int enforce;
@@ -124,14 +126,14 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c Linux-PAM-
                  /* check it for strength too... */
  		D(("for strength"));
 @@ -624,10 +650,21 @@
-                     retval = _pam_unix_approve_pass(pamh,ctrl,&options,
-                                                oldtoken,token1);
-                     if (retval != PAM_SUCCESS) {
--                        if (getuid() || (flags & PAM_CHANGE_EXPIRED_AUTHTOK))
-+			if (flags & PAM_CHANGE_EXPIRED_AUTHTOK)
- 			    retval = PAM_AUTHTOK_ERR;
--			else
--			    retval = PAM_SUCCESS;
+                 retval = _pam_unix_approve_pass (pamh, ctrl, &options,
+ 						 oldtoken, token1);
+ 		if (retval != PAM_SUCCESS) {
+-		    if (getuid() || (flags & PAM_CHANGE_EXPIRED_AUTHTOK))
++		    if (flags & PAM_CHANGE_EXPIRED_AUTHTOK)
+ 		        retval = PAM_AUTHTOK_ERR;
+-		    else
+-		        retval = PAM_SUCCESS;
 +			else switch (options.enforce) {
 +				case ENFORCE_NONE:
 +					retval = PAM_SUCCESS;
@@ -145,6 +147,6 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c Linux-PAM-
 +					retval = PAM_AUTHTOK_ERR;
 +					break;
 +			}
- 		    }
                  }
              }
+         }
