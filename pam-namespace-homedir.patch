@@ -3,12 +3,13 @@ initialize homedirs in namespace init script
 diff -up Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init.homedir Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init
 --- Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init.homedir	2007-08-24 10:40:46.000000000 +0200
 +++ Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init	2007-08-24 15:33:52.000000000 +0200
-@@ -1,9 +1,24 @@
+@@ -1,7 +1,24 @@
  #!/bin/sh -p
 -# This is only a boilerplate for the instance initialization script.
- # It receives polydir path as $1, the instance path as $2, 
- # a flag whether the instance dir was newly created (0 - no, 1 - yes) in $3,
- # and user name in $4.
+-# It receives polydir path as $1 and the instance path as $2.
++# It receives polydir path as $1, the instance path as $2, 
++# a flag whether the instance dir was newly created (0 - no, 1 - yes) in $3,
++# and user name in $4.
  #
 +# The following section will copy the contents of /etc/skel if this is a
 +# newly created home directory.
@@ -107,16 +108,3 @@ diff -up Linux-PAM-0.99.8.1/modules/pam_namespace/pam_namespace.8.xml.ns-init Li
      </para>
  
      <para>
-diff -up Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init.ns-init Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init
---- Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init.ns-init	2007-06-18 12:46:47.000000000 +0200
-+++ Linux-PAM-0.99.8.1/modules/pam_namespace/namespace.init	2007-08-06 13:57:56.000000000 +0200
-@@ -1,6 +1,8 @@
- #!/bin/sh -p
- # This is only a boilerplate for the instance initialization script.
--# It receives polydir path as $1 and the instance path as $2.
-+# It receives polydir path as $1, the instance path as $2, 
-+# a flag whether the instance dir was newly created (0 - no, 1 - yes) in $3,
-+# and user name in $4.
- #
- # If you intend to polyinstantiate /tmp and you also want to use the X windows
- # environment, you will have to use this script to bind mount the socket that
