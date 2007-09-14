@@ -5,7 +5,7 @@
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	audit		# build with Linux Auditing library support
 #
-%define		pam_pld_version	0.99.7.1-3
+%define		pam_pld_version	0.99.8.1-1
 #
 %define		_sbindir	/sbin
 #
@@ -19,16 +19,16 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	0.99.7.1
+Version:	0.99.8.1
 Release:	1
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	385458dfb4633071594e255a6ebec9da
+# Source0-md5:	a6472db4afe13850cb401922211bba4e
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2.sign
-# Source1-md5:	259c57009369eda92a00d1a153776ac6
+# Source1-md5:	6b5fc356fdbb0b7cdbbdc80419043cac
 Source2:	ftp://ftp.pld-linux.org/software/pam/pam-pld-%{pam_pld_version}.tar.gz
-# Source2-md5:	04d42fee1701f78bdd115c0944a34238
+# Source2-md5:	d1b70a7456699511d4aef1198d28e791
 Source3:	other.pamd
 Source4:	system-auth.pamd
 Source5:	config-util.pamd
@@ -40,20 +40,13 @@ Patch1:		%{name}-modutil_mem_limit.patch
 Patch2:		%{name}-cracklib-try-first-pass.patch
 Patch3:		%{name}-cracklib-enforce.patch
 Patch4:		%{name}-tally-fail-close.patch
-Patch5:		%{name}-selinux-nofail.patch
-Patch6:		%{name}-selinux-drop-multiple.patch
-Patch7:		%{name}-selinux-keycreate.patch
-Patch8:		%{name}-selinux-select-context.patch
-Patch9:		%{name}-selinux-use-current-range.patch
-Patch10:	%{name}-namespace-no-unmount.patch
-Patch11:	%{name}-namespace-preserve-uid.patch
-Patch12:	%{name}-namespace-level.patch
-Patch13:	%{name}-namespace-unmnt-override.patch
-Patch14:	%{name}-unix-nullcheck.patch
-Patch15:	%{name}-unix-blowfish.patch
-Patch16:	%{name}-mkhomedir-new-features.patch
-Patch17:	%{name}-db-gdbm.patch
-Patch18:	%{name}-exec-failok.patch
+Patch5:		%{name}-unix-blowfish.patch
+Patch6:		%{name}-mkhomedir-new-features.patch
+Patch7:		%{name}-db-gdbm.patch
+Patch8:		%{name}-exec-failok.patch
+Patch9:		%{name}-audit-no-log.patch
+Patch10:	%{name}-namespace-temp-logon.patch
+Patch11:	%{name}-namespace-homedir.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.0.8}
 BuildRequires:	autoconf
@@ -247,13 +240,6 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch18 -p1
 
 %build
 %{__libtoolize}
