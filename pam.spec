@@ -297,7 +297,7 @@ cd $RPM_BUILD_ROOT/%{_lib}
 for f in lib*.la ; do
 	sed -e 's|/%{_lib}/libpam|%{_libdir}/libpam|g' $f > $RPM_BUILD_ROOT%{_libdir}/$f
 	rm -f $f
-	sed -i -e 's|libdir=\'%{_lib}\'|libdir=\'%{_libdir}\'|g' $RPM_BUILD_ROOT%{_libdir}/$f
+	sed -i -e "s|libdir='/%{_lib}|libdir='%{_libdir}|g" $RPM_BUILD_ROOT%{_libdir}/$f
 done
 ln -sf /%{_lib}/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /%{_lib}/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
