@@ -77,9 +77,9 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c Linux-PAM-
  _pam_parse (pam_handle_t *pamh, struct cracklib_options *opt,
              int argc, const char **argv)
 @@ -161,6 +166,15 @@
- 	 } else if (!strncmp(*argv,"dictpath=",9)) {
- 	     strncpy(opt->cracklib_dictpath, *argv+9,
- 		     sizeof(opt->cracklib_dictpath) - 1);
+ 	     if (!*(opt->cracklib_dictpath)) {
+ 		 opt->cracklib_dictpath = CRACKLIB_DICTS;
+ 	     }
 +	 } else if (!strncmp(*argv,"enforce=",8)) {
 +	 	if (!strncmp(*argv+8,"none",4))
 +			opt->enforce = ENFORCE_NONE;

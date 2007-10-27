@@ -1429,14 +1429,14 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/Makefile.am Linux-PAM-0.99.7.
  
  bigcrypt_SOURCES = bigcrypt.c bigcrypt_main.c
  bigcrypt_CFLAGS = $(AM_CFLAGS)
- bigcrypt_LDFLAGS = @LIBCRYPT@
+ bigcrypt_LDADD = @LIBCRYPT@
  
 -unix_chkpwd_SOURCES = unix_chkpwd.c md5_good.c md5_broken.c bigcrypt.c
 +unix_chkpwd_SOURCES = unix_chkpwd.c md5_good.c md5_broken.c bigcrypt.c \
 +		      arc4random.c bcrypt.c blowfish.c
  unix_chkpwd_CFLAGS = $(AM_CFLAGS) @PIE_CFLAGS@
- unix_chkpwd_LDFLAGS = @PIE_LDFLAGS@ -L$(top_builddir)/libpam -lpam \
- 	@LIBCRYPT@ @LIBSELINUX@
+ unix_chkpwd_LDFLAGS = @PIE_LDFLAGS@ 
+ unix_chkpwd_LDADD = -L$(top_builddir)/libpam -lpam @LIBCRYPT@ @LIBSELINUX@
 diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix.8 Linux-PAM-0.99.7.1/modules/pam_unix/pam_unix.8
 --- Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix.8	2006-09-20 16:34:37.000000000 +0200
 +++ Linux-PAM-0.99.7.1/modules/pam_unix/pam_unix.8	2007-02-04 20:00:26.388888108 +0100
