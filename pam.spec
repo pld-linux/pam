@@ -19,14 +19,14 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	0.99.8.1
-Release:	2
+Version:	0.99.9.0
+Release:	0.1
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	a6472db4afe13850cb401922211bba4e
+# Source0-md5:	f526c794482ce21c31866549e05c45de
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2.sign
-# Source1-md5:	6b5fc356fdbb0b7cdbbdc80419043cac
+# Source1-md5:	ffae0c1502acb7866a4a34e4b35eb6ec
 Source2:	ftp://ftp.pld-linux.org/software/pam/pam-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	d1b70a7456699511d4aef1198d28e791
 Source3:	other.pamd
