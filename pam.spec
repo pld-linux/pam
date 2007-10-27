@@ -47,6 +47,7 @@ Patch8:		%{name}-exec-failok.patch
 Patch9:		%{name}-audit-no-log.patch
 Patch10:	%{name}-namespace-temp-logon.patch
 Patch11:	%{name}-namespace-homedir.patch
+Patch12:	%{name}-selinux-permit.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.0.8}
 BuildRequires:	autoconf
@@ -240,6 +241,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 
 %build
 %{__libtoolize}
@@ -508,7 +510,9 @@ fi
 %files pam_selinux
 %defattr(644,root,root,755)
 %attr(755,root,root) /%{_lib}/security/pam_selinux.so
+%attr(755,root,root) /%{_lib}/security/pam_selinux_permit.so
 %attr(755,root,root) %{_sbindir}/pam_selinux_check
 %config(noreplace) %verify(not size mtime md5) /etc/pam.d/pam_selinux_check
+%config(noreplace) %verify(not size mtime md5) /etc/security/sepermit.conf
 %{_mandir}/man8/pam_selinux*.8*
 %endif
