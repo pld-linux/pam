@@ -452,10 +452,11 @@ diff -up Linux-PAM-0.99.8.1/modules/pam_selinux/Makefile.am.permit Linux-PAM-0.9
  
  pam_selinux_check_LDFLAGS = $(AM_LDFLAGS) \
  	-L$(top_builddir)/libpam -lpam \
-@@ -30,12 +31,16 @@ if HAVE_VERSIONING
+@@ -30,12 +31,17 @@ if HAVE_VERSIONING
  	-Wl,--version-script=$(srcdir)/../modules.map
  endif
  
++pam_selinux_permit_la_LIBADD= $(pam_selinux_la_LIBADD)
 +pam_selinux_permit_la_LDFLAGS= $(pam_selinux_la_LDFLAGS)
 +
 +secureconf_DATA = sepermit.conf
