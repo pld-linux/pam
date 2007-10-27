@@ -448,10 +448,10 @@ diff -up Linux-PAM-0.99.8.1/modules/pam_selinux/Makefile.am.permit Linux-PAM-0.9
  AM_CFLAGS = -I$(top_srcdir)/libpam/include -I$(top_srcdir)/libpamc/include \
 -	-I$(top_srcdir)/libpam_misc/include
 +	-I$(top_srcdir)/libpam_misc/include \
-+	-D SEPERMIT_CONF_FILE=\"$(SCONFIGDIR)/sepermit.conf\"
- AM_LDFLAGS = -no-undefined \
- 	-L$(top_builddir)/libpam -lpam @LIBSELINUX@
++	-DSEPERMIT_CONF_FILE=\"$(SCONFIGDIR)/sepermit.conf\"
  
+ pam_selinux_check_LDFLAGS = $(AM_LDFLAGS) \
+ 	-L$(top_builddir)/libpam -lpam \
 @@ -30,12 +31,16 @@ if HAVE_VERSIONING
  	-Wl,--version-script=$(srcdir)/../modules.map
  endif
