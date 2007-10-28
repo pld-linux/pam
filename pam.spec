@@ -5,7 +5,7 @@
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	audit		# build with Linux Auditing library support
 #
-%define		pam_pld_version	0.99.8.1-1
+%define		pam_pld_version	0.99.9.0-1
 #
 %define		_sbindir	/sbin
 #
@@ -28,7 +28,7 @@ Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{versio
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2.sign
 # Source1-md5:	ffae0c1502acb7866a4a34e4b35eb6ec
 Source2:	ftp://ftp.pld-linux.org/software/pam/pam-pld-%{pam_pld_version}.tar.gz
-# Source2-md5:	d1b70a7456699511d4aef1198d28e791
+# Source2-md5:	a92ff06ff3ab5f96a7e1aaa04ef77fa7
 Source3:	other.pamd
 Source4:	system-auth.pamd
 Source5:	config-util.pamd
