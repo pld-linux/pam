@@ -6,7 +6,7 @@ diff -ur Linux-PAM-0.99.7.1/libpam/pam_modutil_private.h~ Linux-PAM-0.99.7.1/lib
  
  #define PWD_INITIAL_LENGTH     0x100
 -#define PWD_ABSURD_PWD_LENGTH  0x8000
-+#define PWD_ABSURD_PWD_LENGTH  0x20000
++#define PWD_ABSURD_PWD_LENGTH  0x80000
  
  extern void
  pammodutil_cleanup(pam_handle_t *pamh, void *data,
