@@ -20,7 +20,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	0.99.9.0
-Release:	2
+Release:	3
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2
@@ -48,6 +48,7 @@ Patch9:		%{name}-audit-no-log.patch
 Patch10:	%{name}-namespace-temp-logon.patch
 Patch11:	%{name}-namespace-homedir.patch
 Patch12:	%{name}-selinux-permit.patch
+Patch13:	%{name}-tally-fclose.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.0.8}
 BuildRequires:	autoconf
@@ -242,6 +243,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 %build
 %{__libtoolize}
