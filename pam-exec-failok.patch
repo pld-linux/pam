@@ -1,7 +1,7 @@
 --- Linux-PAM-0.99.7.1/modules/pam_exec/pam_exec.8.xml~	2006-06-09 18:44:06.000000000 +0200
 +++ Linux-PAM-0.99.7.1/modules/pam_exec/pam_exec.8.xml	2007-02-09 22:35:07.000000000 +0100
 @@ -25,6 +25,9 @@
-         seteuid
+         quiet
        </arg>
        <arg choice="opt">
 +        failok
@@ -32,57 +32,53 @@
 --- Linux-PAM-0.99.7.1/modules/pam_exec/pam_exec.c.orig	2007-02-09 22:30:39.000000000 +0100
 +++ Linux-PAM-0.99.7.1/modules/pam_exec/pam_exec.c	2007-02-09 22:37:07.000000000 +0100
 @@ -64,6 +64,7 @@
- {
    int debug = 0;
    int call_setuid = 0;
+   int quiet = 0;
 +  int fail_ok = 0;
    int optargc;
    const char *logfile = NULL;
    pid_t pid;
 @@ -85,6 +86,8 @@
- 	logfile = &argv[optargc][4];
-       else if (strcasecmp (argv[optargc], "seteuid") == 0)
  	call_setuid = 1;
+       else if (strcasecmp (argv[optargc], "quiet") == 0)
+ 	quiet = 1;
 +      else if (strcasecmp (argv[optargc], "failok") == 0)
 +	fail_ok = 1;
        else
  	break; /* Unknown option, assume program to execute. */
      }
-@@ -115,26 +118,32 @@
+@@ -115,29 +118,32 @@
  	    {
  	      pam_syslog (pamh, LOG_ERR, "%s failed: exit code %d",
  			  argv[optargc], WEXITSTATUS(status));
--	      pam_error (pamh, _("%s failed: exit code %d"),
--			 argv[optargc], WEXITSTATUS(status));
-+	      if (fail_ok == 0)
-+	          pam_error (pamh, _("%s failed: exit code %d"),
-+			     argv[optargc], WEXITSTATUS(status));
+-		if (!quiet)
++		if (!quiet && !fail_ok)
+ 	      pam_error (pamh, _("%s failed: exit code %d"),
+ 			 argv[optargc], WEXITSTATUS(status));
  	    }
  	  else if (WIFSIGNALED(status))
  	    {
  	      pam_syslog (pamh, LOG_ERR, "%s failed: caught signal %d%s",
  			  argv[optargc], WTERMSIG(status),
  			  WCOREDUMP(status) ? " (core dumped)" : "");
--	      pam_error (pamh, _("%s failed: caught signal %d%s"),
--			 argv[optargc], WTERMSIG(status),
--			 WCOREDUMP(status) ? " (core dumped)" : "");
-+	      if (fail_ok == 0)
-+	          pam_error (pamh, _("%s failed: caught signal %d%s"),
-+			     argv[optargc], WTERMSIG(status),
-+			     WCOREDUMP(status) ? " (core dumped)" : "");
+-		if (!quiet)
++		if (!quiet && !fail_ok)
+ 	      pam_error (pamh, _("%s failed: caught signal %d%s"),
+ 			 argv[optargc], WTERMSIG(status),
+ 			 WCOREDUMP(status) ? " (core dumped)" : "");
  	    }
  	  else
  	    {
  	      pam_syslog (pamh, LOG_ERR, "%s failed: unknown status 0x%x",
  			  argv[optargc], status);
--	      pam_error (pamh, _("%s failed: unknown status 0x%x"),
--			 argv[optargc], status);
-+	      if (fail_ok == 0)
-+	          pam_error (pamh, _("%s failed: unknown status 0x%x"),
-+			     argv[optargc], status);
+-		if (!quiet)
++		if (!quiet && !fail_ok)
+ 	      pam_error (pamh, _("%s failed: unknown status 0x%x"),
+ 			 argv[optargc], status);
  	    }
 -	  return PAM_SYSTEM_ERR;
-+	  if (fail_ok == 0)
++	  if (!fail_ok)
 +	    return PAM_SYSTEM_ERR;
 +	  else
 +	    return PAM_SUCCESS;

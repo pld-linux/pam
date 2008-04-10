@@ -1,6 +1,6 @@
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/arc4random.c Linux-PAM-0.99.7.1/modules/pam_unix/arc4random.c
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/arc4random.c	1970-01-01 01:00:00.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/arc4random.c	2007-02-04 20:07:14.885603885 +0100
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/arc4random.c Linux-PAM-1.0.0-bcrypt/modules/pam_unix/arc4random.c
+--- Linux-PAM-1.0.0/modules/pam_unix/arc4random.c	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/arc4random.c	2008-04-10 16:12:51.000000000 +0200
 @@ -0,0 +1,166 @@
 +/*
 + * Arc4 random number generator for OpenBSD.
@@ -168,9 +168,9 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/arc4random.c Linux-PAM-0.99.7
 +	printf("%qd cycles\n", v);
 +}
 +#endif
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/bcrypt.c Linux-PAM-0.99.7.1/modules/pam_unix/bcrypt.c
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/bcrypt.c	1970-01-01 01:00:00.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/bcrypt.c	2007-02-04 20:08:46.818842861 +0100
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/bcrypt.c Linux-PAM-1.0.0-bcrypt/modules/pam_unix/bcrypt.c
+--- Linux-PAM-1.0.0/modules/pam_unix/bcrypt.c	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/bcrypt.c	2008-04-10 16:12:51.000000000 +0200
 @@ -0,0 +1,363 @@
 +/*
 + * Copyright 1997 Niels Provos <provos@physnet.uni-hamburg.de>
@@ -535,9 +535,9 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/bcrypt.c Linux-PAM-0.99.7.1/m
 +	printf("Passwd entry: %s\n", p);
 +}
 +#endif
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/blf.h Linux-PAM-0.99.7.1/modules/pam_unix/blf.h
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/blf.h	1970-01-01 01:00:00.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/blf.h	2007-02-04 19:53:39.265687480 +0100
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/blf.h Linux-PAM-1.0.0-bcrypt/modules/pam_unix/blf.h
+--- Linux-PAM-1.0.0/modules/pam_unix/blf.h	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/blf.h	2008-04-10 16:12:51.000000000 +0200
 @@ -0,0 +1,80 @@
 +/*
 + * Blowfish - a fast block cipher designed by Bruce Schneier
@@ -619,9 +619,9 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/blf.h Linux-PAM-0.99.7.1/modu
 +u_int32_t Blowfish_stream2word __P((const u_int8_t *, u_int16_t , u_int16_t *));
 +
 +#endif
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/blowfish.c Linux-PAM-0.99.7.1/modules/pam_unix/blowfish.c
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/blowfish.c	1970-01-01 01:00:00.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/blowfish.c	2007-02-04 19:53:39.265687480 +0100
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/blowfish.c Linux-PAM-1.0.0-bcrypt/modules/pam_unix/blowfish.c
+--- Linux-PAM-1.0.0/modules/pam_unix/blowfish.c	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/blowfish.c	2008-04-10 16:12:51.000000000 +0200
 @@ -0,0 +1,769 @@
 +/*
 + * Blowfish block cipher for OpenBSD
@@ -1392,9 +1392,9 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/blowfish.c Linux-PAM-0.99.7.1
 +	report(data2, 2);
 +}
 +#endif
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/blowfish.h Linux-PAM-0.99.7.1/modules/pam_unix/blowfish.h
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/blowfish.h	1970-01-01 01:00:00.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/blowfish.h	2007-02-04 19:53:39.265687480 +0100
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/blowfish.h Linux-PAM-1.0.0-bcrypt/modules/pam_unix/blowfish.h
+--- Linux-PAM-1.0.0/modules/pam_unix/blowfish.h	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/blowfish.h	2008-04-10 16:12:51.000000000 +0200
 @@ -0,0 +1,11 @@
 +
 +#ifndef BLOWFISH_H
@@ -1407,52 +1407,39 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/blowfish.h Linux-PAM-0.99.7.1
 +char *bcrypt_gensalt(u_int8_t log_rounds);
 +
 +#endif				/* BLOWFISH_H */
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/Makefile.am Linux-PAM-0.99.7.1/modules/pam_unix/Makefile.am
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/Makefile.am	2006-12-18 19:50:50.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/Makefile.am	2007-02-04 19:53:39.269687706 +0100
-@@ -34,7 +34,7 @@
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/Makefile.am Linux-PAM-1.0.0-bcrypt/modules/pam_unix/Makefile.am
+--- Linux-PAM-1.0.0/modules/pam_unix/Makefile.am	2008-04-03 14:05:18.000000000 +0200
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/Makefile.am	2008-04-10 16:12:51.000000000 +0200
+@@ -32,7 +32,7 @@
  
  securelib_LTLIBRARIES = pam_unix.la
  
--noinst_HEADERS = md5.h support.h yppasswd.h bigcrypt.h
-+noinst_HEADERS = md5.h support.h yppasswd.h bigcrypt.h blf.h blowfish.h
+-noinst_HEADERS = md5.h support.h yppasswd.h bigcrypt.h passverify.h
++noinst_HEADERS = md5.h support.h yppasswd.h bigcrypt.h passverify.h blf.h blowfish.h
  
- sbin_PROGRAMS = unix_chkpwd
+ sbin_PROGRAMS = unix_chkpwd unix_update
  
-@@ -42,13 +42,15 @@
+@@ -40,14 +40,15 @@
  
  pam_unix_la_SOURCES = bigcrypt.c pam_unix_acct.c \
  	pam_unix_auth.c pam_unix_passwd.c pam_unix_sess.c support.c \
--	yppasswd_xdr.c md5_good.c md5_broken.c
-+	yppasswd_xdr.c md5_good.c md5_broken.c \
+-	passverify.c yppasswd_xdr.c md5_good.c md5_broken.c
++	passverify.c yppasswd_xdr.c md5_good.c md5_broken.c \
 +	arc4random.c bcrypt.c blowfish.c
  
  bigcrypt_SOURCES = bigcrypt.c bigcrypt_main.c
  bigcrypt_CFLAGS = $(AM_CFLAGS)
  bigcrypt_LDADD = @LIBCRYPT@
  
--unix_chkpwd_SOURCES = unix_chkpwd.c md5_good.c md5_broken.c bigcrypt.c
-+unix_chkpwd_SOURCES = unix_chkpwd.c md5_good.c md5_broken.c bigcrypt.c \
-+		      arc4random.c bcrypt.c blowfish.c
- unix_chkpwd_CFLAGS = $(AM_CFLAGS) @PIE_CFLAGS@
+ unix_chkpwd_SOURCES = unix_chkpwd.c md5_good.c md5_broken.c bigcrypt.c \
+-	passverify.c
++	passverify.c arc4random.c bcrypt.c blowfish.c
+ unix_chkpwd_CFLAGS = $(AM_CFLAGS) @PIE_CFLAGS@ -DHELPER_COMPILE=\"unix_chkpwd\"
  unix_chkpwd_LDFLAGS = @PIE_LDFLAGS@ 
- unix_chkpwd_LDADD = -L$(top_builddir)/libpam -lpam @LIBCRYPT@ @LIBSELINUX@
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix.8 Linux-PAM-0.99.7.1/modules/pam_unix/pam_unix.8
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix.8	2006-09-20 16:34:37.000000000 +0200
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/pam_unix.8	2007-02-04 20:00:26.388888108 +0100
-@@ -96,6 +96,9 @@
- \fBmd5\fR
- When a user changes their password next, encrypt it with the MD5 algorithm.
- .TP 3n
-+\fBblowfish\fR
-+When a user changes their password next, encrypt it with the OpenBSD Blowfish algorithm.
-+.TP 3n
- \fBbigcrypt\fR
- When a user changes their password next, encrypt it with the DEC C2 algorithm.
- .TP 3n
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix.8.xml Linux-PAM-0.99.7.1/modules/pam_unix/pam_unix.8.xml
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix.8.xml	2006-09-20 16:34:37.000000000 +0200
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/pam_unix.8.xml	2007-02-04 19:53:39.269687706 +0100
+ unix_chkpwd_LDADD = @LIBCRYPT@ @LIBSELINUX@
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/pam_unix.8.xml Linux-PAM-1.0.0-bcrypt/modules/pam_unix/pam_unix.8.xml
+--- Linux-PAM-1.0.0/modules/pam_unix/pam_unix.8.xml	2008-01-28 13:21:48.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/pam_unix.8.xml	2008-04-10 16:12:51.000000000 +0200
 @@ -249,6 +249,17 @@
        </varlistentry>
        <varlistentry>
@@ -1471,22 +1458,31 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix.8.xml Linux-PAM-0.99
            <option>bigcrypt</option>
          </term>
          <listitem>
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix_passwd.c Linux-PAM-0.99.7.1/modules/pam_unix/pam_unix_passwd.c
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix_passwd.c	2006-12-20 12:08:59.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/pam_unix_passwd.c	2007-02-04 19:53:39.269687706 +0100
-@@ -85,6 +85,7 @@
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/passverify.c Linux-PAM-1.0.0-bcrypt/modules/pam_unix/passverify.c
+--- Linux-PAM-1.0.0/modules/pam_unix/passverify.c	2008-01-28 14:17:01.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/passverify.c	2008-04-10 16:18:36.000000000 +0200
+@@ -25,6 +25,7 @@
+ 
  #include "md5.h"
- #include "support.h"
  #include "bigcrypt.h"
 +#include "blowfish.h"
+ #include "passverify.h"
  
- #if !((__GLIBC__ == 2) && (__GLIBC_MINOR__ >= 1))
- extern int getrpcport(const char *host, unsigned long prognum,
-@@ -185,6 +186,19 @@
- 	return x;
+ #ifdef WITH_SELINUX
+@@ -91,6 +92,8 @@
+ 				_pam_delete(pp);
+ 				pp = Brokencrypt_md5(p, hash);
+ 		    	}
++		} else if (!strncmp(salt, "$2", 2)) {
++			pp = bcrypt(p, salt);
+ 		} else if (*hash != '$' && hash_len >= 13) {
+ 		    	pp = bigcrypt(p, hash);
+ 		    	if (pp && hash_len == 13 && strlen(pp) > hash_len) {
+@@ -385,6 +388,20 @@
  }
  
-+static char *crypt_blowfish_wrapper(const char *pass_new, int rounds)
+ char *
++crypt_blowfish_wrapper(const char *pass_new, int rounds)
 +{
 +	char *bf_salt;
 +	char *x = NULL;
@@ -1499,27 +1495,42 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/pam_unix_passwd.c Linux-PAM-0
 +	return x;
 +}
 +
- static char *getNISserver(pam_handle_t *pamh)
++char *
+ create_password_hash(const char *password, unsigned int ctrl, int rounds)
  {
- 	char *master;
-@@ -1303,6 +1317,14 @@
- 
- 		if (on(UNIX_MD5_PASS, ctrl)) {
- 			tpass = crypt_md5_wrapper(pass_new);
-+		} else if (on(UNIX_BLOWFISH, ctrl)) {
-+			struct passwd *p_user;
+ 	const char *algoid;
+@@ -394,6 +411,15 @@
+ 	if (on(UNIX_MD5_PASS, ctrl)) {
+ 		return crypt_md5_wrapper(password);
+ 	}
++	if (on(UNIX_BLOWFISH, ctrl)) {
++		struct passwd *p_user;
 +
-+			p_user = pam_modutil_getpwnam(pamh, user);
-+			if ((p_user != NULL) && (p_user->pw_uid == 0))
-+				tpass = crypt_blowfish_wrapper(pass_new, BLOWFISH_ROOT_ROUNDS);
-+			else
-+				tpass = crypt_blowfish_wrapper(pass_new, BLOWFISH_USER_ROUNDS);
- 		} else {
- 			/*
- 			 * Salt manipulation is stolen from Rick Faith's passwd
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/README Linux-PAM-0.99.7.1/modules/pam_unix/README
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/README	2006-09-22 15:01:20.000000000 +0200
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/README	2007-02-04 20:00:27.976978609 +0100
++		p_user = pam_modutil_getpwnam(pamh, user);
++		if ((p_user != NULL) && (p_user->pw_uid == 0))
++			return crypt_blowfish_wrapper(pass_new, BLOWFISH_ROOT_ROUNDS);
++		else
++			tpass = crypt_blowfish_wrapper(pass_new, BLOWFISH_USER_ROUNDS);
++	}
+ 	if (on(UNIX_SHA256_PASS, ctrl)) {
+ 		algoid = "$5$";
+ 	} else if (on(UNIX_SHA512_PASS, ctrl)) {
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/passverify.h Linux-PAM-1.0.0-bcrypt/modules/pam_unix/passverify.h
+--- Linux-PAM-1.0.0/modules/pam_unix/passverify.h	2008-01-28 13:21:48.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/passverify.h	2008-04-10 16:25:28.000000000 +0200
+@@ -22,6 +22,9 @@
+ crypt_md5_wrapper(const char *pass_new);
+ 
+ char *
++crypt_blowfish_wrapper(const char *pass_new, int rounds);
++
++char *
+ create_password_hash(const char *password, unsigned int ctrl, int rounds);
+ 
+ int
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/README Linux-PAM-1.0.0-bcrypt/modules/pam_unix/README
+--- Linux-PAM-1.0.0/modules/pam_unix/README	2008-01-28 13:32:32.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/README	2008-04-10 16:12:51.000000000 +0200
 @@ -109,6 +109,11 @@
  
      When a user changes their password next, encrypt it with the MD5 algorithm.
@@ -1532,79 +1543,30 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/README Linux-PAM-0.99.7.1/mod
  bigcrypt
  
      When a user changes their password next, encrypt it with the DEC C2
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/support.c Linux-PAM-0.99.7.1/modules/pam_unix/support.c
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/support.c	2007-01-23 10:41:21.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/support.c	2007-02-04 20:00:16.992352631 +0100
-@@ -29,6 +29,7 @@
- #include "md5.h"
- #include "support.h"
- #include "bigcrypt.h"
-+#include "blowfish.h"
- #ifdef WITH_SELINUX
- #include <selinux/selinux.h>
- #define SELINUX_ENABLED is_selinux_enabled()>0
-@@ -698,6 +699,8 @@
- 			_pam_delete(pp);
- 			pp = Brokencrypt_md5(p, salt);
- 		    }
-+		} else if (!strncmp(salt, "$2", 2)) {
-+		    pp = bcrypt(p, salt);
- 		} else if (*salt != '$' && salt_len >= 13) {
- 		    pp = bigcrypt(p, salt);
- 		    if (pp && strlen(pp) > salt_len) {
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/support.h Linux-PAM-0.99.7.1/modules/pam_unix/support.h
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/support.h	2007-01-23 10:30:23.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/support.h	2007-02-04 19:53:39.269687706 +0100
-@@ -84,8 +84,9 @@
- #define UNIX_NOREAP              21     /* don't reap child process */
- #define UNIX_BROKEN_SHADOW       22     /* ignore errors reading password aging
- 					 * information during acct management */
-+#define UNIX_BLOWFISH            23	/* force the use of Blowfish passwords */
+diff -urN Linux-PAM-1.0.0/modules/pam_unix/support.h Linux-PAM-1.0.0-bcrypt/modules/pam_unix/support.h
+--- Linux-PAM-1.0.0/modules/pam_unix/support.h	2008-01-28 13:21:48.000000000 +0100
++++ Linux-PAM-1.0.0-bcrypt/modules/pam_unix/support.h	2008-04-10 16:24:29.000000000 +0200
+@@ -88,8 +88,9 @@
+ #define UNIX_SHA512_PASS         24	/* new password hashes will use SHA512 */
+ #define UNIX_ALGO_ROUNDS         25	/* optional number of rounds for new 
+ 					   password hash algorithms */
++#define UNIX_BLOWFISH            26	/* force the use of Blowfish passwords */
  /* -------------- */
--#define UNIX_CTRLS_              23	/* number of ctrl arguments defined */
-+#define UNIX_CTRLS_              24	/* number of ctrl arguments defined */
+-#define UNIX_CTRLS_              26	/* number of ctrl arguments defined */
++#define UNIX_CTRLS_              27	/* number of ctrl arguments defined */
  
  
  static const UNIX_Ctrls unix_args[UNIX_CTRLS_] =
-@@ -106,16 +107,17 @@
- /* UNIX__QUIET */          {NULL,              _ALL_ON_,               02000},
- /* UNIX_USE_AUTHTOK */     {"use_authtok",     _ALL_ON_,               04000},
- /* UNIX_SHADOW */          {"shadow",          _ALL_ON_,              010000},
--/* UNIX_MD5_PASS */        {"md5",             _ALL_ON_^(0400000),    020000},
-+/* UNIX_MD5_PASS */        {"md5",             _ALL_ON_^(020400000),  020000},
- /* UNIX__NULLOK */         {"nullok",          _ALL_ON_^(01000),           0},
- /* UNIX_DEBUG */           {"debug",           _ALL_ON_,              040000},
- /* UNIX_NODELAY */         {"nodelay",         _ALL_ON_,             0100000},
- /* UNIX_NIS */             {"nis",             _ALL_ON_,             0200000},
--/* UNIX_BIGCRYPT */        {"bigcrypt",        _ALL_ON_^(020000),    0400000},
-+/* UNIX_BIGCRYPT */        {"bigcrypt",        _ALL_ON_^(020020000), 0400000},
- /* UNIX_LIKE_AUTH */       {"likeauth",        _ALL_ON_,            01000000},
+@@ -120,9 +121,10 @@
  /* UNIX_REMEMBER_PASSWD */ {"remember=",       _ALL_ON_,            02000000},
  /* UNIX_NOREAP */          {"noreap",          _ALL_ON_,            04000000},
  /* UNIX_BROKEN_SHADOW */   {"broken_shadow",   _ALL_ON_,           010000000},
-+/* UNIX_BLOWFISH */        {"blowfish",        _ALL_ON_^(000420000),020000000},
+-/* UNIX_SHA256_PASS */     {"sha256",        _ALL_ON_^(040420000), 020000000},
+-/* UNIX_SHA512_PASS */     {"sha512",        _ALL_ON_^(020420000), 040000000},
++/* UNIX_SHA256_PASS */     {"sha256",       _ALL_ON_^(0240420000), 020000000},
++/* UNIX_SHA512_PASS */     {"sha512",       _ALL_ON_^(0220420000), 040000000},
+ /* UNIX_ALGO_ROUNDS */     {"rounds=",         _ALL_ON_,          0100000000},
++/* UNIX_BLOWFISH */        {"blowfish",      _ALL_ON_^(000420000),0200000000},
  };
  
  #define UNIX_DEFAULTS  (unix_args[UNIX__NONULL].flag)
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_unix/unix_chkpwd.c Linux-PAM-0.99.7.1/modules/pam_unix/unix_chkpwd.c
---- Linux-PAM-0.99.7.1.orig/modules/pam_unix/unix_chkpwd.c	2006-10-24 12:01:49.000000000 +0200
-+++ Linux-PAM-0.99.7.1/modules/pam_unix/unix_chkpwd.c	2007-02-04 19:53:39.269687706 +0100
-@@ -41,6 +41,7 @@
- 
- #include "md5.h"
- #include "bigcrypt.h"
-+#include "blowfish.h"
- 
- /* syslogging function for errors and other information */
- 
-@@ -203,6 +204,10 @@
- 			if (pp && strcmp(pp, salt) == 0)
- 				retval = PAM_SUCCESS;
- 		}
-+	} else if (!strncmp(salt, "$2", 2)) {
-+		pp = bcrypt(p, salt);
-+		if (pp && strcmp(pp, salt) == 0)
-+			retval = PAM_SUCCESS;
- 	} else if (*salt == '$') {
- 	        /*
- 		 * Ok, we don't know the crypt algorithm, but maybe
