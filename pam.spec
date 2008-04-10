@@ -19,14 +19,14 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	0.99.9.0
-Release:	3
+Version:	1.0.0
+Release:	0.1
 License:	GPL or BSD
 Group:		Base
-Source0:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	f526c794482ce21c31866549e05c45de
-Source1:	http://ftp.kernel.org/pub/linux/libs/pam/pre/library/Linux-PAM-%{version}.tar.bz2.sign
-# Source1-md5:	ffae0c1502acb7866a4a34e4b35eb6ec
+Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
+# Source0-md5:	0f5d63c81cad2f420083a7994fcaa3b3
+Source1:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2.sign
+# Source1-md5:	241d37978a808e71b019123d6318113e
 Source2:	ftp://ftp.pld-linux.org/software/pam/pam-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	a92ff06ff3ab5f96a7e1aaa04ef77fa7
 Source3:	other.pamd
@@ -44,13 +44,11 @@ Patch5:		%{name}-unix-blowfish.patch
 Patch6:		%{name}-mkhomedir-new-features.patch
 Patch7:		%{name}-db-gdbm.patch
 Patch8:		%{name}-exec-failok.patch
-Patch9:		%{name}-audit-no-log.patch
-Patch10:	%{name}-namespace-temp-logon.patch
-Patch11:	%{name}-namespace-homedir.patch
-Patch12:	%{name}-selinux-permit.patch
-Patch13:	%{name}-tally-fclose.patch
+Patch9:		%{name}-tally-fclose.patch
+Patch10:	%{name}-set-item.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
-%{?with_audit:BuildRequires:	audit-libs-devel >= 1.0.8}
+%{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
+%{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
@@ -240,10 +238,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
+%patch10 -p0
 
 %build
 %{__libtoolize}
@@ -319,6 +314,7 @@ install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man5/config-util.5
 for dir in modules/pam_* ; do
 %if %{without selinux}
 [ ${dir} = "modules/pam_selinux" ] && continue
+[ ${dir} = "modules/pam_sepermit" ] && continue
 %endif
 	if [ -d ${dir} ] ; then
 		if ! ls -1 $RPM_BUILD_ROOT/%{_lib}/security/`basename ${dir}`*.so ; then
@@ -422,6 +418,7 @@ fi
 %config /etc/security/console.perms.d/50-default.perms
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/opasswd
 %attr(4755,root,root) /sbin/unix_chkpwd
+%attr(4755,root,root) /sbin/unix_update
 %attr(755,root,root) %{_bindir}/pam_pwgen
 %attr(755,root,root) %{_sbindir}/pam_console_apply
 %attr(755,root,root) %{_sbindir}/pam_tally
@@ -437,6 +434,7 @@ fi
 %{_mandir}/man8/pam_succeed_if*
 %{_mandir}/man8/pam_[t-x]*
 %{_mandir}/man8/unix_chkpwd*
+%{_mandir}/man8/unix_update*
 #%ghost %verify(not md5 size mtime) /var/log/faillog
 %ghost %verify(not md5 size mtime) /var/log/tallylog
 
@@ -472,7 +470,6 @@ fi
 %attr(755,root,root) /%{_lib}/security/pam_permit.so
 %attr(755,root,root) /%{_lib}/security/pam_pwexport.so
 %attr(755,root,root) /%{_lib}/security/pam_pwgen.so
-%attr(755,root,root) /%{_lib}/security/pam_rhosts_auth.so
 %attr(755,root,root) /%{_lib}/security/pam_rhosts.so
 %attr(755,root,root) /%{_lib}/security/pam_rootok.so
 %attr(755,root,root) /%{_lib}/security/pam_rps.so
@@ -484,6 +481,7 @@ fi
 %attr(755,root,root) /%{_lib}/security/pam_tally.so
 %attr(755,root,root) /%{_lib}/security/pam_time.so
 %attr(755,root,root) /%{_lib}/security/pam_timestamp.so
+%attr(755,root,root) /%{_lib}/security/pam_tty_audit.so
 %attr(755,root,root) /%{_lib}/security/pam_umask.so
 %attr(755,root,root) /%{_lib}/security/pam_unix.so
 %attr(755,root,root) /%{_lib}/security/pam_userdb.so
@@ -512,9 +510,10 @@ fi
 %files pam_selinux
 %defattr(644,root,root,755)
 %attr(755,root,root) /%{_lib}/security/pam_selinux.so
-%attr(755,root,root) /%{_lib}/security/pam_selinux_permit.so
+%attr(755,root,root) /%{_lib}/security/pam_sepermit.so
 %attr(755,root,root) %{_sbindir}/pam_selinux_check
 %config(noreplace) %verify(not size mtime md5) /etc/pam.d/pam_selinux_check
 %config(noreplace) %verify(not size mtime md5) /etc/security/sepermit.conf
 %{_mandir}/man8/pam_selinux*.8*
+%{_mandir}/man8/pam_sepermit*.8*
 %endif
