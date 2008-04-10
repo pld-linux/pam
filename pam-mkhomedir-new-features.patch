@@ -1,17 +1,3 @@
-diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/Makefile.am Linux-PAM-0.99.7.1/modules/pam_mkhomedir/Makefile.am
---- Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/Makefile.am	2006-06-01 20:53:15.000000000 +0200
-+++ Linux-PAM-0.99.7.1/modules/pam_mkhomedir/Makefile.am	2007-02-03 22:09:37.950620500 +0100
-@@ -25,6 +25,10 @@
- pam_mkhomedir_la_SOURCES = pam_mkhomedir.c
- pam_mkhomedir_la_LIBADD = -L$(top_builddir)/libpam -lpam
- 
-+install-exec-local:
-+	$(LN_S) pam_mkhomedir.so $(DESTDIR)$(SECUREDIR)/pam_homedir.so
-+	echo ".so pam_mkhomedir.8" > $(DESTDIR)$(man8dir)/pam_homedir.8
-+
- if ENABLE_REGENERATE_MAN
- noinst_DATA = README
- README: pam_mkhomedir.8.xml
 diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.8.xml
 --- Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml	2006-05-30 15:03:09.000000000 +0200
 +++ Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.8.xml	2007-02-03 22:09:37.942620000 +0100
