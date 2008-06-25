@@ -256,7 +256,8 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 
 # we must explicitely update-gmo as we patch a po file
 %{__make} -C po update-gmo
-%{__make}
+%{__make} \
+	DEFS="-DHAVE_CONFIG_H -D_GNU_SOURCE"
 
 %install
 rm -rf $RPM_BUILD_ROOT
