@@ -20,7 +20,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.0.0
-Release:	1
+Release:	2
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
@@ -70,7 +70,6 @@ BuildRequires:	libxml2-progs
 BuildRequires:	libxslt-progs
 BuildRequires:	w3m
 %endif
-Requires(post):	coreutils
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	awk
 Requires:	/usr/bin/make
@@ -287,7 +286,6 @@ echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-#:> $RPM_BUILD_ROOT/var/log/faillog
 :> $RPM_BUILD_ROOT/var/log/tallylog
 
 mv -f $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}
@@ -375,13 +373,9 @@ if [ -d /var/lock/console -a -d /var/run/console ]; then
 fi
 
 %post
-#if [ ! -a /var/log/faillog ] ; then
-#	touch /var/log/faillog
-#	chmod 600 /var/log/faillog
-#fi
 if [ ! -a /var/log/tallylog ] ; then
-	touch /var/log/tallylog
-	chmod 600 /var/log/tallylog
+	# don't use coreutils here
+	(umask 177; :> /var/log/tallylog)
 fi
 
 %post	libs -p /sbin/ldconfig
@@ -435,7 +429,6 @@ fi
 %{_mandir}/man8/pam_[t-x]*
 %{_mandir}/man8/unix_chkpwd*
 %{_mandir}/man8/unix_update*
-#%ghost %verify(not md5 size mtime) /var/log/faillog
 %ghost %verify(not md5 size mtime) /var/log/tallylog
 
 %files libs
