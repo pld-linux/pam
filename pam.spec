@@ -20,7 +20,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.0.1
-Release:	2
+Release:	3
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
@@ -373,7 +373,7 @@ fi
 
 %post -p <lua>
 fh, error = io.open("/var/log/tallylog")
-if file ~= nil then
+if fh ~= nil then
 	io.close(fh)
 else
 	fh = io.open("/var/log/tallylog", "w+")
