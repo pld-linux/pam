@@ -371,11 +371,15 @@ if [ -d /var/lock/console -a -d /var/run/console ]; then
 	rm -rf /var/lock/console
 fi
 
-%post
-if [ ! -a /var/log/tallylog ] ; then
-	# don't use coreutils here
-	(umask 177; :> /var/log/tallylog)
-fi
+%post -p <lua>
+fh, error = io.open("/var/log/tallylog")
+if file ~= nil then
+	io.close(fh)
+else
+	fh = io.open("/var/log/tallylog", "w+")
+	io.close(fh)
+	posix.chmod("/var/log/tallylog", "rw-------")
+end
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
