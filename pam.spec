@@ -342,6 +342,7 @@ done
 
 # useless - shut up check-files
 rm -f $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
+rm -f $RPM_BUILD_ROOT/%{_lib}/lib*.so
 rm -rf $RPM_BUILD_ROOT%{_datadir}/doc/Linux-PAM
 
 %if %{without selinux}
@@ -386,12 +387,9 @@ end
 
 %files -f Linux-PAM.lang
 %defattr(644,root,root,755)
-%doc AUTHORS CHANGELOG ChangeLog Copyright NEWS
-%doc doc/txts/README*
+%doc AUTHORS CHANGELOG ChangeLog Copyright NEWS doc/txts/README*
 %if %{with doc}
-%doc doc/specs/*.txt
-%doc doc/sag/Linux-PAM_*.txt
-%doc doc/{sag,}/html
+%doc doc/specs/*.txt doc/sag/Linux-PAM_*.txt doc/{sag,}/html
 %endif
 %dir %attr(755,root,root) /etc/pam.d
 %dir %attr(755,root,root) /etc/security/console.apps
@@ -437,7 +435,12 @@ end
 %files libs
 %defattr(644,root,root,755)
 %dir /%{_lib}/security/pam_filter
-%attr(755,root,root) /%{_lib}/lib*.so.*.*
+%attr(755,root,root) /%{_lib}/libpam.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpam.so.0
+%attr(755,root,root) /%{_lib}/libpam_misc.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpam_misc.so.0
+%attr(755,root,root) /%{_lib}/libpamc.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpamc.so.0
 %attr(755,root,root) /%{_lib}/security/pam_access.so
 %attr(755,root,root) /%{_lib}/security/pam_console.so
 %attr(755,root,root) /%{_lib}/security/pam_cracklib.so
@@ -488,13 +491,18 @@ end
 %files devel
 %defattr(644,root,root,755)
 %if %{with doc}
-%doc doc/{adg,mwg}/Linux-PAM_*.txt
-%doc doc/{adg,mwg,}/html
+%doc doc/{adg,mwg}/Linux-PAM_*.txt doc/{adg,mwg,}/html
 %endif
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
-%{_includedir}/security/*.h
-%{_mandir}/man3/*
+%attr(755,root,root) %{_libdir}/libpam.so
+%attr(755,root,root) %{_libdir}/libpam_misc.so
+%attr(755,root,root) %{_libdir}/libpamc.so
+%{_libdir}/libpam.la
+%{_libdir}/libpam_misc.la
+%{_libdir}/libpamc.la
+%{_includedir}/security/_pam_*.h
+%{_includedir}/security/pam*.h
+%{_mandir}/man3/misc_conv.3*
+%{_mandir}/man3/pam*.3*
 
 %files static
 %defattr(644,root,root,755)
