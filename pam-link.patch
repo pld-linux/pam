@@ -1,0 +1,12 @@
+--- pam-pld-0.80.1/modules/pam_unix/Makefile.am~	2005-07-11 17:46:12.000000000 +0300
++++ pam-pld-0.80.1/modules/pam_unix/Makefile.am	2008-10-16 23:37:06.969192248 +0300
+@@ -42,7 +42,8 @@
+ 			  yppasswd_xdr.c
+ pam_unix_la_LDFLAGS	= -avoid-version -module
+ 
+-pam_unix_la_LIBADD	= $(LIBNSL) $(LIBCRACK) $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a
++pam_unix_la_LIBADD	= $(LIBNSL) $(LIBCRACK) $(LIBSELINUX) ../../pamcrypt/libpamcrypt.la ../pammodutil/libpammodutil.a \
++	-L$(top_builddir)/libpam -lpam
+ 
+ noinst_HEADERS		= lckpwdf.-c support.h yppasswd.h
+ 
