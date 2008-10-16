@@ -23,7 +23,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	0.80.1
-Release:	17
+Release:	18
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -32,6 +32,7 @@ Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 Source1:	system-auth.pamd
 Patch0:		%{name}-pam_pwgen_app.patch
 Patch1:		%{name}-modutil_mem_limit.patch
+Patch2:		%{name}-pam_unix-linking.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -61,9 +62,9 @@ Requires:	cracklib
 Requires:	cracklib-dicts
 Requires:	make
 Provides:	pam-pld
-Obsoletes:	pamconfig
-Obsoletes:	pam_make
 Obsoletes:	pam-doc
+Obsoletes:	pam_make
+Obsoletes:	pamconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
@@ -282,6 +283,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %setup -q -n %{name}-pld-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 mkdir m4
 %{!?with_prelude:echo 'AC_DEFUN([AM_PATH_LIBPRELUDE],[/bin/true])' > m4/prelude.m4}
 
@@ -321,7 +323,7 @@ rm -f docs/{ps,txts}/{README,*.log} \
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*.* $RPM_BUILD_ROOT/%{_lib}
+mv -f $RPM_BUILD_ROOT%{_libdir}/lib*.so.* $RPM_BUILD_ROOT/%{_lib}
 
 install pamcrypt/.libs/libpamcrypt.a $RPM_BUILD_ROOT%{_libdir}
 
@@ -390,7 +392,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) /%{_lib}/lib*.so.*.*
+%attr(755,root,root) /%{_lib}/libpam.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpam.so.0
+%attr(755,root,root) /%{_lib}/libpam_misc.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpam_misc.so.0
+%attr(755,root,root) /%{_lib}/libpamc.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpamc.so.0
 %attr(755,root,root) /%{_lib}/security/pam_access.so
 %attr(755,root,root) /%{_lib}/security/pam_console.so
 %attr(755,root,root) /%{_lib}/security/pam_cracklib.so
