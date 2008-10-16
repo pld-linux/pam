@@ -13,14 +13,14 @@
 %bcond_without	tcpd		# don't build pam_tcpd module
 #
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
-Summary(de):	Einsteckbare Authentifizierungsmodule: modulare, inkrementДre Authentifizierung
-Summary(es):	MСdulos de autentificaciСn plugables (PAM)
-Summary(fr):	PAM : Pluggable Authentication Modules: modular, incremental authentication
-Summary(pl):	Modularny system uwierzytelniania
-Summary(pt_BR):	MСdulos de autenticaГЦo plugАveis (PAM)
-Summary(ru):	Интструмент, обеспечивающий аутентификацию для приложений
-Summary(tr):	ModЭler, artЩmsal doПrulama birimleri
-Summary(uk):	╤нструмент, що забезпечу╓ аутентиф╕кац╕ю для програм
+Summary(de.UTF-8):	Einsteckbare Authentifizierungsmodule: modulare, inkrementц╓re Authentifizierung
+Summary(es.UTF-8):	MцЁdulos de autentificaciцЁn plugables (PAM)
+Summary(fr.UTF-8):	PAM : Pluggable Authentication Modules: modular, incremental authentication
+Summary(pl.UTF-8):	Modularny system uwierzytelniania
+Summary(pt_BR.UTF-8):	MцЁdulos de autenticaц╖цёo plugц║veis (PAM)
+Summary(ru.UTF-8):	п≤п╫я┌я│я┌я─я┐п╪п╣п╫я┌, п╬п╠п╣я│п©п╣я┤п╦п╡п╟я▌я┴п╦п╧ п╟я┐я┌п╣п╫я┌п╦я└п╦п╨п╟я├п╦я▌ п╢п╩я▐ п©я─п╦п╩п╬п╤п╣п╫п╦п╧
+Summary(tr.UTF-8):	Modц╪ler, artд╠msal doд÷rulama birimleri
+Summary(uk.UTF-8):	п├п╫я│я┌я─я┐п╪п╣п╫я┌, я┴п╬ п╥п╟п╠п╣п╥п©п╣я┤я┐я■ п╟я┐я┌п╣п╫я┌п╦я└я√п╨п╟я├я√я▌ п╢п╩я▐ п©я─п╬пЁя─п╟п╪
 Name:		pam
 Version:	0.80.1
 Release:	17
@@ -74,82 +74,82 @@ extensible authentication system which allows the system administrator
 to configure authentication services individually for every
 pam-compliant application without recompiling any of the applications.
 
-%description -l de
-PAM (Pluggable Authentication Modules) ist ein leistungsfДhiges,
+%description -l de.UTF-8
+PAM (Pluggable Authentication Modules) ist ein leistungsfц╓higes,
 flexibles und erweiterbares Authentifizierungssystem, mit dem der
-Systemverwalter Authentifizierungs-Dienste individuell fЭr jede
+Systemverwalter Authentifizierungs-Dienste individuell fц╪r jede
 pam-kompatible Anwendung konfigurieren kann, ohne diese neu
-kompilieren zu mЭssen.
+kompilieren zu mц╪ssen.
 
-%description -l es
-PAM (MСdulos de AutenticaciСn Plugables) es un potente, flexible y
-extensible sistema de autentificaciСn, que permite al administrador
-del sistema configurar servicios de autentificaciСn individualmente
-para cada aplicaciСn pam compatible, sin la necesidad de recompilar
+%description -l es.UTF-8
+PAM (MцЁdulos de AutenticaciцЁn Plugables) es un potente, flexible y
+extensible sistema de autentificaciцЁn, que permite al administrador
+del sistema configurar servicios de autentificaciцЁn individualmente
+para cada aplicaciцЁn pam compatible, sin la necesidad de recompilar
 cualquier una de las aplicaciones.
 
-%description -l fr
-PAM (Pluggable Authentication Modules) est un systИme
-d'authentification puissant, souple et extensible permettant Ю
-l'administrateur systХme de configurer les individuellement les
-services d'authentification pour chaque application conforme Ю PAM,
+%description -l fr.UTF-8
+PAM (Pluggable Authentication Modules) est un systц╘me
+d'authentification puissant, souple et extensible permettant ц═
+l'administrateur systц╗me de configurer les individuellement les
+services d'authentification pour chaque application conforme ц═ PAM,
 sans recompiler aucune application.
 
-%description -l pl
-PAM (Pluggable Authentication Modules) jest silnym i Ёatwo
-dostosowywalnym do potrzeb systemem uwierzytelniania, ktСry umo©liwia
-administratorowi indywidualne konfigurowanie poszczegСlnych usЁug,
-ktСre s╠ dostosowane i skonsolidowane z bibliotekami PAM, bez
-pС╪niejszej ich rekompilacji w momencie zmiany sposobu
-uwierzytelniania tych©e usЁug.
+%description -l pl.UTF-8
+PAM (Pluggable Authentication Modules) jest silnym i е┌atwo
+dostosowywalnym do potrzeb systemem uwierzytelniania, ktцЁry umoе╪liwia
+administratorowi indywidualne konfigurowanie poszczegцЁlnych usе┌ug,
+ktцЁre sд┘ dostosowane i skonsolidowane z bibliotekami PAM, bez
+pцЁе╨niejszej ich rekompilacji w momencie zmiany sposobu
+uwierzytelniania tychе╪e usе┌ug.
 
-%description -l pt_BR
-PAM (MСdulos de AutenticaГЦo PlugАveis) И um poderoso, flexМvel e
-extensМvel sistema de autenticaГЦo, que permite o administrador do
-sistema configurar serviГos de autenticaГЦo individualmente para cada
-aplicaГЦo pam compatМvel, sem necessidade de recompilar qualquer uma
-das aplicaГУes.
+%description -l pt_BR.UTF-8
+PAM (MцЁdulos de Autenticaц╖цёo Plugц║veis) ц╘ um poderoso, flexц╜vel e
+extensц╜vel sistema de autenticaц╖цёo, que permite o administrador do
+sistema configurar serviц╖os de autenticaц╖цёo individualmente para cada
+aplicaц╖цёo pam compatц╜vel, sem necessidade de recompilar qualquer uma
+das aplicaц╖ц╣es.
 
-%description -l uk
-PAM (Pluggable Authentication Modules) - це потужна, гнучка, здатна до
-розширення система аутентикац╕╖, яка дозволя╓ системному
-адм╕н╕стратору налагоджувати сев╕си авторизац╕╖ доступу (аутентикац╕╖)
-╕ндив╕дуально для кожно╖ pam-сум╕сно╖ програми без необх╕дност╕
-перекомп╕ляц╕╖ само╖ програми. Це базовий механ╕зм аутентикац╕╖ в PLD
+%description -l uk.UTF-8
+PAM (Pluggable Authentication Modules) - я├п╣ п©п╬я┌я┐п╤п╫п╟, пЁп╫я┐я┤п╨п╟, п╥п╢п╟я┌п╫п╟ п╢п╬
+я─п╬п╥я┬п╦я─п╣п╫п╫я▐ я│п╦я│я┌п╣п╪п╟ п╟я┐я┌п╣п╫я┌п╦п╨п╟я├я√я≈, я▐п╨п╟ п╢п╬п╥п╡п╬п╩я▐я■ я│п╦я│я┌п╣п╪п╫п╬п╪я┐
+п╟п╢п╪я√п╫я√я│я┌я─п╟я┌п╬я─я┐ п╫п╟п╩п╟пЁп╬п╢п╤я┐п╡п╟я┌п╦ я│п╣п╡я√я│п╦ п╟п╡я┌п╬я─п╦п╥п╟я├я√я≈ п╢п╬я│я┌я┐п©я┐ (п╟я┐я┌п╣п╫я┌п╦п╨п╟я├я√я≈)
+я√п╫п╢п╦п╡я√п╢я┐п╟п╩я▄п╫п╬ п╢п╩я▐ п╨п╬п╤п╫п╬я≈ pam-я│я┐п╪я√я│п╫п╬я≈ п©я─п╬пЁя─п╟п╪п╦ п╠п╣п╥ п╫п╣п╬п╠я┘я√п╢п╫п╬я│я┌я√
+п©п╣я─п╣п╨п╬п╪п©я√п╩я▐я├я√я≈ я│п╟п╪п╬я≈ п©я─п╬пЁя─п╟п╪п╦. п╕п╣ п╠п╟п╥п╬п╡п╦п╧ п╪п╣я┘п╟п╫я√п╥п╪ п╟я┐я┌п╣п╫я┌п╦п╨п╟я├я√я≈ п╡ PLD
 Linux.
 
-%description -l tr
-PAM (Pluggable Authentication Modules) sistem yЖneticilerinin
-uygulamalardan herhangi birini yeniden derlemeksizin bЭtЭn PAM uyumlu
-uygulamalar iГin doПrulama hizmetlerini ayarlamalarЩna yardЩmcЩ olan,
-gЭclЭ, esnek ve kapsamlЩ bir doПrulama sistemidir.
+%description -l tr.UTF-8
+PAM (Pluggable Authentication Modules) sistem yц╤neticilerinin
+uygulamalardan herhangi birini yeniden derlemeksizin bц╪tц╪n PAM uyumlu
+uygulamalar iц╖in doд÷rulama hizmetlerini ayarlamalarд╠na yardд╠mcд╠ olan,
+gц╪clц╪, esnek ve kapsamlд╠ bir doд÷rulama sistemidir.
 
-%description -l ru
-PAM (Pluggable Authentication Modules) - это мощная, гибкая,
-расширяемая система аутентикации, позволяющая системному
-администратору конфигурировать сервисы авторизации доступа
-(аутентикации) индивидуально для каждой pam-совместимой программы без
-необходимости перекомпилляции самой программы. Это базовый механизм
-аутентикации в PLD Linux.
+%description -l ru.UTF-8
+PAM (Pluggable Authentication Modules) - я█я┌п╬ п╪п╬я┴п╫п╟я▐, пЁп╦п╠п╨п╟я▐,
+я─п╟я│я┬п╦я─я▐п╣п╪п╟я▐ я│п╦я│я┌п╣п╪п╟ п╟я┐я┌п╣п╫я┌п╦п╨п╟я├п╦п╦, п©п╬п╥п╡п╬п╩я▐я▌я┴п╟я▐ я│п╦я│я┌п╣п╪п╫п╬п╪я┐
+п╟п╢п╪п╦п╫п╦я│я┌я─п╟я┌п╬я─я┐ п╨п╬п╫я└п╦пЁя┐я─п╦я─п╬п╡п╟я┌я▄ я│п╣я─п╡п╦я│я▀ п╟п╡я┌п╬я─п╦п╥п╟я├п╦п╦ п╢п╬я│я┌я┐п©п╟
+(п╟я┐я┌п╣п╫я┌п╦п╨п╟я├п╦п╦) п╦п╫п╢п╦п╡п╦п╢я┐п╟п╩я▄п╫п╬ п╢п╩я▐ п╨п╟п╤п╢п╬п╧ pam-я│п╬п╡п╪п╣я│я┌п╦п╪п╬п╧ п©я─п╬пЁя─п╟п╪п╪я▀ п╠п╣п╥
+п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬я│я┌п╦ п©п╣я─п╣п╨п╬п╪п©п╦п╩п╩я▐я├п╦п╦ я│п╟п╪п╬п╧ п©я─п╬пЁя─п╟п╪п╪я▀. п╜я┌п╬ п╠п╟п╥п╬п╡я▀п╧ п╪п╣я┘п╟п╫п╦п╥п╪
+п╟я┐я┌п╣п╫я┌п╦п╨п╟я├п╦п╦ п╡ PLD Linux.
 
 %package libs
 Summary:	PAM modules and libraries
-Summary(pl):	ModuЁy i biblioteki PAM
+Summary(pl.UTF-8):	Moduе┌y i biblioteki PAM
 Group:		Libraries
 Conflicts:	pam < 0:0.80.1-2
 
 %description libs
 Core PAM modules and libraries.
 
-%description libs -l pl
-ModuЁy i biblioteki PAM.
+%description libs -l pl.UTF-8
+Moduе┌y i biblioteki PAM.
 
 %package devel
 Summary:	PAM header files
-Summary(pl):	Pliki nagЁСwkowe i dokumentacja programisty do PAM
-Summary(pt_BR):	Bibliotecas e arquivos de inclusЦo para desenvolvimento com PAM
-Summary(ru):	Библиотеки разработчика для PAM
-Summary(uk):	Б╕бл╕отеки програм╕ста для PAM
+Summary(pl.UTF-8):	Pliki nagе┌цЁwkowe i dokumentacja programisty do PAM
+Summary(pt_BR.UTF-8):	Bibliotecas e arquivos de inclusцёo para desenvolvimento com PAM
+Summary(ru.UTF-8):	п▒п╦п╠п╩п╦п╬я┌п╣п╨п╦ я─п╟п╥я─п╟п╠п╬я┌я┤п╦п╨п╟ п╢п╩я▐ PAM
+Summary(uk.UTF-8):	п▒я√п╠п╩я√п╬я┌п╣п╨п╦ п©я─п╬пЁя─п╟п╪я√я│я┌п╟ п╢п╩я▐ PAM
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	filesystem >= 2.0-1
@@ -157,41 +157,41 @@ Requires:	filesystem >= 2.0-1
 %description devel
 Header files for developing PAM based applications.
 
-%description devel -l pl
-Pliki nagЁСwkowe i dokumentacja programisty do PAM.
+%description devel -l pl.UTF-8
+Pliki nagе┌цЁwkowe i dokumentacja programisty do PAM.
 
-%description devel -l pt_BR
-Bibliotecas e arquivos de inclusЦo para desenvolvimento com PAM
+%description devel -l pt_BR.UTF-8
+Bibliotecas e arquivos de inclusцёo para desenvolvimento com PAM
 
-%description devel -l ru
-Этот пакет содержит хедеры и библиотеки разработчика для PAM.
+%description devel -l ru.UTF-8
+п╜я┌п╬я┌ п©п╟п╨п╣я┌ я│п╬п╢п╣я─п╤п╦я┌ я┘п╣п╢п╣я─я▀ п╦ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ я─п╟п╥я─п╟п╠п╬я┌я┤п╦п╨п╟ п╢п╩я▐ PAM.
 
-%description devel -l uk
-Цей пакет м╕стить хедери та б╕бл╕отеки програм╕ста для PAM.
+%description devel -l uk.UTF-8
+п╕п╣п╧ п©п╟п╨п╣я┌ п╪я√я│я┌п╦я┌я▄ я┘п╣п╢п╣я─п╦ я┌п╟ п╠я√п╠п╩я√п╬я┌п╣п╨п╦ п©я─п╬пЁя─п╟п╪я√я│я┌п╟ п╢п╩я▐ PAM.
 
 %package static
 Summary:	PAM static libraries
-Summary(pl):	Biblioteki statyczne PAM
-Summary(ru):	Статические библиотеки разработчика для PAM
-Summary(uk):	Статичн╕ б╕бл╕отеки програм╕ста для PAM
+Summary(pl.UTF-8):	Biblioteki statyczne PAM
+Summary(ru.UTF-8):	п║я┌п╟я┌п╦я┤п╣я│п╨п╦п╣ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ я─п╟п╥я─п╟п╠п╬я┌я┤п╦п╨п╟ п╢п╩я▐ PAM
+Summary(uk.UTF-8):	п║я┌п╟я┌п╦я┤п╫я√ п╠я√п╠п╩я√п╬я┌п╣п╨п╦ п©я─п╬пЁя─п╟п╪я√я│я┌п╟ п╢п╩я▐ PAM
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description static
 PAM static libraries.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Biblioteki statyczne PAM.
 
-%description static -l ru
-Этот пакет содержит статические библиотеки разработчика для PAM.
+%description static -l ru.UTF-8
+п╜я┌п╬я┌ п©п╟п╨п╣я┌ я│п╬п╢п╣я─п╤п╦я┌ я│я┌п╟я┌п╦я┤п╣я│п╨п╦п╣ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ я─п╟п╥я─п╟п╠п╬я┌я┤п╦п╨п╟ п╢п╩я▐ PAM.
 
-%description static -l uk
-Цей пакет м╕стить статичн╕ б╕бл╕отеки програм╕ста для PAM.
+%description static -l uk.UTF-8
+п╕п╣п╧ п©п╟п╨п╣я┌ п╪я√я│я┌п╦я┌я▄ я│я┌п╟я┌п╦я┤п╫я√ п╠я√п╠п╩я√п╬я┌п╣п╨п╦ п©я─п╬пЁя─п╟п╪я√я│я┌п╟ п╢п╩я▐ PAM.
 
 %package pam_pwdb
 Summary:	pam_pwdb module
-Summary(pl):	ModuЁ pam_pwdb
+Summary(pl.UTF-8):	Moduе┌ pam_pwdb
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	pwdb >= 0.54-2
@@ -199,12 +199,12 @@ Requires:	pwdb >= 0.54-2
 %description pam_pwdb
 pam_pwdb module.
 
-%description pam_pwdb -l pl
-ModuЁ pam_pwdb.
+%description pam_pwdb -l pl.UTF-8
+Moduе┌ pam_pwdb.
 
 %package pam_radius
 Summary:	pam_radius module
-Summary(pl):	ModuЁ pam_radius
+Summary(pl.UTF-8):	Moduе┌ pam_radius
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	pwdb >= 0.54-2
@@ -212,12 +212,12 @@ Requires:	pwdb >= 0.54-2
 %description pam_radius
 pam_radius module.
 
-%description pam_radius -l pl
-ModuЁ pam_radius.
+%description pam_radius -l pl.UTF-8
+Moduе┌ pam_radius.
 
 %package pam_skey
 Summary:	pam_skey module
-Summary(pl):	ModuЁ pam_skey
+Summary(pl.UTF-8):	Moduе┌ pam_skey
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	skey
@@ -225,12 +225,12 @@ Requires:	skey
 %description pam_skey
 pam_skey module.
 
-%description pam_skey -l pl
-ModuЁ pam_skey.
+%description pam_skey -l pl.UTF-8
+Moduе┌ pam_skey.
 
 %package pam_opie
 Summary:	pam_opie module
-Summary(pl):	ModuЁ pam_opie
+Summary(pl.UTF-8):	Moduе┌ pam_opie
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	opie
@@ -238,12 +238,12 @@ Requires:	opie
 %description pam_opie
 pam_opie module.
 
-%description pam_opie -l pl
-ModuЁ pam_opie.
+%description pam_opie -l pl.UTF-8
+Moduе┌ pam_opie.
 
 %package pam_tcpd
 Summary:	pam_tcpd module
-Summary(pl):	ModuЁ pam_tcpd
+Summary(pl.UTF-8):	Moduе┌ pam_tcpd
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	libwrap >= 7.6-32
@@ -251,12 +251,12 @@ Requires:	libwrap >= 7.6-32
 %description pam_tcpd
 pam_tcpd module.
 
-%description pam_tcpd -l pl
-ModuЁ pam_tcpd.
+%description pam_tcpd -l pl.UTF-8
+Moduе┌ pam_tcpd.
 
 %package pam_cap
 Summary:	pam_cap module
-Summary(pl):	ModuЁ pam_cap
+Summary(pl.UTF-8):	Moduе┌ pam_cap
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	libcap
@@ -264,19 +264,19 @@ Requires:	libcap
 %description pam_cap
 pam_cap module.
 
-%description pam_cap -l pl
-ModuЁ pam_cap.
+%description pam_cap -l pl.UTF-8
+Moduе┌ pam_cap.
 
 %package pam_selinux
 Summary:	PAM module - SELinux support
-Summary(pl):	ModuЁ PAM pozwalaj╠cy na zmianЙ kontekstСw SELinuksa
+Summary(pl.UTF-8):	Moduе┌ PAM pozwalajд┘cy na zmianд≥ kontekstцЁw SELinuksa
 Group:		Base
 
 %description pam_selinux
 PAM module - SELinux support.
 
-%description pam_selinux -l pl
-ModuЁ PAM pozwalaj╠cy na zmianЙ kontekstСw SELinuksa.
+%description pam_selinux -l pl.UTF-8
+Moduе┌ PAM pozwalajд┘cy na zmianд≥ kontekstцЁw SELinuksa.
 
 %prep
 %setup -q -n %{name}-pld-%{version}
