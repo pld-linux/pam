@@ -19,15 +19,15 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.0.1
-Release:	4
+Version:	1.0.3
+Release:	2
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	1c75f81bd44c5da93014992820917847
+# Source0-md5:	7cc8653cb31717dbb1380bde980c9fdf
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2.sign
-# Source1-md5:	16580f1c07c953e38977de9c932a636c
+# Source1-md5:	f3f7bc6e483266667534ad50eb188320
 Source2:	ftp://ftp.pld-linux.org/software/pam/pam-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	a92ff06ff3ab5f96a7e1aaa04ef77fa7
 Source3:	other.pamd
@@ -45,7 +45,6 @@ Patch5:		%{name}-unix-blowfish.patch
 Patch6:		%{name}-mkhomedir-new-features.patch
 Patch7:		%{name}-db-gdbm.patch
 Patch8:		%{name}-exec-failok.patch
-Patch9:		%{name}-tally-fclose.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 %{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
@@ -236,7 +235,6 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
-%patch9 -p1
 
 %build
 %{__libtoolize}
