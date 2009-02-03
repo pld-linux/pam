@@ -23,7 +23,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	0.80.1
-Release:	18
+Release:	19
 Epoch:		0
 License:	GPL or BSD
 Group:		Base
@@ -32,7 +32,7 @@ Source0:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{version}.tar.gz
 Source1:	system-auth.pamd
 Patch0:		%{name}-pam_pwgen_app.patch
 Patch1:		%{name}-modutil_mem_limit.patch
-Patch2:		%{name}-pam_unix-linking.patch
+Patch2:		%{name}-link.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -286,6 +286,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch2 -p1
 mkdir m4
 %{!?with_prelude:echo 'AC_DEFUN([AM_PATH_LIBPRELUDE],[/bin/true])' > m4/prelude.m4}
+find doc/ -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
 
 %build
 %{__libtoolize}
@@ -293,8 +294,8 @@ mkdir m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-find doc/ -type f | xargs %{__perl} -pi -e 's#/lib/security#/%{_lib}/security#g'
 %configure \
+	--enable-maintainer-mode \
 	%{!?with_doc:--without-docs} \
 	%{!?with_cap:--disable-cap} \
 	%{!?with_opie:--disable-opie} \
