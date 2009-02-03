@@ -10,3 +10,437 @@
  
  noinst_HEADERS		= lckpwdf.-c support.h yppasswd.h
  
+--- pam-pld-0.80.1/modules/pam_userdb/Makefile.am	2005-04-07 15:24:42.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_userdb/Makefile.am	2009-02-03 20:10:35.788497700 +0200
+@@ -35,6 +35,7 @@
+ else
+ pam_userdb_la_LIBADD	=
+ endif
++pam_userdb_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ noinst_HEADERS		= pam_userdb.h
+ 
+--- pam-pld-0.80.1/modules/pam_warn/Makefile.am	2003-12-19 18:25:05.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_warn/Makefile.am	2009-02-03 20:09:48.673250650 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_warn_la_SOURCES	= pam_warn.c
+ pam_warn_la_LDFLAGS	= -avoid-version -module
+-pam_warn_la_LIBADD	=
++pam_warn_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_wheel/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_wheel/Makefile.am	2009-02-03 20:11:04.461614255 +0200
+@@ -17,7 +17,7 @@
+ 
+ pam_wheel_la_SOURCES	= pam_wheel.c
+ pam_wheel_la_LDFLAGS	= -avoid-version -module
+-pam_wheel_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_wheel_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_xauth/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_xauth/Makefile.am	2009-02-03 20:10:58.509282324 +0200
+@@ -21,7 +21,7 @@
+ 
+ pam_xauth_la_SOURCES	= $(local_sources)
+ pam_xauth_la_LDFLAGS	= -avoid-version -module
+-pam_xauth_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_xauth_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README $(man_MANS)
+ 
+--- pam-pld-0.80.1/modules/pam_access/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_access/Makefile.am	2009-02-03 20:26:15.461384000 +0200
+@@ -29,6 +29,7 @@
+ else
+ pam_access_la_LIBADD	= ../pammodutil/libpammodutil.a
+ endif
++pam_access_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README $(access_conf_DATA)
+ 
+--- pam-pld-0.80.1/modules/pam_cap/Makefile.am	2003-12-19 18:25:02.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_cap/Makefile.am	2009-02-03 20:26:20.182713000 +0200
+@@ -29,7 +29,7 @@
+ 			  -I$(top_srcdir)/include $(DYNAMIC)
+ 
+ pam_cap_la_LDFLAGS	= -avoid-version -module
+-pam_cap_la_LIBADD	=
++pam_cap_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= License test.c $(cap_conf_DATA)
+ 
+--- pam-pld-0.80.1/modules/pam_console/Makefile.am	2003-12-19 18:25:02.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_console/Makefile.am	2009-02-03 20:26:22.438552000 +0200
+@@ -21,7 +21,7 @@
+ 
+ pam_console_la_SOURCES	= pam_console.c
+ pam_console_la_LDFLAGS	= -avoid-version -module
+-pam_console_la_LIBADD	=
++pam_console_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README README.pld COPYING \
+ 			  $(console_conf_DATA) $(man_MANS)
+--- pam-pld-0.80.1/modules/pam_cracklib/Makefile.am	2003-12-19 18:25:02.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_cracklib/Makefile.am	2009-02-03 20:33:22.973761000 +0200
+@@ -21,6 +21,7 @@
+ else
+ pam_cracklib_la_LIBADD	= -lcrack
+ endif
++pam_cracklib_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ modulesdir		= /@libdirname@/security
+ 
+--- pam-pld-0.80.1/modules/pam_debug/Makefile.am	2003-12-19 18:25:02.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_debug/Makefile.am	2009-02-03 20:34:41.689122000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_debug_la_SOURCES	= pam_debug.c
+ pam_debug_la_LDFLAGS	= -avoid-version -module
+-pam_debug_la_LIBADD	=
++pam_debug_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_env/Makefile.am	2003-12-19 18:25:02.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_env/Makefile.am	2009-02-03 20:26:03.544928000 +0200
+@@ -23,7 +23,7 @@
+ 
+ pam_env_la_SOURCES	= pam_env.c
+ pam_env_la_LDFLAGS	= -avoid-version -module
+-pam_env_la_LIBADD	=
++pam_env_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README pam_env.conf-example
+ 
+--- pam-pld-0.80.1/modules/pam_filter/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_filter/Makefile.am	2009-02-03 20:26:01.128239000 +0200
+@@ -20,7 +20,7 @@
+ 
+ pam_filter_la_SOURCES	= pam_filter.c
+ pam_filter_la_LDFLAGS	= -avoid-version -module
+-pam_filter_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_filter_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README .upperLOWER
+ 
+--- pam-pld-0.80.1/modules/pam_ftp/Makefile.am	2003-12-19 18:25:02.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_ftp/Makefile.am	2009-02-03 20:26:05.744738000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_ftp_la_SOURCES	= pam_ftp.c
+ pam_ftp_la_LDFLAGS	= -avoid-version -module
+-pam_ftp_la_LIBADD	=
++pam_ftp_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_group/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_group/Makefile.am	2009-02-03 20:33:06.374698000 +0200
+@@ -27,6 +27,7 @@
+ else
+ pam_group_la_LIBADD	= ../pammodutil/libpammodutil.a
+ endif
++pam_group_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= $(group_conf_DATA)
+ 
+--- pam-pld-0.80.1/modules/pam_homedir/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_homedir/Makefile.am	2009-02-03 20:32:49.055557000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_homedir_la_SOURCES	= pam_homedir.c
+ pam_homedir_la_LDFLAGS	= -avoid-version -module
+-pam_homedir_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_homedir_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ CLEANFILES		= *~ $(TITLE).so
+ 
+--- pam-pld-0.80.1/modules/pam_issue/Makefile.am	2003-12-19 18:25:02.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_issue/Makefile.am	2009-02-03 20:32:35.856474000 +0200
+@@ -16,6 +16,7 @@
+ 
+ pam_issue_la_SOURCES	= pam_issue.c
+ pam_issue_la_LDFLAGS	= -avoid-version -module
++pam_issue_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ CLEANFILES		= *~ $(TITLE).so
+ 
+--- pam-pld-0.80.1/modules/pam_lastlog/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_lastlog/Makefile.am	2009-02-03 20:25:26.346024000 +0200
+@@ -23,6 +23,7 @@
+ else
+ pam_lastlog_la_LIBADD	= ../pammodutil/libpammodutil.a
+ endif
++pam_lastlog_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ CLEANFILES		= *~ $(TITLE).so
+ 
+--- pam-pld-0.80.1/modules/pam_limits/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_limits/Makefile.am	2009-02-03 20:25:53.281393000 +0200
+@@ -24,7 +24,7 @@
+ 
+ pam_limits_la_SOURCES	= pam_limits.c
+ pam_limits_la_LDFLAGS	= -avoid-version -module
+-pam_limits_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_limits_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README limits.skel
+ 
+--- pam-pld-0.80.1/modules/pam_listfile/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_listfile/Makefile.am	2009-02-03 20:31:44.801356000 +0200
+@@ -17,7 +17,7 @@
+ 
+ pam_listfile_la_SOURCES	= pam_listfile.c
+ pam_listfile_la_LDFLAGS	= -avoid-version -module
+-pam_listfile_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_listfile_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_localuser/Makefile.am	2004-10-01 21:22:27.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_localuser/Makefile.am	2009-02-03 20:30:58.774791000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_localuser_la_SOURCES= pam_localuser.c
+ pam_localuser_la_LDFLAGS= -avoid-version -module
+-pam_localuser_la_LIBADD	=
++pam_localuser_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ man_MANS		= pam_localuser.8
+ 
+--- pam-pld-0.80.1/modules/pam_mail/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_mail/Makefile.am	2009-02-03 20:25:16.618062000 +0200
+@@ -28,6 +28,7 @@
+ else
+ pam_mail_la_LIBADD	= ../pammodutil/libpammodutil.a
+ endif
++pam_mail_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README $(mail_conf_DATA)
+ 
+--- pam-pld-0.80.1/modules/pam_motd/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_motd/Makefile.am	2009-02-03 20:25:19.328059000 +0200
+@@ -17,7 +17,7 @@
+ 
+ pam_motd_la_SOURCES	= pam_motd.c
+ pam_motd_la_LDFLAGS	= -avoid-version -module
+-pam_motd_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_motd_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ CLEANFILES		= *~ $(TITLE).so
+ 
+--- pam-pld-0.80.1/modules/pam_netid/Makefile.am	2003-12-19 18:25:03.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_netid/Makefile.am	2009-02-03 20:31:26.772728000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_netid_la_SOURCES	= pam_netid.c
+ pam_netid_la_LDFLAGS	= -avoid-version -module
+-pam_netid_la_LIBADD	=
++pam_netid_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README link.c
+ 
+--- pam-pld-0.80.1/modules/pam_nologin/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_nologin/Makefile.am	2009-02-03 20:29:38.064707000 +0200
+@@ -17,7 +17,7 @@
+ 
+ pam_nologin_la_SOURCES	= pam_nologin.c
+ pam_nologin_la_LDFLAGS	= -avoid-version -module
+-pam_nologin_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_nologin_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_opie/Makefile.am	2003-12-19 18:25:03.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_opie/Makefile.am	2009-02-03 20:30:31.208024000 +0200
+@@ -27,6 +27,8 @@
+ pam_opie_la_LIBADD	= -lopie
+ pam_opietrust_la_LIBADD	= -lopie
+ endif
++pam_opie_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
++pam_opietrust_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ modulesdir		= /@libdirname@/security
+ 
+--- pam-pld-0.80.1/modules/pam_permit/Makefile.am	2003-12-19 18:25:03.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_permit/Makefile.am	2009-02-03 20:24:45.644953000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_permit_la_SOURCES	= pam_permit.c
+ pam_permit_la_LDFLAGS	= -avoid-version -module
+-pam_permit_la_LIBADD	=
++pam_permit_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_pwdb/Makefile.am	2003-12-19 18:25:04.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_pwdb/Makefile.am	2009-02-03 20:29:15.571369000 +0200
+@@ -37,7 +37,7 @@
+ 			  pam_unix_sess.-c support.-c
+ 
+ pam_pwdb_la_LDFLAGS	= -avoid-version -module
+-pam_pwdb_la_LIBADD	= ../../pamcrypt/libpamcrypt.la
++pam_pwdb_la_LIBADD	= ../../pamcrypt/libpamcrypt.la -L$(top_builddir)/libpam -lpam
+ 
+ pwdb_chkpwd_LDADD	= ../../pamcrypt/libpamcrypt.la
+ 
+--- pam-pld-0.80.1/modules/pam_pwgen/Makefile.am	2003-12-19 18:25:04.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_pwgen/Makefile.am	2009-02-03 20:27:20.091376000 +0200
+@@ -25,7 +25,10 @@
+ 
+ if CRYPTLIB_PRESENT
+ pam_pwgen_la_LIBADD	= -lcrypt
++else
++pam_pwgen_la_LIBADD	=
+ endif
++pam_pwgen_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ bin_PROGRAMS		= pam_pwgen
+ sbin_PROGRAMS		= pwgen_trigram
+--- pam-pld-0.80.1/modules/pam_radius/Makefile.am	2003-12-19 18:25:04.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_radius/Makefile.am	2009-02-03 20:24:27.989376000 +0200
+@@ -29,7 +29,7 @@
+ noinst_HEADERS		= pam_radius.h
+ 
+ pam_radius_la_LDFLAGS	= -avoid-version -module
+-pam_radius_la_LIBADD	=
++pam_radius_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_rhosts/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_rhosts/Makefile.am	2009-02-03 20:24:24.261691000 +0200
+@@ -17,7 +17,7 @@
+ 
+ pam_rhosts_la_SOURCES	= pam_rhosts_auth.c
+ pam_rhosts_la_LDFLAGS	= -avoid-version -module
+-pam_rhosts_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_rhosts_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_securetty/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_securetty/Makefile.am	2009-02-03 20:21:48.448092000 +0200
+@@ -17,7 +17,7 @@
+ 
+ pam_securetty_la_SOURCES	= pam_securetty.c
+ pam_securetty_la_LDFLAGS	= -avoid-version -module
+-pam_securetty_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_securetty_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_selinux/Makefile.am	2005-07-11 19:00:46.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_selinux/Makefile.am	2009-02-03 20:24:21.628074000 +0200
+@@ -26,7 +26,7 @@
+ 
+ pam_selinux_la_SOURCES	= pam_selinux.c
+ pam_selinux_la_LDFLAGS	= -avoid-version -module
+-pam_selinux_la_LIBADD	= $(LIBSELINUX)
++pam_selinux_la_LIBADD	= $(LIBSELINUX) -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README $(man_MANS)
+ 
+--- pam-pld-0.80.1/modules/pam_shells/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_shells/Makefile.am	2009-02-03 20:21:36.591415000 +0200
+@@ -17,7 +17,7 @@
+ 
+ pam_shells_la_SOURCES	= pam_shells.c
+ pam_shells_la_LDFLAGS	= -avoid-version -module
+-pam_shells_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_shells_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_skey/Makefile.am	2003-12-19 18:25:04.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_skey/Makefile.am	2009-02-03 20:21:27.032106000 +0200
+@@ -23,6 +23,7 @@
+ else
+ pam_skey_la_LIBADD	= -lskey
+ endif
++pam_skey_la_LIBADD	+= -L$(top_builddir)/libpam -lpam
+ 
+ modulesdir		= /@libdirname@/security
+ 
+--- pam-pld-0.80.1/modules/pam_stress/Makefile.am	2003-12-19 18:25:05.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_stress/Makefile.am	2009-02-03 20:24:17.726217000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_stress_la_SOURCES	= pam_stress.c
+ pam_stress_la_LDFLAGS	= -avoid-version -module
+-pam_stress_la_LIBADD	=
++pam_stress_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_succeed_if/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_succeed_if/Makefile.am	2009-02-03 20:24:15.324730000 +0200
+@@ -18,7 +18,7 @@
+ 
+ pam_succeed_if_la_SOURCES= pam_succeed_if.c
+ pam_succeed_if_la_LDFLAGS= -avoid-version -module
+-pam_succeed_if_la_LIBADD =../pammodutil/libpammodutil.a
++pam_succeed_if_la_LIBADD =../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ man_MANS		= pam_succeed_if.8
+ 
+--- pam-pld-0.80.1/modules/pam_tally/Makefile.am	2005-06-07 17:28:20.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_tally/Makefile.am	2009-02-03 20:21:44.685162000 +0200
+@@ -17,7 +17,7 @@
+ 
+ pam_tally_la_SOURCES	= pam_tally.c
+ pam_tally_la_LDFLAGS	= -avoid-version -module
+-pam_tally_la_LIBADD	= ../pammodutil/libpammodutil.a
++pam_tally_la_LIBADD	= ../pammodutil/libpammodutil.a -L$(top_builddir)/libpam -lpam
+ 
+ noinst_HEADERS		= faillog.h
+ 
+--- pam-pld-0.80.1/modules/pam_tcpd/Makefile.am	2003-12-19 18:25:05.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_tcpd/Makefile.am	2009-02-03 20:21:05.018207000 +0200
+@@ -27,7 +27,7 @@
+ pam_tcpd_la_CFLAGS	= -I$(top_srcdir)/include $(DYNAMIC)
+ 
+ pam_tcpd_la_LDFLAGS	= -avoid-version -module
+-pam_tcpd_la_LIBADD	=
++pam_tcpd_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ CLEANFILES		= *~ $(TITLE).so
+ 
+--- pam-pld-0.80.1/modules/pam_time/Makefile.am	2004-10-01 17:49:14.000000000 +0300
++++ pam-pld-0.80.1-link/modules/pam_time/Makefile.am	2009-02-03 20:20:23.228121000 +0200
+@@ -20,7 +20,7 @@
+ 
+ pam_time_la_SOURCES	= pam_time.c
+ pam_time_la_LDFLAGS	= -avoid-version -module
+-pam_time_la_LIBADD	=
++pam_time_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README $(time_conf_DATA)
+ 
+--- pam-pld-0.80.1/modules/pam_usertty/Makefile.am	2003-12-19 18:25:05.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_usertty/Makefile.am	2009-02-03 20:19:18.591430000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_usertty_la_SOURCES	= pam_usertty.c
+ pam_usertty_la_LDFLAGS	= -avoid-version -module
+-pam_usertty_la_LIBADD	=
++pam_usertty_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
+--- pam-pld-0.80.1/modules/pam_utmp/Makefile.am	2003-12-19 18:25:05.000000000 +0200
++++ pam-pld-0.80.1-link/modules/pam_utmp/Makefile.am	2009-02-03 20:24:10.718075000 +0200
+@@ -16,7 +16,7 @@
+ 
+ pam_utmp_la_SOURCES	= pam_utmp.c
+ pam_utmp_la_LDFLAGS	= -avoid-version -module
+-pam_utmp_la_LIBADD	=
++pam_utmp_la_LIBADD	= -L$(top_builddir)/libpam -lpam
+ 
+ EXTRA_DIST		= README
+ 
