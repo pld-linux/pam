@@ -1,0 +1,24 @@
+--- Linux-PAM-1.0.3/modules/pam_console/50-default.perms~	2007-10-27 17:49:34.000000000 +0300
++++ Linux-PAM-1.0.3/modules/pam_console/50-default.perms	2009-04-24 14:18:30.275207529 +0300
+@@ -14,17 +14,17 @@
+ <dvb>=/dev/dvb/adapter*/*
+ 
+ # permission definitions
+-<console>  0600 <pilot>      0660 root.ttyS
++<console>  0600 <pilot>      0660 root.dialout
+ <console>  0600 <scanner>    0660 root.root
+ <console>  0600 <fb>         0660 root.video
+ <console>  0600 <kbd>        0600 root
+ <console>  0600 <joystick>   0660 root.sys
+ <console>  0700 <gpm>	     0700 root
+ <console>  0600 <mainboard>  0660 root.root
+-<console>  0600 <rio500>     0664 root.ttyS
++<console>  0600 <rio500>     0664 root.dialout
+ <console>  0600 <pmu>        0660 root.video
+-<console>  0600 <bluetooth>  0664 root.ttyS
+-<console>  0600 <irda>       0664 root.ttyS
++<console>  0600 <bluetooth>  0664 root.dialout
++<console>  0600 <irda>       0664 root.dialout
+ <console>  0600 <dvb>        0660 root.video
+ 
+ <xconsole> 0600 /dev/console 0600 root.root
