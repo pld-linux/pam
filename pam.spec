@@ -1,4 +1,4 @@
-#		
+#
 # Conditional build:
 %bcond_without	doc		# don't build documentation
 %bcond_with	prelude		# build with Prelude IDS support
@@ -20,7 +20,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.0.3
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -28,12 +28,12 @@ Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.t
 # Source0-md5:	7cc8653cb31717dbb1380bde980c9fdf
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2.sign
 # Source1-md5:	f3f7bc6e483266667534ad50eb188320
-Source2:	ftp://ftp.pld-linux.org/software/pam/pam-pld-%{pam_pld_version}.tar.gz
+Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	a92ff06ff3ab5f96a7e1aaa04ef77fa7
 Source3:	other.pamd
 Source4:	system-auth.pamd
 Source5:	config-util.pamd
-Source6:	pam_selinux_check.pamd
+Source6:	%{name}_selinux_check.pamd
 Source7:	system-auth.5
 Source8:	config-util.5
 Patch0:		%{name}-pld-modules.patch
@@ -45,16 +45,17 @@ Patch5:		%{name}-unix-blowfish.patch
 Patch6:		%{name}-mkhomedir-new-features.patch
 Patch7:		%{name}-db-gdbm.patch
 Patch8:		%{name}-exec-failok.patch
+Patch9:		%{name}-udevgroup.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
-%{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel >= 2.8.3
+%{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
 # gdbm due to db pulling libpthread
-BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	flex
+BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	glibc-devel >= 6:2.5-0.5
 %{?with_prelude:BuildRequires:	libprelude-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
@@ -70,12 +71,14 @@ BuildRequires:	libxslt-progs
 BuildRequires:	w3m
 %endif
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	awk
 Requires:	/usr/bin/make
+Requires:	awk
 Provides:	pam-pld
-Obsoletes:	pamconfig
-Obsoletes:	pam_make
 Obsoletes:	pam-doc
+Obsoletes:	pam_make
+Obsoletes:	pamconfig
+Conflicts:	dev < 3.4-4
+Conflicts:	udev < 1:138-5
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -146,13 +149,12 @@ PAM (Pluggable Authentication Modules) - это мощная, гибкая,
 Summary:	PAM modules and libraries
 Summary(pl.UTF-8):	Moduły i biblioteki PAM
 Group:		Libraries
-Conflicts:	pam < 0:0.80.1-2
 Requires(triggerpostun):	sed >= 4.0
+%{?with_audit:Requires:	audit-libs >= 1.0.8}
 Requires:	cracklib >= 2.8.3
 Requires:	cracklib-dicts >= 2.8.3
 Requires:	gdbm >= 1.8.3-7
 Requires:	glibc >= 6:2.5-0.5
-%{?with_audit:Requires:	audit-libs >= 1.0.8}
 %{?with_selinux:Requires:	libselinux >= 1.33.2}
 Obsoletes:	pam-pam_cap
 Obsoletes:	pam-pam_opie
@@ -160,6 +162,7 @@ Obsoletes:	pam-pam_pwdb
 Obsoletes:	pam-pam_radius
 Obsoletes:	pam-pam_skey
 Obsoletes:	pam-pam_tcpd
+Conflicts:	pam < 0:0.80.1-2
 
 %description libs
 Core PAM modules and libraries.
@@ -235,6 +238,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 %build
 %{__libtoolize}
@@ -271,11 +275,11 @@ install modules/pam_selinux/pam_selinux_check.8 $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
 %endif
 
-mkdir -p doc/txts
+install -d doc/txts
 for r in modules/pam_*/README ; do
 	cp -f $r doc/txts/README.$(basename $(dirname $r))
 done
-mkdir -p doc/html
+install -d doc/html
 cp -f doc/index.html doc/html/
 
 # fix PAM/pam man page
@@ -390,10 +394,10 @@ end
 %if %{with doc}
 %doc doc/specs/*.txt doc/sag/Linux-PAM_*.txt doc/{sag,}/html
 %endif
-%dir %attr(755,root,root) /etc/pam.d
-%dir %attr(755,root,root) /etc/security/console.apps
-%dir %attr(755,root,root) /etc/security/console.perms.d
-%dir %attr(755,root,root) /var/run/console
+%dir /etc/pam.d
+%dir /etc/security/console.apps
+%dir /etc/security/console.perms.d
+%dir /var/run/console
 %config(noreplace) %verify(not md5 mtime size) /etc/environment
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/other
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/system-auth
@@ -429,7 +433,7 @@ end
 %{_mandir}/man8/pam_[t-x]*
 %{_mandir}/man8/unix_chkpwd*
 %{_mandir}/man8/unix_update*
-%ghost %verify(not md5 size mtime) /var/log/tallylog
+%ghost %verify(not md5 mtime size) /var/log/tallylog
 
 %files libs
 %defattr(644,root,root,755)
@@ -515,8 +519,8 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_selinux.so
 %attr(755,root,root) /%{_lib}/security/pam_sepermit.so
 %attr(755,root,root) %{_sbindir}/pam_selinux_check
-%config(noreplace) %verify(not size mtime md5) /etc/pam.d/pam_selinux_check
-%config(noreplace) %verify(not size mtime md5) /etc/security/sepermit.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/pam.d/pam_selinux_check
+%config(noreplace) %verify(not md5 mtime size) /etc/security/sepermit.conf
 %{_mandir}/man8/pam_selinux*.8*
 %{_mandir}/man8/pam_sepermit*.8*
 %endif
