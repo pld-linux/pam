@@ -5,7 +5,7 @@
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	audit		# build with Linux Auditing library support
 #
-%define		pam_pld_version	0.99.9.0-1
+%define		pam_pld_version	1.1.0-1
 #
 %define		_sbindir	/sbin
 #
@@ -19,17 +19,17 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.0.3
-Release:	4
+Version:	1.1.0
+Release:	0.1
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
 Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	7cc8653cb31717dbb1380bde980c9fdf
+# Source0-md5:	9cda791c827dfcd9f2888caf0a64cc4a
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2.sign
-# Source1-md5:	f3f7bc6e483266667534ad50eb188320
+# Source1-md5:	eedcd01bf8e722be4e6c8e16b5f1dce5
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
-# Source2-md5:	a92ff06ff3ab5f96a7e1aaa04ef77fa7
+# Source2-md5:	0f8fa92706ce74a026604073a3bf5783
 Source3:	other.pamd
 Source4:	system-auth.pamd
 Source5:	config-util.pamd
@@ -37,15 +37,11 @@ Source6:	%{name}_selinux_check.pamd
 Source7:	system-auth.5
 Source8:	config-util.5
 Patch0:		%{name}-pld-modules.patch
-Patch1:		%{name}-modutil_mem_limit.patch
-Patch2:		%{name}-cracklib-try-first-pass.patch
-Patch3:		%{name}-cracklib-enforce.patch
-Patch4:		%{name}-tally-fail-close.patch
-Patch5:		%{name}-unix-blowfish.patch
-Patch6:		%{name}-mkhomedir-new-features.patch
-Patch7:		%{name}-db-gdbm.patch
-Patch8:		%{name}-exec-failok.patch
-Patch9:		%{name}-udevgroup.patch
+Patch1:		%{name}-cracklib-enforce.patch
+Patch2:		%{name}-tally-fail-close.patch
+Patch3:		%{name}-mkhomedir-notfound.patch
+Patch4:		%{name}-db-gdbm.patch
+Patch5:		%{name}-exec-failok.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 BuildRequires:	autoconf
@@ -56,11 +52,12 @@ BuildRequires:	cracklib-devel >= 2.8.3
 # gdbm due to db pulling libpthread
 BuildRequires:	flex
 BuildRequires:	gdbm-devel >= 1.8.3-7
-BuildRequires:	glibc-devel >= 6:2.5-0.5
+BuildRequires:	glibc-devel >= 6:2.10.1
 %{?with_prelude:BuildRequires:	libprelude-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
 BuildRequires:	libtool >= 2:1.5
 %if %{with doc}
+BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-dtd43-xml
 BuildRequires:	docbook-dtd44-xml
 BuildRequires:	docbook-style-xsl >= 1.69.1
@@ -153,6 +150,7 @@ Requires(triggerpostun):	sed >= 4.0
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
 Requires:	cracklib >= 2.8.3
 Requires:	cracklib-dicts >= 2.8.3
+Requires:	crypt(blowfish)
 Requires:	gdbm >= 1.8.3-7
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 1.33.2}
@@ -235,10 +233,6 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
 
 %build
 %{__libtoolize}
@@ -415,16 +409,18 @@ end
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram*
 %config /etc/security/console.perms.d/50-default.perms
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/opasswd
-%attr(4755,root,root) /sbin/unix_chkpwd
-%attr(4755,root,root) /sbin/unix_update
 %attr(755,root,root) %{_bindir}/pam_pwgen
+%attr(755,root,root) %{_sbindir}/mkhomedir_helper
 %attr(755,root,root) %{_sbindir}/pam_console_apply
 %attr(755,root,root) %{_sbindir}/pam_tally
 %attr(755,root,root) %{_sbindir}/pam_tally2
 %attr(755,root,root) %{_sbindir}/pam_timestamp_check
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
+%attr(4755,root,root) %{_sbindir}/unix_chkpwd
+%attr(4755,root,root) %{_sbindir}/unix_update
 %{_mandir}/man5/*
 %{_mandir}/man8/PAM.*
+%{_mandir}/man8/mkhomedir_helper.8*
 %{_mandir}/man8/pam.*
 %{_mandir}/man8/pam_[a-r]*
 %{_mandir}/man8/pam_securetty*
@@ -472,6 +468,7 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_permit.so
 %attr(755,root,root) /%{_lib}/security/pam_pwexport.so
 %attr(755,root,root) /%{_lib}/security/pam_pwgen.so
+%attr(755,root,root) /%{_lib}/security/pam_pwhistory.so
 %attr(755,root,root) /%{_lib}/security/pam_rhosts.so
 %attr(755,root,root) /%{_lib}/security/pam_rootok.so
 %attr(755,root,root) /%{_lib}/security/pam_rps.so

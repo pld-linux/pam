@@ -36,13 +36,13 @@
    int call_setuid = 0;
    int quiet = 0;
 +  int fail_ok = 0;
+   int expose_authtok = 0;
    int optargc;
    const char *logfile = NULL;
-   pid_t pid;
 @@ -85,6 +86,8 @@
- 	call_setuid = 1;
-       else if (strcasecmp (argv[optargc], "quiet") == 0)
  	quiet = 1;
+       else if (strcasecmp (argv[optargc], "expose_authtok") == 0)
+ 	expose_authtok = 1;
 +      else if (strcasecmp (argv[optargc], "failok") == 0)
 +	fail_ok = 1;
        else
