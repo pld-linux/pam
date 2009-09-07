@@ -1,0 +1,90 @@
+diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.8.xml
+--- Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml	2006-05-30 15:03:09.000000000 +0200
++++ Linux-PAM-0.99.7.1/modules/pam_mkhomedir/pam_mkhomedir.8.xml	2007-02-03 22:09:37.942620000 +0100
+@@ -29,6 +29,9 @@
+         umask=<replaceable>mode</replaceable>
+       </arg>
+       <arg choice="opt">
++        notfound=[<replaceable>create</replaceable>|<replaceable>deny</replaceable>|<replaceable>ignore</replaceable>]
++      </arg>
++      <arg choice="opt">
+         skel=<replaceable>skeldir</replaceable>
+       </arg>
+     </cmdsynopsis>
+@@ -82,6 +94,20 @@
+ 
+       <varlistentry>
+         <term>
++          <option>notfound=[<replaceable>create</replaceable>|<replaceable>deny</replaceable>|<replaceable>ignore</replaceable>]</option>
++        </term>
++        <listitem>
++          <para>
++            What to do if home directory is not found or it is not a directory.
++	    <replaceable>create</replaceable> - default, make home directory;
++	    <replaceable>deny</replaceable> - deny access;
++	    <replaceable>ignore</replaceable> - do nothing
++          </para>
++        </listitem>
++      </varlistentry>
++
++      <varlistentry>
++        <term>
+           <option>skel=<replaceable>/path/to/skel/directory</replaceable></option>
+         </term>
+         <listitem>
+--- Linux-PAM-1.1.0/modules/pam_mkhomedir/pam_mkhomedir.c~	2009-04-09 10:07:18.000000000 +0200
++++ Linux-PAM-1.1.0/modules/pam_mkhomedir/pam_mkhomedir.c	2009-09-07 12:32:41.109408541 +0200
+@@ -61,8 +61,11 @@
+ #define MAX_FD_NO 10000
+ 
+ /* argument parsing */
+-#define MKHOMEDIR_DEBUG      020	/* be verbose about things */
+-#define MKHOMEDIR_QUIET      040	/* keep quiet about things */
++#define MKHOMEDIR_DEBUG      0x10	/* be verbose about things */
++#define MKHOMEDIR_QUIET      0x20	/* keep quiet about things */
++/* what to do, if home directory does not exist? */
++#define HOMEDIR_CREATE       0x40	/* create it */
++#define HOMEDIR_DENY         0x80	/* deny access */
+ 
+ struct options_t {
+   int ctrl;
+@@ -75,7 +78,7 @@
+ _pam_parse (const pam_handle_t *pamh, int flags, int argc, const char **argv,
+ 	    options_t *opt)
+ {
+-   opt->ctrl = 0;
++   opt->ctrl = HOMEDIR_CREATE;
+    opt->umask = "0022";
+    opt->skeldir = "/etc/skel";
+ 
+@@ -94,7 +97,16 @@
+ 	 opt->umask = *argv+6;
+       } else if (!strncmp(*argv,"skel=",5)) {
+ 	 opt->skeldir = *argv+5;
++      } else if (!strncmp(*argv,"notfound=",9)) {
+       } else {
++	 if (!strcmp(*argv + 9, "create"))
++	    opt->ctrl = (opt->ctrl | HOMEDIR_CREATE) & ~HOMEDIR_DENY;
++	 else if (!strcmp(*argv + 9, "deny"))
++	    opt->ctrl = (opt->ctrl | HOMEDIR_DENY) & ~HOMEDIR_CREATE;
++	 else if (!strcmp(*argv + 9, "ignore"))
++	    opt->ctrl &= ~(HOMEDIR_CREATE | HOMEDIR_DENY);
++	 else
++	    pam_syslog(pamh, LOG_ERR, "unknown parameter for \"create\" option: %s", *argv + 9);
+ 	 pam_syslog(pamh, LOG_ERR, "unknown option: %s", *argv);
+       }
+    }
+@@ -230,7 +242,12 @@
+       return PAM_SUCCESS;
+    }
+ 
+-   return create_homedir(pamh, &opt, pwd);
++   if (opt->ctrl & HOMEDIR_CREATE)
++      return create_homedir(pamh, &opt, pwd);
++   else if (opt->ctrl & HOMEDIR_DENY)
++      return PAM_PERM_DENIED;
++   else
++      return PAM_SUCCESS;
+ }
+ 
+ /* Ignore */
