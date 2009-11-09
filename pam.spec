@@ -5,7 +5,7 @@
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	audit		# build with Linux Auditing library support
 #
-%define		pam_pld_version	1.1.0-1
+%define		pam_pld_version	1.1.0-2
 #
 %define		_sbindir	/sbin
 #
@@ -20,7 +20,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.0
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -29,7 +29,7 @@ Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.t
 Source1:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2.sign
 # Source1-md5:	eedcd01bf8e722be4e6c8e16b5f1dce5
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
-# Source2-md5:	0f8fa92706ce74a026604073a3bf5783
+# Source2-md5:	982169260efd9bdd9a74323c3f232e6f
 Source3:	other.pamd
 Source4:	system-auth.pamd
 Source5:	config-util.pamd
