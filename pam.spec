@@ -20,7 +20,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.0
-Release:	3
+Release:	4
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -154,7 +154,6 @@ Requires:	crypt(blowfish)
 Requires:	gdbm >= 1.8.3-7
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 1.33.2}
-Obsoletes:	pam-pam_cap
 Obsoletes:	pam-pam_opie
 Obsoletes:	pam-pam_pwdb
 Obsoletes:	pam-pam_radius
