@@ -309,6 +309,9 @@ for dir in modules/pam_* ; do
 [ ${dir} = "modules/pam_selinux" ] && continue
 [ ${dir} = "modules/pam_sepermit" ] && continue
 %endif
+%if %{without audit}
+[ ${dir} = "modules/pam_tty_audit" ] && continue
+%endif
 	if [ -d ${dir} ] ; then
 		if ! ls -1 $RPM_BUILD_ROOT/%{_lib}/security/`basename ${dir}`*.so ; then
 			echo ERROR `basename ${dir}` did not build a module.
@@ -479,7 +482,7 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_tally.so
 %attr(755,root,root) /%{_lib}/security/pam_time.so
 %attr(755,root,root) /%{_lib}/security/pam_timestamp.so
-%attr(755,root,root) /%{_lib}/security/pam_tty_audit.so
+%{?with_audit:%attr(755,root,root) /%{_lib}/security/pam_tty_audit.so}
 %attr(755,root,root) /%{_lib}/security/pam_umask.so
 %attr(755,root,root) /%{_lib}/security/pam_unix.so
 %attr(755,root,root) /%{_lib}/security/pam_userdb.so
