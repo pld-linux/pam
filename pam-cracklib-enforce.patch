@@ -100,13 +100,14 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c Linux-PAM-
      options.cracklib_dictpath = CRACKLIB_DICTS;
  
      ctrl = _pam_parse(pamh, &options, argc, argv);
-@@ -613,11 +628,26 @@
+@@ -613,12 +628,31 @@
  	    if (ctrl & PAM_DEBUG_ARG)
  	      pam_syslog(pamh,LOG_DEBUG,"bad password: %s",crack_msg);
  	    pam_error (pamh, _("BAD PASSWORD: %s"), crack_msg);
 -	    if (getuid() || (flags & PAM_CHANGE_EXPIRED_AUTHTOK))
 +	    if (flags & PAM_CHANGE_EXPIRED_AUTHTOK)
 	      {
+ 		pam_set_item (pamh, PAM_AUTHTOK, NULL);
 		retval = PAM_AUTHTOK_ERR;
 		continue;
 	      }
@@ -115,11 +116,15 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c Linux-PAM-
 +				retval = PAM_SUCCESS;
 +				break;
 +			case ENFORCE_USERS:
-+				if (getuid()) retval = PAM_AUTHTOK_ERR;
++				if (getuid()) {
++					pam_set_item (pamh, PAM_AUTHTOK, NULL);
++					retval = PAM_AUTHTOK_ERR;
++				}
 +				else retval = PAM_SUCCESS;
 +				break;
 +			case ENFORCE_ALL:
 +			default:
++				pam_set_item (pamh, PAM_AUTHTOK, NULL);
 +				retval = PAM_AUTHTOK_ERR;
 +				break;
 +		}
@@ -128,13 +133,14 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c Linux-PAM-
  	  }
  
  	  /* check it for strength too... */
-@@ -624,11 +650,26 @@
+@@ -624,12 +650,31 @@
  	  retval = _pam_unix_approve_pass (pamh, ctrl, &options,
  					   oldtoken, newtoken);
  	  if (retval != PAM_SUCCESS) {
 -	    if (getuid() || (flags & PAM_CHANGE_EXPIRED_AUTHTOK))
 +	    if (flags & PAM_CHANGE_EXPIRED_AUTHTOK)
  	      {
+ 		pam_set_item(pamh, PAM_AUTHTOK, NULL);
  		retval = PAM_AUTHTOK_ERR;
  		continue;
  	      }
@@ -143,11 +149,15 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_cracklib/pam_cracklib.c Linux-PAM-
 +				retval = PAM_SUCCESS;
 +				break;
 +			case ENFORCE_USERS:
-+				if (getuid()) retval = PAM_AUTHTOK_ERR;
++				if (getuid()) {
++					pam_set_item(pamh, PAM_AUTHTOK, NULL);
++					retval = PAM_AUTHTOK_ERR;
++				}
 +				else retval = PAM_SUCCESS;
 +				break;
 +			case ENFORCE_ALL:
 +			default:
++				pam_set_item(pamh, PAM_AUTHTOK, NULL);
 +				retval = PAM_AUTHTOK_ERR;
 +				break;
 +		}
