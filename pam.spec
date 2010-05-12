@@ -48,7 +48,6 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel >= 2.8.3
-%{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
 # gdbm due to db pulling libpthread
 BuildRequires:	flex
 BuildRequires:	gdbm-devel >= 1.8.3-7
@@ -56,6 +55,8 @@ BuildRequires:	glibc-devel >= 6:2.10.1
 %{?with_prelude:BuildRequires:	libprelude-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
 BuildRequires:	libtool >= 2:1.5
+%{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
+BuildRequires:	zlib-devel
 %if %{with doc}
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-dtd43-xml
