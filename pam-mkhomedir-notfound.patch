@@ -57,11 +57,10 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linu
     opt->umask = "0022";
     opt->skeldir = "/etc/skel";
  
-@@ -94,7 +97,15 @@
+@@ -94,7 +97,16 @@
  	 opt->umask = *argv+6;
        } else if (!strncmp(*argv,"skel=",5)) {
  	 opt->skeldir = *argv+5;
--      } else {
 +      } else if (!strncmp(*argv,"notfound=",9)) {
 +	 if (!strcmp(*argv + 9, "create"))
 +	    opt->ctrl = (opt->ctrl | HOMEDIR_CREATE) & ~HOMEDIR_DENY;
@@ -71,6 +70,7 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linu
 +	    opt->ctrl &= ~(HOMEDIR_CREATE | HOMEDIR_DENY);
 +	 else
 +	    pam_syslog(pamh, LOG_ERR, "unknown parameter for \"create\" option: %s", *argv + 9);
+       } else {
  	 pam_syslog(pamh, LOG_ERR, "unknown option: %s", *argv);
        }
     }
