@@ -57,12 +57,12 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linu
     opt->umask = "0022";
     opt->skeldir = "/etc/skel";
  
-@@ -94,7 +97,16 @@
+@@ -94,7 +97,15 @@
  	 opt->umask = *argv+6;
        } else if (!strncmp(*argv,"skel=",5)) {
  	 opt->skeldir = *argv+5;
+-      } else {
 +      } else if (!strncmp(*argv,"notfound=",9)) {
-       } else {
 +	 if (!strcmp(*argv + 9, "create"))
 +	    opt->ctrl = (opt->ctrl | HOMEDIR_CREATE) & ~HOMEDIR_DENY;
 +	 else if (!strcmp(*argv + 9, "deny"))
