@@ -4,11 +4,8 @@
 %bcond_with	prelude		# build with Prelude IDS support
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	audit		# build with Linux Auditing library support
-#
+
 %define		pam_pld_version	1.1.2-1
-#
-%define		_sbindir	/sbin
-#
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Summary(de.UTF-8):	Einsteckbare Authentifizierungsmodule: modulare, inkrementäre Authentifizierung
 Summary(es.UTF-8):	Módulos de autentificación plugables (PAM)
@@ -20,7 +17,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.3
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -78,6 +75,8 @@ Obsoletes:	pamconfig
 Conflicts:	dev < 3.4-4
 Conflicts:	udev < 1:138-5
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_sbindir	/sbin
 
 %description
 PAM (Pluggable Authentication Modules) is a powerful, flexible,
@@ -370,6 +369,13 @@ done
 if [ -d /var/lock/console -a -d /var/run/console ]; then
 	cp -a /var/lock/console/* /var/run/console/ 2> /dev/null
 	rm -rf /var/lock/console
+fi
+
+%triggerin -- cronie,vixie-cron,hc-cron,fcron,mcron
+# restart crond if pam is upgraded
+# (crond is linked with old libpam but tries to open modules linked with new libpam)
+if [ "$1" != 1 ]; then
+	%service -q crond restart
 fi
 
 %post -p <lua>
