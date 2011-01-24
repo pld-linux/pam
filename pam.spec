@@ -49,6 +49,7 @@ BuildRequires:	cracklib-devel >= 2.8.3
 BuildRequires:	flex
 BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	glibc-devel >= 6:2.10.1
+BuildRequires:	glibc-misc
 %{?with_prelude:BuildRequires:	libprelude-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
 BuildRequires:	libtool >= 2:1.5
