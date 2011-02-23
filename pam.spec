@@ -418,13 +418,13 @@ end
 %config(noreplace) %verify(not md5 mtime size) /etc/security/time.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.en
-%config(noreplace) %verify(not md5 mtime size) %lang(de) /etc/security/trigram.de
-%config(noreplace) %verify(not md5 mtime size) %lang(es) /etc/security/trigram.es
-%config(noreplace) %verify(not md5 mtime size) %lang(fi) /etc/security/trigram.fi
-%config(noreplace) %verify(not md5 mtime size) %lang(it) /etc/security/trigram.it
-%config(noreplace) %verify(not md5 mtime size) %lang(ja) /etc/security/trigram.ja
-%config(noreplace) %verify(not md5 mtime size) %lang(nb) /etc/security/trigram.no
-%config(noreplace) %verify(not md5 mtime size) %lang(pl) /etc/security/trigram.pl
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.de
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.es
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.fi
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.it
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.ja
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.no
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.pl
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.perms.d/50-default.perms
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/opasswd
 %attr(755,root,root) %{_bindir}/pam_pwgen
