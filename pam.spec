@@ -17,7 +17,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.4
-Release:	0.1
+Release:	1
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -329,15 +329,6 @@ for module in $RPM_BUILD_ROOT/%{_lib}/security/pam*.so ; do
 		echo ERROR module: ${module} cannot be loaded.
 		exit 1
 	fi
-# And for good measure, make sure that none of the modules pull in threading
-# libraries, which if loaded in a non-threaded application, can cause Very
-# Bad Things to happen.
-	if env LD_LIBRARY_PATH=$RPM_BUILD_ROOT/%{_lib} \
-			LD_PRELOAD=$RPM_BUILD_ROOT/%{_lib}/libpam.so ldd -r ${module} | \
-			fgrep -q libpthread ; then
-		echo ERROR module: ${module} pulls threading libraries.
-		exit 1
-	fi
 done
 
 # useless - shut up check-files
@@ -419,6 +410,7 @@ end
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.en
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.de
+%config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.dk
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.es
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.fi
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.it
