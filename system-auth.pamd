@@ -15,6 +15,6 @@ password	required	pam_exec.so failok seteuid /usr/bin/make -C /var/db
 # password	required	pam_exec.so failok seteuid /usr/bin/make -C /var/yp
 
 session		optional	pam_keyinit.so revoke
-session		required	pam_limits.so change_uid
+session		required	pam_limits.so
 session		[success=1 default=ignore]	pam_succeed_if.so service in crond quiet use_uid
 session		required	pam_unix.so
