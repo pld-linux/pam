@@ -41,18 +41,21 @@ Patch4:		%{name}-db-gdbm.patch
 Patch5:		%{name}-exec-failok.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel >= 2.8.3
 # gdbm due to db pulling libpthread
 BuildRequires:	flex
 BuildRequires:	gdbm-devel >= 1.8.3-7
+BuildRequires:	gettext-devel >= 0.15
 BuildRequires:	glibc-devel >= 6:2.10.1
 BuildRequires:	glibc-misc
-%{?with_prelude:BuildRequires:	libprelude-devel}
+%{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
+#BuildRequires:	libtirpc-devel
 BuildRequires:	libtool >= 2:1.5
+BuildRequires:	libxcrypt-devel
 %{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
 BuildRequires:	zlib-devel
 %if %{with doc}
