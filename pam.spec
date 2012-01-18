@@ -350,7 +350,7 @@ rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_
 rm -rf $RPM_BUILD_ROOT
 
 %triggerpostun libs -- %{name}-libs < 0.99.7.1
-for f in `grep -l "\(pam_make\|pam_homedir\)" /etc/pam.d/*` ; do
+for f in $(grep -l "\(pam_make\|pam_homedir\)" /etc/pam.d/*); do
 	case "$f" in
 	*rpmorig|*rpmnew|*rpmsave|*~|*.orig)
 		continue
@@ -436,13 +436,11 @@ end
 %{_mandir}/man8/PAM.*
 %{_mandir}/man8/mkhomedir_helper.8*
 %{_mandir}/man8/pam.*
-%{_mandir}/man8/pam_[a-r]*
-%{_mandir}/man8/pam_securetty*
-%{_mandir}/man8/pam_shells*
-%{_mandir}/man8/pam_succeed_if*
-%{_mandir}/man8/pam_[t-x]*
+%{_mandir}/man8/pam_*
 %{_mandir}/man8/unix_chkpwd*
 %{_mandir}/man8/unix_update*
+%exclude %{_mandir}/man8/pam_selinux*.8*
+%exclude %{_mandir}/man8/pam_sepermit*.8*
 %ghost %verify(not md5 mtime size) /var/log/tallylog
 
 %files libs
