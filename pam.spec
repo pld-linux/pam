@@ -34,6 +34,7 @@ Source5:	config-util.pamd
 Source6:	%{name}_selinux_check.pamd
 Source7:	system-auth.5
 Source8:	config-util.5
+Source9:	%{name}.tmpfiles
 Patch0:		%{name}-pld-modules.patch
 Patch1:		%{name}-cracklib-enforce.patch
 Patch2:		%{name}-tally-fail-close.patch
@@ -262,7 +263,8 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/log}
+install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/log} \
+	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -272,6 +274,8 @@ install modules/pam_selinux/.libs/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
 install modules/pam_selinux/pam_selinux_check.8 $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
 %endif
+
+install %{SOURCE9} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
 
 install -d doc/txts
 for r in modules/pam_*/README ; do
@@ -397,6 +401,7 @@ end
 %dir /etc/security/console.apps
 %dir /etc/security/console.perms.d
 %dir /var/run/console
+/usr/lib/tmpfiles.d/%{name}.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/environment
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/other
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/system-auth
