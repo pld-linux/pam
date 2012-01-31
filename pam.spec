@@ -17,7 +17,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.5
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -537,4 +537,5 @@ end
 %config(noreplace) %verify(not md5 mtime size) /etc/security/sepermit.conf
 %{_mandir}/man8/pam_selinux*.8*
 %{_mandir}/man8/pam_sepermit*.8*
+%dir /var/run/sepermit
 %endif
