@@ -17,7 +17,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.5
-Release:	3
+Release:	4
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -377,6 +377,7 @@ fi
 if [ "$1" != 1 ]; then
 	%service -q crond restart
 fi
+exit 0
 
 %post -p <lua>
 fh, error = io.open("/var/log/tallylog")
