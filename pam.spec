@@ -17,7 +17,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.5
-Release:	4
+Release:	5
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -378,6 +378,15 @@ if [ "$1" != 1 ]; then
 	%service -q crond restart
 fi
 exit 0
+
+%triggerpostun -- %{name} < 1:1.1.5-5
+# We want it added for painless upgarde even if it mean log pollution for non-systemd
+# enabled systems,
+# If this module is not present on systemd enabled system then `systemctl restart sshd.service`
+# will kill all sessions.
+if ! grep -qs pam_systemd /etc/pam.d/system-auth; then
+	echo "session		optional	pam_systemd.so" >>/etc/pam.d/system-auth
+fi
 
 %post -p <lua>
 fh, error = io.open("/var/log/tallylog")
