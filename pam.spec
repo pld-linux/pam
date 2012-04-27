@@ -263,7 +263,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/log} \
+install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/{log,run/sepermit}} \
 	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
 %{__make} install \
