@@ -454,8 +454,10 @@ end
 %{_mandir}/man8/pam_*
 %{_mandir}/man8/unix_chkpwd*
 %{_mandir}/man8/unix_update*
+%if %{without selinux}
 %exclude %{_mandir}/man8/pam_selinux*.8*
 %exclude %{_mandir}/man8/pam_sepermit*.8*
+%endif
 %ghost %verify(not md5 mtime size) /var/log/tallylog
 
 %files libs
