@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	doc		# don't build documentation
-%bcond_with	prelude		# build with Prelude IDS support
+%bcond_with	prelude		# build with Prelude IDS support (in libpam)
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	audit		# build with Linux Auditing library support
 
@@ -454,16 +454,28 @@ end
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
 %attr(4755,root,root) %{_sbindir}/unix_chkpwd
 %attr(4755,root,root) %{_sbindir}/unix_update
-%{_mandir}/man5/*
-%{_mandir}/man8/PAM.*
+%{_mandir}/man5/access.conf.5*
+%{_mandir}/man5/config-util.5*
+%{_mandir}/man5/console.apps.5*
+%{_mandir}/man5/console.handlers.5*
+%{_mandir}/man5/console.perms.5*
+%{_mandir}/man5/group.conf.5*
+%{_mandir}/man5/limits.conf.5*
+%{_mandir}/man5/namespace.conf.5*
+%{_mandir}/man5/pam.conf.5*
+%{_mandir}/man5/pam.d.5*
+%{_mandir}/man5/pam_env.conf.5*
+%{_mandir}/man5/system-auth.5*
+%{_mandir}/man5/time.conf.5*
+%{_mandir}/man8/PAM.8*
 %{_mandir}/man8/mkhomedir_helper.8*
-%{_mandir}/man8/pam.*
-%{_mandir}/man8/pam_*
-%{_mandir}/man8/unix_chkpwd*
-%{_mandir}/man8/unix_update*
+%{_mandir}/man8/pam.8*
+%{_mandir}/man8/pam_*.8*
+%{_mandir}/man8/unix_chkpwd.8*
+%{_mandir}/man8/unix_update.8*
 %if %{with selinux}
 %exclude %{_mandir}/man8/pam_selinux*.8*
-%exclude %{_mandir}/man8/pam_sepermit*.8*
+%exclude %{_mandir}/man8/pam_sepermit.8*
 %endif
 %ghost %verify(not md5 mtime size) /var/log/tallylog
 
@@ -554,7 +566,8 @@ end
 %attr(755,root,root) %{_sbindir}/pam_selinux_check
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/pam_selinux_check
 %config(noreplace) %verify(not md5 mtime size) /etc/security/sepermit.conf
+%{_mandir}/man5/sepermit.conf.5*
 %{_mandir}/man8/pam_selinux*.8*
-%{_mandir}/man8/pam_sepermit*.8*
+%{_mandir}/man8/pam_sepermit.8*
 %dir /var/run/sepermit
 %endif
