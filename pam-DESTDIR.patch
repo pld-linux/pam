@@ -1,0 +1,11 @@
+--- Linux-PAM-1.1.6/modules/pam_namespace/Makefile.am~	2012-08-15 13:08:43.000000000 +0200
++++ Linux-PAM-1.1.6/modules/pam_namespace/Makefile.am	2012-11-27 12:11:03.796446562 +0100
+@@ -40,7 +40,7 @@
+   secureconf_SCRIPTS = namespace.init
+ 
+ install-data-local:
+-	mkdir -p $(namespaceddir)
++	mkdir -p $(DESTDIR)$(namespaceddir)
+ endif
+ 
+ 
