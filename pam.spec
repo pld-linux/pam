@@ -16,14 +16,14 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.1.5
-Release:	8
+Version:	1.1.6
+Release:	1
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
 #Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
 Source0:	https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	927ee5585bdec5256c75117e9348aa47
+# Source0-md5:	7b73e58b7ce79ffa321d408de06db2c4
 #xSource1:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2.sign
 # xSource1-md5:	2435d4a23aaf871bcec436f863b0de6c
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
@@ -36,11 +36,12 @@ Source7:	system-auth.5
 Source8:	config-util.5
 Source9:	%{name}.tmpfiles
 Patch0:		%{name}-pld-modules.patch
-Patch1:		%{name}-cracklib-enforce.patch
+Patch1:		%{name}-RLIM.patch
 Patch2:		%{name}-tally-fail-close.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
 Patch4:		%{name}-db-gdbm.patch
 Patch5:		%{name}-exec-failok.patch
+Patch6:		%{name}-DESTDIR.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 BuildRequires:	autoconf >= 2.61
@@ -238,6 +239,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 %{__libtoolize}
@@ -459,7 +461,7 @@ end
 %{_mandir}/man8/pam_*
 %{_mandir}/man8/unix_chkpwd*
 %{_mandir}/man8/unix_update*
-%if %{without selinux}
+%if %{with selinux}
 %exclude %{_mandir}/man8/pam_selinux*.8*
 %exclude %{_mandir}/man8/pam_sepermit*.8*
 %endif
