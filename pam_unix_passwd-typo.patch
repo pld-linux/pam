@@ -1,11 +1,22 @@
---- Linux-PAM-1.1.7/modules/pam_unix/pam_unix_passwd.c~	2013-08-29 15:09:08.000000000 +0300
-+++ Linux-PAM-1.1.7/modules/pam_unix/pam_unix_passwd.c	2013-09-13 17:49:28.090104727 +0300
-@@ -255,7 +255,7 @@
+From 7f9aa8388f19012b6b11b0077422ee0c7a8cb286 Mon Sep 17 00:00:00 2001
+From: Tomas Mraz <tmraz@fedoraproject.org>
+Date: Fri, 13 Sep 2013 12:04:08 +0000
+Subject: Add missing ')'
+
+modules/pam_unix/pam_unix_passwd.c: Add missing ')'..
+---
+diff --git a/modules/pam_unix/pam_unix_passwd.c b/modules/pam_unix/pam_unix_passwd.c
+index 9bc1cd9..9aae3b0 100644
+--- a/modules/pam_unix/pam_unix_passwd.c
++++ b/modules/pam_unix/pam_unix_passwd.c
+@@ -255,7 +255,7 @@ static int _unix_run_update_binary(pam_handle_t *pamh, unsigned int ctrl, const
  	close(fds[0]);       /* close here to avoid possible SIGPIPE above */
  	close(fds[1]);
  	/* wait for helper to complete: */
 -	while ((rc=waitpid(child, &retval, 0) < 0 && errno == EINTR);
-+	while ((rc=waitpid(child, &retval, 0) < 0 && errno == EINTR));
++	while ((rc=waitpid(child, &retval, 0)) < 0 && errno == EINTR);
  	if (rc<0) {
  	  pam_syslog(pamh, LOG_ERR, "unix_update waitpid failed: %m");
  	  retval = PAM_AUTHTOK_ERR;
+--
+cgit v0.9.2
