@@ -1,0 +1,11 @@
+--- Linux-PAM-1.1.7/modules/pam_unix/pam_unix_passwd.c~	2013-08-29 15:09:08.000000000 +0300
++++ Linux-PAM-1.1.7/modules/pam_unix/pam_unix_passwd.c	2013-09-13 17:49:28.090104727 +0300
+@@ -255,7 +255,7 @@
+ 	close(fds[0]);       /* close here to avoid possible SIGPIPE above */
+ 	close(fds[1]);
+ 	/* wait for helper to complete: */
+-	while ((rc=waitpid(child, &retval, 0) < 0 && errno == EINTR);
++	while ((rc=waitpid(child, &retval, 0) < 0 && errno == EINTR));
+ 	if (rc<0) {
+ 	  pam_syslog(pamh, LOG_ERR, "unix_update waitpid failed: %m");
+ 	  retval = PAM_AUTHTOK_ERR;

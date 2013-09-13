@@ -16,14 +16,14 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.1.6
-Release:	3
+Version:	1.1.7
+Release:	0.1
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
 #Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
 Source0:	https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	7b73e58b7ce79ffa321d408de06db2c4
+# Source0-md5:	9f90888cd22212a6b5af2920f4eaaf1b
 #xSource1:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2.sign
 # xSource1-md5:	2435d4a23aaf871bcec436f863b0de6c
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
@@ -36,12 +36,11 @@ Source7:	system-auth.5
 Source8:	config-util.5
 Source9:	%{name}.tmpfiles
 Patch0:		%{name}-pld-modules.patch
-Patch1:		%{name}-RLIM.patch
+Patch1:		%{name}_unix_passwd-typo.patch
 Patch2:		%{name}-tally-fail-close.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
 Patch4:		%{name}-db-gdbm.patch
 Patch5:		%{name}-exec-failok.patch
-Patch6:		%{name}-DESTDIR.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 BuildRequires:	autoconf >= 2.61
@@ -239,7 +238,6 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
 
 %build
 %{__libtoolize}
@@ -266,18 +264,18 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/{log,run/sepermit}} \
-	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
+	$RPM_BUILD_ROOT%{systemdtmpfilesdir}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %if %{with selinux}
-install modules/pam_selinux/.libs/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
-install modules/pam_selinux/pam_selinux_check.8 $RPM_BUILD_ROOT%{_mandir}/man8
-install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
+install -p modules/pam_selinux/.libs/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
+cp -p modules/pam_selinux/pam_selinux_check.8 $RPM_BUILD_ROOT%{_mandir}/man8
+cp -p %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
 %endif
 
-install %{SOURCE9} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
+cp -p %{SOURCE9} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 install -d doc/txts
 for r in modules/pam_*/README ; do
@@ -307,12 +305,12 @@ ln -sf /%{_lib}/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_mi
 ln -sf /%{_lib}/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
 cd -
 
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/other
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/pam.d/system-auth
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/config-util
+cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/other
+cp -p %{SOURCE4} $RPM_BUILD_ROOT/etc/pam.d/system-auth
+cp -p %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/config-util
 
-install %{SOURCE7} $RPM_BUILD_ROOT%{_mandir}/man5/system-auth.5
-install %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man5/config-util.5
+cp -p %{SOURCE7} $RPM_BUILD_ROOT%{_mandir}/man5/system-auth.5
+cp -p %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man5/config-util.5
 
 # Make sure every module subdirectory gave us a module.  Yes, this is hackish.
 for dir in modules/pam_* ; do
@@ -344,7 +342,7 @@ done
 # useless - shut up check-files
 rm -f $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
 rm -f $RPM_BUILD_ROOT/%{_lib}/lib*.so
-rm -rf $RPM_BUILD_ROOT%{_datadir}/doc/Linux-PAM
+rm -rf $RPM_BUILD_ROOT%{_docdir}/Linux-PAM
 
 %if %{without selinux}
 rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_check,%{_mandir}/man8/pam_selinux*.8*}
