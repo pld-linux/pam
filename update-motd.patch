@@ -1,4 +1,5 @@
 Patch for Ubuntu bug #399071
+https://bugs.launchpad.net/ubuntu/+source/pam/+bug/399071
 
 Provide a more dynamic MOTD, based on the short-lived update-motd project.
 
