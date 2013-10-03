@@ -94,7 +94,7 @@ Index: pam.ubuntu/modules/pam_motd/pam_motd.c
 +        && S_ISDIR(st.st_mode))
 +    {
 +	mode_t old_mask = umask(0022);
-+	if (!system("/usr/bin/env -i PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin run-parts --lsbsysinit /etc/update-motd.d > /var/run/motd.new"))
++	if (!system("/usr/bin/env -i PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin run-parts /etc/update-motd.d > /var/run/motd.new"))
 +	    rename("/var/run/motd.new", "/var/run/motd");
 +	umask(old_mask);
      }
@@ -137,21 +137,6 @@ Index: pam.ubuntu/modules/pam_motd/pam_motd.8
 ===================================================================
 --- pam.ubuntu.orig/modules/pam_motd/pam_motd.8
 +++ pam.ubuntu/modules/pam_motd/pam_motd.8
-@@ -2,12 +2,12 @@
- .\"     Title: pam_motd
- .\"    Author: [see the "AUTHOR" section]
- .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
--.\"      Date: 06/04/2011
-+.\"      Date: 10/30/2011
- .\"    Manual: Linux-PAM Manual
- .\"    Source: Linux-PAM Manual
- .\"  Language: English
- .\"
--.TH "PAM_MOTD" "8" "06/04/2011" "Linux-PAM Manual" "Linux\-PAM Manual"
-+.TH "PAM_MOTD" "8" "10/30/2011" "Linux-PAM Manual" "Linux\-PAM Manual"
- .\" -----------------------------------------------------------------
- .\" * Define some portability stuff
- .\" -----------------------------------------------------------------
 @@ -45,6 +45,13 @@
  /path/filename
  file is displayed as message of the day\&.
