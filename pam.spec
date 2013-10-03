@@ -17,7 +17,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.7
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -41,6 +41,7 @@ Patch2:		%{name}-tally-fail-close.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
 Patch4:		%{name}-db-gdbm.patch
 Patch5:		%{name}-exec-failok.patch
+Patch6:		update-motd.patch
 URL:		http://www.kernel.org/pub/linux/libs/pam/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 BuildRequires:	autoconf >= 2.61
@@ -238,6 +239,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 %{__libtoolize}
@@ -416,7 +418,7 @@ end
 %dir /etc/security/console.apps
 %dir /etc/security/console.perms.d
 %dir /var/run/console
-/usr/lib/tmpfiles.d/%{name}.conf
+%{systemdtmpfilesdir}/%{name}.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/environment
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/other
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/system-auth
