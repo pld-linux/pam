@@ -16,14 +16,14 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.1.7
-Release:	2
+Version:	1.1.8
+Release:	1
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
 #Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
 Source0:	https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	9f90888cd22212a6b5af2920f4eaaf1b
+# Source0-md5:	35b6091af95981b1b2cd60d813b5e4ee
 #xSource1:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2.sign
 # xSource1-md5:	2435d4a23aaf871bcec436f863b0de6c
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
@@ -36,7 +36,6 @@ Source7:	system-auth.5
 Source8:	config-util.5
 Source9:	%{name}.tmpfiles
 Patch0:		%{name}-pld-modules.patch
-Patch1:		%{name}_unix_passwd-typo.patch
 Patch2:		%{name}-tally-fail-close.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
 Patch4:		%{name}-db-gdbm.patch
@@ -234,7 +233,6 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 %prep
 %setup -q -a2 -n Linux-PAM-%{version}
 %patch0 -p1
-%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
