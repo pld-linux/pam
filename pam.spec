@@ -17,7 +17,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.8
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -72,8 +72,8 @@ BuildRequires:	libxslt-progs
 BuildRequires:	w3m
 %endif
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	/usr/bin/make
 Requires:	awk
+Suggests:	make
 Provides:	pam-pld
 Obsoletes:	pam-doc
 Obsoletes:	pam_make
