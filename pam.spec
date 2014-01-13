@@ -1,3 +1,5 @@
+# TODO
+# - check and package docs: https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-1.1.8-docs.tar.bz2
 #
 # Conditional build:
 %bcond_without	doc		# don't build documentation
