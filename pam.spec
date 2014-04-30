@@ -71,13 +71,25 @@ BuildRequires:	libxslt-progs
 BuildRequires:	w3m
 %endif
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+%{?with_audit:Requires:	audit-libs >= 1.0.8}
 Requires:	awk
+Requires:	cracklib >= 2.8.3
+Requires:	cracklib-dicts >= 2.8.3
+Requires:	crypt(blowfish)
+Requires:	gdbm >= 1.8.3-7
+Requires:	glibc >= 6:2.5-0.5
 Suggests:	make
 Provides:	pam-pld
 Obsoletes:	pam-doc
+Obsoletes:	pam-pam_opie
+Obsoletes:	pam-pam_pwdb
+Obsoletes:	pam-pam_radius
+Obsoletes:	pam-pam_skey
+Obsoletes:	pam-pam_tcpd
 Obsoletes:	pam_make
 Obsoletes:	pamconfig
 Conflicts:	dev < 3.4-4
+Conflicts:	pam < 0:0.80.1-2
 Conflicts:	udev < 1:138-5
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -148,29 +160,16 @@ PAM (Pluggable Authentication Modules) - это мощная, гибкая,
 аутентикации в PLD Linux.
 
 %package libs
-Summary:	PAM modules and libraries
-Summary(pl.UTF-8):	Moduły i biblioteki PAM
+Summary:	PAM libraries
+Summary(pl.UTF-8):	Moduły PAM
 Group:		Libraries
 Requires(triggerpostun):	sed >= 4.0
-%{?with_audit:Requires:	audit-libs >= 1.0.8}
-Requires:	cracklib >= 2.8.3
-Requires:	cracklib-dicts >= 2.8.3
-Requires:	crypt(blowfish)
-Requires:	gdbm >= 1.8.3-7
-Requires:	glibc >= 6:2.5-0.5
-%{?with_selinux:Requires:	libselinux >= 1.33.2}
-Obsoletes:	pam-pam_opie
-Obsoletes:	pam-pam_pwdb
-Obsoletes:	pam-pam_radius
-Obsoletes:	pam-pam_skey
-Obsoletes:	pam-pam_tcpd
-Conflicts:	pam < 0:0.80.1-2
 
 %description libs
-Core PAM modules and libraries.
+PAM libraries.
 
 %description libs -l pl.UTF-8
-Moduły i biblioteki PAM.
+Moduły PAM.
 
 %package devel
 Summary:	PAM header files
@@ -222,6 +221,7 @@ Biblioteki statyczne PAM.
 Summary:	PAM module - SELinux support
 Summary(pl.UTF-8):	Moduł PAM pozwalający na zmianę kontekstów SELinuksa
 Group:		Base
+Requires:	libselinux >= 1.33.2
 
 %description pam_selinux
 PAM module - SELinux support.
@@ -476,15 +476,7 @@ end
 %endif
 %ghost %verify(not md5 mtime size) /var/log/tallylog
 
-%files libs
-%defattr(644,root,root,755)
-%dir /%{_lib}/security/pam_filter
-%attr(755,root,root) /%{_lib}/libpam.so.*.*.*
-%attr(755,root,root) %ghost /%{_lib}/libpam.so.0
-%attr(755,root,root) /%{_lib}/libpam_misc.so.*.*.*
-%attr(755,root,root) %ghost /%{_lib}/libpam_misc.so.0
-%attr(755,root,root) /%{_lib}/libpamc.so.*.*.*
-%attr(755,root,root) %ghost /%{_lib}/libpamc.so.0
+# PAM modules
 %attr(755,root,root) /%{_lib}/security/pam_access.so
 %attr(755,root,root) /%{_lib}/security/pam_console.so
 %attr(755,root,root) /%{_lib}/security/pam_cracklib.so
@@ -532,6 +524,16 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_warn.so
 %attr(755,root,root) /%{_lib}/security/pam_wheel.so
 %attr(755,root,root) /%{_lib}/security/pam_xauth.so
+
+%files libs
+%defattr(644,root,root,755)
+%dir /%{_lib}/security/pam_filter
+%attr(755,root,root) /%{_lib}/libpam.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpam.so.0
+%attr(755,root,root) /%{_lib}/libpam_misc.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpam_misc.so.0
+%attr(755,root,root) /%{_lib}/libpamc.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libpamc.so.0
 
 %files devel
 %defattr(644,root,root,755)
