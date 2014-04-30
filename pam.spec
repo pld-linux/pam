@@ -80,7 +80,6 @@ Requires:	glibc >= 6:2.5-0.5
 # for migration purposes. drop at some point
 Requires:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Suggests:	make
-Provides:	pam-pld
 Obsoletes:	pam-doc
 Obsoletes:	pam-pam_opie
 Obsoletes:	pam-pam_pwdb
