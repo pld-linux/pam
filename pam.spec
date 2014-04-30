@@ -76,8 +76,9 @@ Requires:	awk
 Requires:	cracklib >= 2.8.3
 Requires:	cracklib-dicts >= 2.8.3
 Requires:	crypt(blowfish)
-Requires:	gdbm >= 1.8.3-7
 Requires:	glibc >= 6:2.5-0.5
+# for migration purposes. drop at some point
+Requires:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Suggests:	make
 Provides:	pam-pld
 Obsoletes:	pam-doc
@@ -229,6 +230,15 @@ PAM module - SELinux support.
 %description pam_selinux -l pl.UTF-8
 Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 
+%package pam_userdb
+Summary:	PAM module - authenticate against db database
+Group:		Base
+Requires:	gdbm >= 1.8.3-7
+Conflicts:	pam-libs < 1:1.1.8-3.1
+
+%description pam_userdb
+pam_userdb - PAM module to authenticate against a Berkeley DB database
+
 %prep
 %setup -q -a2 -n Linux-PAM-%{version}
 %patch0 -p1
@@ -277,11 +287,12 @@ cp -p %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
 cp -p %{SOURCE9} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 install -d doc/txts
-for r in modules/pam_*/README ; do
-	cp -f $r doc/txts/README.$(basename $(dirname $r))
+for r in modules/pam_*/README; do
+	cp -pf $r doc/txts/README.$(basename $(dirname $r))
 done
+rm doc/txts/README.pam_userdb
 install -d doc/html
-cp -f doc/index.html doc/html/
+cp -pf doc/index.html doc/html/
 
 # fix PAM/pam man page
 echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
@@ -474,6 +485,7 @@ end
 %exclude %{_mandir}/man8/pam_selinux*.8*
 %exclude %{_mandir}/man8/pam_sepermit.8*
 %endif
+%exclude %{_mandir}/man8/pam_userdb.8*
 %ghost %verify(not md5 mtime size) /var/log/tallylog
 
 # PAM modules
@@ -520,7 +532,6 @@ end
 %{?with_audit:%attr(755,root,root) /%{_lib}/security/pam_tty_audit.so}
 %attr(755,root,root) /%{_lib}/security/pam_umask.so
 %attr(755,root,root) /%{_lib}/security/pam_unix.so
-%attr(755,root,root) /%{_lib}/security/pam_userdb.so
 %attr(755,root,root) /%{_lib}/security/pam_warn.so
 %attr(755,root,root) /%{_lib}/security/pam_wheel.so
 %attr(755,root,root) /%{_lib}/security/pam_xauth.so
@@ -570,3 +581,9 @@ end
 %{_mandir}/man8/pam_sepermit.8*
 %dir /var/run/sepermit
 %endif
+
+%files pam_userdb
+%defattr(644,root,root,755)
+%doc modules/pam_userdb/README
+%attr(755,root,root) /%{_lib}/security/pam_userdb.so
+%{_mandir}/man8/pam_userdb.8*
