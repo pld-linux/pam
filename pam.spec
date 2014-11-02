@@ -19,7 +19,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.8
-Release:	5
+Release:	6
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -255,6 +255,7 @@ pam_userdb - PAM module to authenticate against a Berkeley DB database
 %{__autoheader}
 %{__automake}
 %configure \
+	ac_cv_path_FO2PDF= \
 	--enable-static \
 	--enable-shared \
 	--libdir=/%{_lib} \
