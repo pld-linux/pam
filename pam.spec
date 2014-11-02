@@ -19,7 +19,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.8
-Release:	4
+Release:	5
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -34,6 +34,7 @@ Source6:	%{name}_selinux_check.pamd
 Source7:	system-auth.5
 Source8:	config-util.5
 Source9:	%{name}.tmpfiles
+Source10:	postlogin.pamd
 Patch0:		%{name}-pld-modules.patch
 Patch2:		%{name}-tally-fail-close.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
@@ -317,6 +318,7 @@ cd -
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/other
 cp -p %{SOURCE4} $RPM_BUILD_ROOT/etc/pam.d/system-auth
 cp -p %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/config-util
+cp -p %{SOURCE10} $RPM_BUILD_ROOT/etc/pam.d/postlogin
 
 cp -p %{SOURCE7} $RPM_BUILD_ROOT%{_mandir}/man5/system-auth.5
 cp -p %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man5/config-util.5
@@ -430,6 +432,7 @@ end
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/other
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/system-auth
 %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/config-util
+%config(noreplace) %verify(not md5 mtime size) /etc/pam.d/postlogin
 %config(noreplace) %verify(not md5 mtime size) /etc/security/access.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.handlers
