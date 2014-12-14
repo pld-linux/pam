@@ -19,7 +19,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.1.8
-Release:	6
+Release:	7
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
@@ -78,9 +78,8 @@ Requires:	cracklib >= 2.8.3
 Requires:	cracklib-dicts >= 2.8.3
 Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
-# for migration purposes. drop at some point
-Requires:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Suggests:	make
+Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Obsoletes:	pam-doc
 Obsoletes:	pam-pam_opie
 Obsoletes:	pam-pam_pwdb
