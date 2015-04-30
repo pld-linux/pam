@@ -18,13 +18,13 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.1.8
-Release:	8
+Version:	1.2.0
+Release:	0.1
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
 Source0:	http://www.linux-pam.org/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	35b6091af95981b1b2cd60d813b5e4ee
+# Source0-md5:	ee4a480d77b341c99e8b1375f8f180c0
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	f9ec6fcafcf1801bf318e60040244f2e
 Source3:	other.pamd
@@ -50,7 +50,7 @@ BuildRequires:	cracklib-devel >= 2.8.3
 # gdbm due to db pulling libpthread
 BuildRequires:	flex
 BuildRequires:	gdbm-devel >= 1.8.3-7
-BuildRequires:	gettext-tools >= 0.15
+BuildRequires:	gettext-tools >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
 BuildRequires:	glibc-misc
 %{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}

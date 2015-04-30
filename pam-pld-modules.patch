@@ -1,5 +1,5 @@
 --- Linux-PAM-0.99.5.0/configure.in.redhat-modules	2006-06-28 09:25:02.000000000 +0200
-+++ Linux-PAM-0.99.5.0/configure.in	2006-06-30 10:24:35.000000000 +0200
++++ Linux-PAM-0.99.5.0/configure.ac	2006-06-30 10:24:35.000000000 +0200
 @@ -492,6 +492,8 @@
  	libpam_misc/Makefile conf/Makefile conf/pam_conv1/Makefile \
  	po/Makefile.in \

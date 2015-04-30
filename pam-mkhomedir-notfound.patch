@@ -32,8 +32,8 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linu
            <option>skel=<replaceable>/path/to/skel/directory</replaceable></option>
          </term>
          <listitem>
---- Linux-PAM-1.1.0/modules/pam_mkhomedir/pam_mkhomedir.c~	2009-04-09 10:07:18.000000000 +0200
-+++ Linux-PAM-1.1.0/modules/pam_mkhomedir/pam_mkhomedir.c	2009-09-07 12:32:41.109408541 +0200
+--- Linux-PAM-1.2.0/modules/pam_mkhomedir/pam_mkhomedir.c~	2015-04-30 12:15:42.000000000 +0300
++++ Linux-PAM-1.2.0/modules/pam_mkhomedir/pam_mkhomedir.c	2015-04-30 12:16:09.350939182 +0300
 @@ -61,8 +61,11 @@
  #define MAX_FD_NO 10000
  
@@ -74,11 +74,11 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linu
  	 pam_syslog(pamh, LOG_ERR, "unknown option: %s", *argv);
        }
     }
-@@ -230,7 +242,12 @@
+@@ -235,7 +235,12 @@
        return PAM_SUCCESS;
     }
  
--   return create_homedir(pamh, &opt, pwd);
+-   return create_homedir(pamh, &opt, user, pwd->pw_dir);
 +   if (opt.ctrl & HOMEDIR_CREATE)
 +      return create_homedir(pamh, &opt, pwd);
 +   else if (opt.ctrl & HOMEDIR_DENY)
