@@ -80,7 +80,7 @@ diff -urN Linux-PAM-0.99.7.1.orig/modules/pam_mkhomedir/pam_mkhomedir.8.xml Linu
  
 -   return create_homedir(pamh, &opt, user, pwd->pw_dir);
 +   if (opt.ctrl & HOMEDIR_CREATE)
-+      return create_homedir(pamh, &opt, pwd);
++      return create_homedir(pamh, &opt, user, pwd->pw_dir);
 +   else if (opt.ctrl & HOMEDIR_DENY)
 +      return PAM_PERM_DENIED;
 +   else
