@@ -51,7 +51,7 @@ BuildRequires:	cracklib-devel >= 2.8.3
 # gdbm due to db pulling libpthread
 BuildRequires:	flex
 BuildRequires:	gdbm-devel >= 1.8.3-7
-BuildRequires:	gettext-devel >= 0.18.3
+BuildRequires:	gettext-tools >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
 %{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
