@@ -51,15 +51,15 @@ BuildRequires:	cracklib-devel >= 2.8.3
 # gdbm due to db pulling libpthread
 BuildRequires:	flex
 BuildRequires:	gdbm-devel >= 1.8.3-7
-BuildRequires:	gettext-tools >= 0.18.3
+BuildRequires:	gettext-devel >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
-BuildRequires:	glibc-misc
 %{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
 #BuildRequires:	libtirpc-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxcrypt-devel
 %{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
+BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel
 %if %{with doc}
 BuildRequires:	docbook-dtd412-xml
