@@ -1,6 +1,8 @@
 # TODO
 # - check and package docs: https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-1.1.8-docs.tar.bz2
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
+# - unpackaged files:
+#   /usr/share/man/man5/environment.5
 #
 # Conditional build:
 %bcond_without	doc		# don't build documentation
@@ -20,7 +22,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.3.0
-Release:	0.1
+Release:	1
 Epoch:		1
 License:	GPL or BSD
 Group:		Base
