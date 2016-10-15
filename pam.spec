@@ -58,7 +58,7 @@ BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	gettext-tools >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
 %{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}
-%{?with_selinux:BuildRequires:	libselinux-devel >= 1.33.2}
+%{?with_selinux:BuildRequires:	libselinux-devel >= 2.1.9}
 #BuildRequires:	libtirpc-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxcrypt-devel
@@ -83,6 +83,7 @@ Requires:	cracklib >= 2.8.3
 Requires:	cracklib-dicts >= 2.8.3
 Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
+%{?with_selinux:Requires:	libselinux >= 2.1.9}
 Suggests:	make
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Obsoletes:	pam-doc
@@ -226,7 +227,7 @@ Biblioteki statyczne PAM.
 Summary:	PAM module - SELinux support
 Summary(pl.UTF-8):	Moduł PAM pozwalający na zmianę kontekstów SELinuksa
 Group:		Base
-Requires:	libselinux >= 1.33.2
+Requires:	libselinux >= 2.1.9
 
 %description pam_selinux
 PAM module - SELinux support.
