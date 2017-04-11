@@ -1,8 +1,6 @@
 # TODO
 # - check and package docs: https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-1.1.8-docs.tar.bz2
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
-# - unpackaged files:
-#   /usr/share/man/man5/environment.5
 #
 # Conditional build:
 %bcond_without	doc		# don't build documentation
@@ -59,8 +57,8 @@ BuildRequires:	gettext-tools >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
 %{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 2.1.9}
-#BuildRequires:	libtirpc-devel
-BuildRequires:	libtool >= 2:1.5
+BuildRequires:	libtirpc-devel
+BuildRequires:	libtool >= 2:2
 BuildRequires:	libxcrypt-devel
 %{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
 BuildRequires:	pkgconfig
@@ -296,7 +294,7 @@ install -d doc/txts
 for r in modules/pam_*/README; do
 	cp -pf $r doc/txts/README.$(basename $(dirname $r))
 done
-rm doc/txts/README.pam_userdb
+%{__rm} doc/txts/README.pam_userdb
 install -d doc/html
 cp -pf doc/index.html doc/html/
 
@@ -308,13 +306,13 @@ echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 
 :> $RPM_BUILD_ROOT/var/log/tallylog
 
-mv -f $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}
+%{__mv} $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}
 
 cd $RPM_BUILD_ROOT/%{_lib}
 for f in lib*.la ; do
-	sed -e 's|/%{_lib}/libpam|%{_libdir}/libpam|g' $f > $RPM_BUILD_ROOT%{_libdir}/$f
-	rm -f $f
-	sed -i -e "s|libdir='/%{_lib}|libdir='%{_libdir}|g" $RPM_BUILD_ROOT%{_libdir}/$f
+	%{__sed} -e 's|/%{_lib}/libpam|%{_libdir}/libpam|g' \
+		 -e "s|libdir='/%{_lib}|libdir='%{_libdir}|g" $f > $RPM_BUILD_ROOT%{_libdir}/$f
+	%{__rm} $f
 done
 ln -sf /%{_lib}/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /%{_lib}/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
@@ -357,9 +355,9 @@ for module in $RPM_BUILD_ROOT/%{_lib}/security/pam*.so ; do
 done
 
 # useless - shut up check-files
-rm -f $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
-rm -f $RPM_BUILD_ROOT/%{_lib}/lib*.so
-rm -rf $RPM_BUILD_ROOT%{_docdir}/Linux-PAM
+%{__rm} $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
+%{__rm} $RPM_BUILD_ROOT/%{_lib}/lib*.so
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/Linux-PAM
 
 %if %{without selinux}
 rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_check,%{_mandir}/man8/pam_selinux*.8*}
@@ -475,6 +473,7 @@ end
 %{_mandir}/man5/console.apps.5*
 %{_mandir}/man5/console.handlers.5*
 %{_mandir}/man5/console.perms.5*
+%{_mandir}/man5/environment.5*
 %{_mandir}/man5/group.conf.5*
 %{_mandir}/man5/limits.conf.5*
 %{_mandir}/man5/namespace.conf.5*
