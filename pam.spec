@@ -1,6 +1,7 @@
 # TODO
 # - check and package docs: https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-1.1.8-docs.tar.bz2
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
+# - replace pam_cracklib.so with pam_pwquality.so (backwards compatible with its options), comes with pam-pam_pwquality package
 #
 # Conditional build:
 %bcond_without	doc		# don't build documentation
