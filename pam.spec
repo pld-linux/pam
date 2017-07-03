@@ -22,7 +22,10 @@ Name:		pam
 Version:	1.3.0
 Release:	3
 Epoch:		1
-License:	GPL or BSD
+# The library is BSD licensed with option to relicense as GPLv2+
+# - this option is redundant as the BSD license allows that anyway.
+# pam_timestamp, pam_loginuid, and pam_console modules are GPLv2+.
+License:	BSD and GPLv2+
 Group:		Base
 Source0:	http://www.linux-pam.org/library/Linux-PAM-%{version}.tar.bz2
 # Source0-md5:	da4b2289b7cfb19583d54e9eaaef1c3a
