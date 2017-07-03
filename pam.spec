@@ -39,6 +39,7 @@ Source8:	config-util.5
 Source9:	%{name}.tmpfiles
 Source10:	postlogin.pamd
 Patch0:		%{name}-pld-modules.patch
+Patch1:		%{name}_console-lex-static.patch
 Patch2:		%{name}-tally-fail-close.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
 Patch4:		%{name}-db-gdbm.patch
@@ -245,6 +246,7 @@ pam_userdb - PAM module to authenticate against a Berkeley DB database
 %prep
 %setup -q -a2 -n Linux-PAM-%{version}
 %patch0 -p1
+%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
