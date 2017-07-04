@@ -2,6 +2,9 @@
 # - check and package docs: https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-1.1.8-docs.tar.bz2
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
 # - replace pam_cracklib.so with pam_pwquality.so (backwards compatible with its options), comes with pam-pam_pwquality package
+# - pam_tally, pam_tally2 is deprecated in favor of pam_faillock
+#   use patch for now: pkgs.fedoraproject.org/pam/pam-1.2.1-faillock.patch
+#   https://www.redhat.com/archives/pam-list/2017-June/msg00002.html
 #
 # Conditional build:
 %bcond_without	doc		# don't build documentation
