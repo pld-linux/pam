@@ -24,7 +24,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.3.0
-Release:	3
+Release:	4
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -32,7 +32,7 @@ Epoch:		1
 License:	BSD and GPLv2+
 Group:		Base
 Source0:	http://www.linux-pam.org/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	da4b2289b7cfb19583d54e9eaaef1c3a
+# Source0-md5:	da4b2289b7cfb19584d54e9eaaef1c3a
 Source1:	http://www.linux-pam.org/library/Linux-PAM-%{version}-docs.tar.bz2
 # Source1-md5:	30fa7fa696a5b3b8d2c3c41d9373a8f3
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
@@ -90,6 +90,7 @@ Requires:	cracklib-dicts >= 2.8.3
 Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 2.1.9}
+Requires:	pam-pam_cracklib = %{epoch}:%{version}-%{release}
 Suggests:	make
 Suggests:	pam-pam_pwquality
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
@@ -230,6 +231,14 @@ Biblioteki statyczne PAM.
 %description static -l uk.UTF-8
 Цей пакет містить статичні бібліотеки програміста для PAM.
 
+%package pam_cracklib
+Summary:	PAM module to check the password against dictionary words
+Group:		Base
+Conflicts:	pam < 1:1.3.0-3.1
+
+%description pam_cracklib
+PAM module to check the password against dictionary words.
+
 %package pam_selinux
 Summary:	PAM module - SELinux support
 Summary(pl.UTF-8):	Moduł PAM pozwalający na zmianę kontekstów SELinuksa
@@ -246,7 +255,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 Summary:	PAM module - authenticate against db database
 Group:		Base
 Requires:	gdbm >= 1.8.3-7
-Conflicts:	pam-libs < 1:1.1.8-3.1
+Conflicts:	pam-libs < 1:1.1.8-4
 
 %description pam_userdb
 pam_userdb - PAM module to authenticate against a Berkeley DB database
@@ -305,6 +314,7 @@ for r in modules/pam_*/README; do
 	cp -pf $r doc/txts/README.$(basename $(dirname $r))
 done
 %{__rm} doc/txts/README.pam_userdb
+%{__rm} doc/txts/README.pam_cracklib
 install -d doc/html
 cp -pf doc/index.html doc/html/
 
@@ -502,13 +512,13 @@ end
 %exclude %{_mandir}/man8/pam_selinux*.8*
 %exclude %{_mandir}/man8/pam_sepermit.8*
 %endif
+%exclude %{_mandir}/man8/pam_cracklib.8*
 %exclude %{_mandir}/man8/pam_userdb.8*
 %ghost %verify(not md5 mtime size) /var/log/tallylog
 
 # PAM modules
 %attr(755,root,root) /%{_lib}/security/pam_access.so
 %attr(755,root,root) /%{_lib}/security/pam_console.so
-%attr(755,root,root) /%{_lib}/security/pam_cracklib.so
 %attr(755,root,root) /%{_lib}/security/pam_debug.so
 %attr(755,root,root) /%{_lib}/security/pam_deny.so
 %attr(755,root,root) /%{_lib}/security/pam_echo.so
@@ -598,6 +608,12 @@ end
 %{_mandir}/man8/pam_sepermit.8*
 %dir /var/run/sepermit
 %endif
+
+%files pam_cracklib
+%defattr(644,root,root,755)
+%doc modules/pam_cracklib/README
+%attr(755,root,root) /%{_lib}/security/pam_cracklib.so
+%{_mandir}/man8/pam_cracklib.8*
 
 %files pam_userdb
 %defattr(644,root,root,755)
