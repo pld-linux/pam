@@ -91,6 +91,7 @@ Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 2.1.9}
 Suggests:	make
+Suggests:	pam-pam_pwquality
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Obsoletes:	pam-doc
 Obsoletes:	pam-pam_opie
