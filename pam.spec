@@ -32,7 +32,7 @@ Epoch:		1
 License:	BSD and GPLv2+
 Group:		Base
 Source0:	http://www.linux-pam.org/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	da4b2289b7cfb19584d54e9eaaef1c3a
+# Source0-md5:	da4b2289b7cfb19583d54e9eaaef1c3a
 Source1:	http://www.linux-pam.org/library/Linux-PAM-%{version}-docs.tar.bz2
 # Source1-md5:	30fa7fa696a5b3b8d2c3c41d9373a8f3
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
