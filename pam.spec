@@ -29,7 +29,7 @@ Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
 # pam_timestamp, pam_loginuid, and pam_console modules are GPLv2+.
-License:	BSD and GPLv2+
+License:	BSD and GPL v2+
 Group:		Base
 Source0:	http://www.linux-pam.org/library/Linux-PAM-%{version}.tar.bz2
 # Source0-md5:	da4b2289b7cfb19583d54e9eaaef1c3a
@@ -58,8 +58,8 @@ BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	cracklib-devel >= 2.8.3
-# gdbm due to db pulling libpthread
 BuildRequires:	flex
+# gdbm due to db pulling libpthread
 BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	gettext-tools >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
@@ -85,8 +85,6 @@ BuildRequires:	w3m
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
 Requires:	awk
-Requires:	cracklib >= 2.8.3
-Requires:	cracklib-dicts >= 2.8.3
 Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 2.1.9}
@@ -192,7 +190,7 @@ Summary(pt_BR.UTF-8):	Bibliotecas e arquivos de inclusão para desenvolvimento c
 Summary(ru.UTF-8):	Библиотеки разработчика для PAM
 Summary(uk.UTF-8):	Бібліотеки програміста для PAM
 Group:		Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_audit:Requires:	audit-libs-devel >= 1.0.8}
 Requires:	filesystem >= 3.0-11
 
@@ -233,16 +231,23 @@ Biblioteki statyczne PAM.
 
 %package pam_cracklib
 Summary:	PAM module to check the password against dictionary words
+Summary(pl.UTF-8):	Moduł PAM do sprawdzania haseł względem słów ze słownika
 Group:		Base
-Conflicts:	pam < 1:1.3.0-3.1
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	cracklib >= 2.8.3
+Requires:	cracklib-dicts >= 2.8.3
 
 %description pam_cracklib
 PAM module to check the password against dictionary words.
+
+%description pam_cracklib -l pl.UTF-8
+Moduł PAM do sprawdzania haseł względem słów ze słownika.
 
 %package pam_selinux
 Summary:	PAM module - SELinux support
 Summary(pl.UTF-8):	Moduł PAM pozwalający na zmianę kontekstów SELinuksa
 Group:		Base
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	libselinux >= 2.1.9
 
 %description pam_selinux
@@ -252,13 +257,18 @@ PAM module - SELinux support.
 Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 
 %package pam_userdb
-Summary:	PAM module - authenticate against db database
+Summary:	PAM module - authenticate against GDBM database
+Summary(pl.UTF-8):	Moduł PAM do uwierzytelniania względem bazy danych GDBM
 Group:		Base
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	gdbm >= 1.8.3-7
-Conflicts:	pam-libs < 1:1.1.8-4
 
 %description pam_userdb
-pam_userdb - PAM module to authenticate against a Berkeley DB database
+pam_userdb - PAM module to authenticate against GDBM database.
+
+%description pam_userdb -l pl.UTF-8
+pam_userdb - moduł PAM służący do uwierzytelniania względem bazy
+danych GDBM.
 
 %prep
 %setup -q -a2 -n Linux-PAM-%{version}
