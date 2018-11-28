@@ -24,7 +24,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.3.1
-Release:	0.1
+Release:	1
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -276,7 +276,9 @@ danych GDBM.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
+# upstream has similar approach for multiple files (not no exec):
+# https://github.com/linux-pam/linux-pam/pull/48
+#%patch6 -p1
 
 %build
 %{__libtoolize}
