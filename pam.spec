@@ -1,5 +1,5 @@
 # TODO
-# - check and package docs: https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-1.1.8-docs.tar.bz2
+# - check and package docs: https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}-docs.tar.xz
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
 # - replace pam_cracklib.so with pam_pwquality.so (backwards compatible with its options), comes with pam-pam_pwquality package
 # - pam_tally, pam_tally2 is deprecated in favor of pam_faillock
@@ -23,18 +23,16 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.3.0
-Release:	5
+Version:	1.3.1
+Release:	0.1
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
 # pam_timestamp, pam_loginuid, and pam_console modules are GPLv2+.
 License:	BSD and GPL v2+
 Group:		Base
-Source0:	http://www.linux-pam.org/library/Linux-PAM-%{version}.tar.bz2
-# Source0-md5:	da4b2289b7cfb19583d54e9eaaef1c3a
-Source1:	http://www.linux-pam.org/library/Linux-PAM-%{version}-docs.tar.bz2
-# Source1-md5:	30fa7fa696a5b3b8d2c3c41d9373a8f3
+Source0:	https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz
+# Source0-md5:	558ff53b0fc0563ca97f79e911822165
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	f9ec6fcafcf1801bf318e60040244f2e
 Source3:	other.pamd
