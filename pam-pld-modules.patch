@@ -9,13 +9,16 @@
  	modules/pam_access/Makefile modules/pam_cracklib/Makefile \
          modules/pam_debug/Makefile modules/pam_deny/Makefile \
  	modules/pam_echo/Makefile modules/pam_env/Makefile \
---- Linux-PAM-0.99.5.0/modules/Makefile.am.redhat-modules	2006-06-27 16:21:08.000000000 +0200
-+++ Linux-PAM-0.99.5.0/modules/Makefile.am	2006-06-30 10:27:02.000000000 +0200
-@@ -3,6 +3,7 @@
- #
+--- Linux-PAM-1.4.0/modules/Makefile.am.orig	2020-08-25 19:33:40.370451732 +0200
++++ Linux-PAM-1.4.0/modules/Makefile.am	2020-08-25 19:35:12.873283934 +0200
+@@ -98,6 +98,10 @@
+ 	pam_warn \
+ 	pam_wheel \
+ 	pam_xauth \
++	pam_console \
++	pam_pwexport \
++	pam_pwgen \
++	pam_rps \
+ 	#
  
- SUBDIRS = pam_access pam_cracklib pam_debug pam_deny pam_echo \
-+	pam_console pam_pwexport pam_pwgen pam_rps \
- 	pam_env pam_exec pam_faildelay pam_filter pam_ftp \
- 	pam_group pam_issue pam_keyinit pam_lastlog pam_limits \
- 	pam_listfile pam_localuser pam_loginuid pam_mail \
+ CLEANFILES = *~

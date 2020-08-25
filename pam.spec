@@ -1,16 +1,16 @@
 # TODO
-# - check and package docs: https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}-docs.tar.xz
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
 # - replace pam_cracklib.so with pam_pwquality.so (backwards compatible with its options), comes with pam-pam_pwquality package
-# - pam_tally, pam_tally2 is deprecated in favor of pam_faillock
-#   use patch for now: pkgs.fedoraproject.org/pam/pam-1.2.1-faillock.patch
-#   https://www.redhat.com/archives/pam-list/2017-June/msg00002.html
+# - pam_tally, pam_tally2 are deprecated in favor of pam_faillock
+# NOTE: https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}-docs.tar.xz
+#   is not needed here: it contains documentation in target formats (HTML, PDF) built from sources included in main tarball
 #
 # Conditional build:
-%bcond_without	doc		# don't build documentation
-%bcond_with	prelude		# build with Prelude IDS support (in libpam)
-%bcond_without	selinux		# build without SELinux support
-%bcond_without	audit		# build with Linux Auditing library support
+%bcond_without	doc		# documentation
+%bcond_with	prelude		# Prelude IDS support (in libpam)
+%bcond_without	cracklib	# (deprecated) cracklib module
+%bcond_without	selinux		# SELinux support
+%bcond_without	audit		# Linux Auditing library support
 
 %define		pam_pld_version	1.1.2-1
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
@@ -23,8 +23,8 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.3.1
-Release:	2
+Version:	1.4.0
+Release:	1
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -32,7 +32,7 @@ Epoch:		1
 License:	BSD and GPL v2+
 Group:		Base
 Source0:	https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz
-# Source0-md5:	558ff53b0fc0563ca97f79e911822165
+# Source0-md5:	39fca0523bccec6af4b63b5322276c84
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	f9ec6fcafcf1801bf318e60040244f2e
 Source3:	other.pamd
@@ -55,12 +55,13 @@ URL:		http://www.linux-pam.org/
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake
 BuildRequires:	bison
-BuildRequires:	cracklib-devel >= 2.8.3
+%{?with_cracklib:BuildRequires:	cracklib-devel >= 2.8.3}
 BuildRequires:	flex
 # gdbm due to db pulling libpthread
 BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	gettext-tools >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
+BuildRequires:	libnsl-devel
 %{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 2.1.9}
 BuildRequires:	libtirpc-devel
@@ -68,6 +69,8 @@ BuildRequires:	libtool >= 2:2
 BuildRequires:	libxcrypt-devel
 %{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
 BuildRequires:	pkgconfig
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 BuildRequires:	zlib-devel
 %if %{with doc}
 BuildRequires:	docbook-dtd412-xml
@@ -86,7 +89,7 @@ Requires:	awk
 Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 2.1.9}
-Requires:	pam-pam_cracklib = %{epoch}:%{version}-%{release}
+%{?with_cracklib:Requires:	pam-pam_cracklib = %{epoch}:%{version}-%{release}}
 Suggests:	make
 Suggests:	pam-pam_pwquality
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
@@ -292,11 +295,14 @@ danych GDBM.
 	--enable-shared \
 	--libdir=/%{_lib} \
 	--includedir=%{_includedir}/security \
-	--enable-isadir=../../%{_lib}/security \
+	%{!?with_audit:--disable-audit} \
+	%{?with_cracklib:--enable-cracklib} \
 	--enable-db=gdbm \
-	%{!?with_selinux:--disable-selinux} \
+	--enable-isadir=../../%{_lib}/security \
 	%{!?with_prelude:--disable-prelude} \
-	%{!?with_audit:--disable-audit}
+	%{!?with_selinux:--disable-selinux} \
+	--enable-tally \
+	--enable-tally2
 
 # we must explicitely update-gmo as we patch a po file
 %{__make} -C po update-gmo
@@ -309,7 +315,8 @@ install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/{log,run/sepermit}} \
 	$RPM_BUILD_ROOT%{systemdtmpfilesdir}
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	servicedir=%{systemdunitdir}
 
 %if %{with selinux}
 install -p modules/pam_selinux/.libs/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
@@ -471,6 +478,7 @@ end
 %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.handlers
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.perms
+%config(noreplace) %verify(not md5 mtime size) /etc/security/faillock.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/security/group.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/security/limits.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/security/namespace.conf
@@ -490,20 +498,24 @@ end
 %config(noreplace) %verify(not md5 mtime size) /etc/security/console.perms.d/50-default.perms
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/opasswd
 %attr(755,root,root) %{_bindir}/pam_pwgen
+%attr(755,root,root) %{_sbindir}/faillock
 %attr(755,root,root) %{_sbindir}/mkhomedir_helper
 %attr(755,root,root) %{_sbindir}/pam_console_apply
+%attr(755,root,root) %{_sbindir}/pam_namespace_helper
 %attr(755,root,root) %{_sbindir}/pam_tally
 %attr(755,root,root) %{_sbindir}/pam_tally2
 %attr(755,root,root) %{_sbindir}/pam_timestamp_check
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
 %attr(4755,root,root) %{_sbindir}/unix_chkpwd
 %attr(4755,root,root) %{_sbindir}/unix_update
+%{systemdunitdir}/pam_namespace.service
 %{_mandir}/man5/access.conf.5*
 %{_mandir}/man5/config-util.5*
 %{_mandir}/man5/console.apps.5*
 %{_mandir}/man5/console.handlers.5*
 %{_mandir}/man5/console.perms.5*
 %{_mandir}/man5/environment.5*
+%{_mandir}/man5/faillock.conf.5*
 %{_mandir}/man5/group.conf.5*
 %{_mandir}/man5/limits.conf.5*
 %{_mandir}/man5/namespace.conf.5*
@@ -513,16 +525,19 @@ end
 %{_mandir}/man5/system-auth.5*
 %{_mandir}/man5/time.conf.5*
 %{_mandir}/man8/PAM.8*
+%{_mandir}/man8/faillock.8*
 %{_mandir}/man8/mkhomedir_helper.8*
 %{_mandir}/man8/pam.8*
 %{_mandir}/man8/pam_*.8*
 %{_mandir}/man8/unix_chkpwd.8*
 %{_mandir}/man8/unix_update.8*
+%if %{with cracklib}
+%exclude %{_mandir}/man8/pam_cracklib.8*
+%endif
 %if %{with selinux}
 %exclude %{_mandir}/man8/pam_selinux*.8*
 %exclude %{_mandir}/man8/pam_sepermit.8*
 %endif
-%exclude %{_mandir}/man8/pam_cracklib.8*
 %exclude %{_mandir}/man8/pam_userdb.8*
 %ghost %verify(not md5 mtime size) /var/log/tallylog
 
@@ -535,6 +550,7 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_env.so
 %attr(755,root,root) /%{_lib}/security/pam_exec.so
 %attr(755,root,root) /%{_lib}/security/pam_faildelay.so
+%attr(755,root,root) /%{_lib}/security/pam_faillock.so
 %attr(755,root,root) /%{_lib}/security/pam_filter.so
 %attr(755,root,root) /%{_lib}/security/pam_filter/upperLOWER
 %attr(755,root,root) /%{_lib}/security/pam_ftp.so
@@ -559,16 +575,18 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_rootok.so
 %attr(755,root,root) /%{_lib}/security/pam_rps.so
 %attr(755,root,root) /%{_lib}/security/pam_securetty.so
+%attr(755,root,root) /%{_lib}/security/pam_setquota.so
 %attr(755,root,root) /%{_lib}/security/pam_shells.so
 %attr(755,root,root) /%{_lib}/security/pam_stress.so
 %attr(755,root,root) /%{_lib}/security/pam_succeed_if.so
-%attr(755,root,root) /%{_lib}/security/pam_tally2.so
 %attr(755,root,root) /%{_lib}/security/pam_tally.so
+%attr(755,root,root) /%{_lib}/security/pam_tally2.so
 %attr(755,root,root) /%{_lib}/security/pam_time.so
 %attr(755,root,root) /%{_lib}/security/pam_timestamp.so
 %{?with_audit:%attr(755,root,root) /%{_lib}/security/pam_tty_audit.so}
 %attr(755,root,root) /%{_lib}/security/pam_umask.so
 %attr(755,root,root) /%{_lib}/security/pam_unix.so
+%attr(755,root,root) /%{_lib}/security/pam_usertype.so
 %attr(755,root,root) /%{_lib}/security/pam_warn.so
 %attr(755,root,root) /%{_lib}/security/pam_wheel.so
 %attr(755,root,root) /%{_lib}/security/pam_xauth.so
@@ -605,6 +623,14 @@ end
 %{_libdir}/libpamc.a
 %{_libdir}/libpam_misc.a
 
+%if %{with cracklib}
+%files pam_cracklib
+%defattr(644,root,root,755)
+%doc modules/pam_cracklib/README
+%attr(755,root,root) /%{_lib}/security/pam_cracklib.so
+%{_mandir}/man8/pam_cracklib.8*
+%endif
+
 %if %{with selinux}
 %files pam_selinux
 %defattr(644,root,root,755)
@@ -618,12 +644,6 @@ end
 %{_mandir}/man8/pam_sepermit.8*
 %dir /var/run/sepermit
 %endif
-
-%files pam_cracklib
-%defattr(644,root,root,755)
-%doc modules/pam_cracklib/README
-%attr(755,root,root) /%{_lib}/security/pam_cracklib.so
-%{_mandir}/man8/pam_cracklib.8*
 
 %files pam_userdb
 %defattr(644,root,root,755)
