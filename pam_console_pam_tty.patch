@@ -1,0 +1,22 @@
+--- Linux-PAM-1.4.0/modules/pam_console/pam_console.c.orig	2008-12-16 13:37:52.000000000 +0100
++++ Linux-PAM-1.4.0/modules/pam_console/pam_console.c	2021-02-17 13:14:35.484487701 +0100
+@@ -521,6 +521,9 @@
+         _pam_log(pamh, LOG_ERR, TRUE, "TTY not defined");
+ 	return PAM_SESSION_ERR;
+     }
++    if (!strncmp("/dev/", tty, 5)) {
++        tty = tty + 5;
++    }
+ 
+     /* get configuration */
+     if (!configfileparsed) { 
+@@ -584,6 +587,9 @@
+     if (is_root(pamh, username)) return PAM_SUCCESS;
+     pam_get_item(pamh, PAM_TTY, CAST_ME_HARDER &tty);
+     if (!tty || !tty[0]) return PAM_SESSION_ERR;
++    if (!strncmp("/dev/", tty, 5)) {
++        tty = tty + 5;
++    }
+ 
+     /* get configuration */
+     if (!configfileparsed) {
