@@ -176,7 +176,7 @@ PAM (Pluggable Authentication Modules) - это мощная, гибкая,
 Summary:	PAM libraries
 Summary(pl.UTF-8):	Moduły PAM
 Group:		Libraries
-Requires(triggerpostun):	sed >= 4.0
+Requires:	sed >= 4.0
 
 %description libs
 PAM libraries.
