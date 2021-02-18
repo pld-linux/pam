@@ -25,7 +25,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.4.0
-Release:	2
+Release:	3
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -92,6 +92,7 @@ Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 2.1.9}
 %{?with_cracklib:Requires:	pam-pam_cracklib = %{epoch}:%{version}-%{release}}
+%{?with_tally:Requires:	pam-pam_tally = %{epoch}:%{version}-%{release}}
 Suggests:	make
 Suggests:	pam-pam_pwquality
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
@@ -258,6 +259,15 @@ PAM module - SELinux support.
 
 %description pam_selinux -l pl.UTF-8
 Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
+
+%package pam_tally
+Summary:	PAM module to check login counts (tallying)
+Group:		Base
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+
+%description pam_tally
+This module maintains a count of attempted accesses, can reset count
+on success, can deny access if too many attempts fail.
 
 %package pam_userdb
 Summary:	PAM module - authenticate against GDBM database
@@ -450,8 +460,7 @@ if ! grep -qs pam_systemd /etc/pam.d/system-auth; then
 	echo "-session	optional	pam_systemd.so" >>/etc/pam.d/system-auth
 fi
 
-%if %{with tally}
-%post -p <lua>
+%post pam_tally -p <lua>
 fh, error = io.open("/var/log/tallylog")
 if fh ~= nil then
 	io.close(fh)
@@ -460,7 +469,6 @@ else
 	io.close(fh)
 	posix.chmod("/var/log/tallylog", "rw-------")
 end
-%endif
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
@@ -509,10 +517,6 @@ end
 %attr(755,root,root) %{_sbindir}/mkhomedir_helper
 %attr(755,root,root) %{_sbindir}/pam_console_apply
 %attr(755,root,root) %{_sbindir}/pam_namespace_helper
-%if %{with tally}
-%attr(755,root,root) %{_sbindir}/pam_tally
-%attr(755,root,root) %{_sbindir}/pam_tally2
-%endif
 %attr(755,root,root) %{_sbindir}/pam_timestamp_check
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
 %attr(4755,root,root) %{_sbindir}/unix_chkpwd
@@ -548,9 +552,6 @@ end
 %exclude %{_mandir}/man8/pam_sepermit.8*
 %endif
 %exclude %{_mandir}/man8/pam_userdb.8*
-%if %{with tally}
-%ghost %verify(not md5 mtime size) /var/log/tallylog
-%endif
 
 # PAM modules
 %attr(755,root,root) /%{_lib}/security/pam_access.so
@@ -590,10 +591,6 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_shells.so
 %attr(755,root,root) /%{_lib}/security/pam_stress.so
 %attr(755,root,root) /%{_lib}/security/pam_succeed_if.so
-%if %{with tally}
-%attr(755,root,root) /%{_lib}/security/pam_tally.so
-%attr(755,root,root) /%{_lib}/security/pam_tally2.so
-%endif
 %attr(755,root,root) /%{_lib}/security/pam_time.so
 %attr(755,root,root) /%{_lib}/security/pam_timestamp.so
 %{?with_audit:%attr(755,root,root) /%{_lib}/security/pam_tty_audit.so}
@@ -663,3 +660,13 @@ end
 %doc modules/pam_userdb/README
 %attr(755,root,root) /%{_lib}/security/pam_userdb.so
 %{_mandir}/man8/pam_userdb.8*
+
+%if %{with tally}
+%files pam_tally
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_sbindir}/pam_tally
+%attr(755,root,root) %{_sbindir}/pam_tally2
+%attr(755,root,root) /%{_lib}/security/pam_tally.so
+%attr(755,root,root) /%{_lib}/security/pam_tally2.so
+%ghost %verify(not md5 mtime size) /var/log/tallylog
+%endif
