@@ -9,6 +9,7 @@
 %bcond_without	doc		# documentation
 %bcond_with	prelude		# Prelude IDS support (in libpam)
 %bcond_without	cracklib	# (deprecated) cracklib module
+%bcond_without	tally		# (deprecated) tally/tally2 modules
 %bcond_without	selinux		# SELinux support
 %bcond_without	audit		# Linux Auditing library support
 
@@ -303,8 +304,8 @@ danych GDBM.
 	--enable-isadir=../../%{_lib}/security \
 	%{!?with_prelude:--disable-prelude} \
 	%{!?with_selinux:--disable-selinux} \
-	--enable-tally \
-	--enable-tally2
+	%{?with_tally:--enable-tally} \
+	%{?with_tally:--enable-tally2}
 
 # we must explicitely update-gmo as we patch a po file
 %{__make} -C po update-gmo
@@ -343,7 +344,9 @@ echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
+%if %{with tally}
 :> $RPM_BUILD_ROOT/var/log/tallylog
+%endif
 
 %{__mv} $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}
 
@@ -447,6 +450,7 @@ if ! grep -qs pam_systemd /etc/pam.d/system-auth; then
 	echo "-session	optional	pam_systemd.so" >>/etc/pam.d/system-auth
 fi
 
+%if %{with tally}
 %post -p <lua>
 fh, error = io.open("/var/log/tallylog")
 if fh ~= nil then
@@ -456,6 +460,7 @@ else
 	io.close(fh)
 	posix.chmod("/var/log/tallylog", "rw-------")
 end
+%endif
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
@@ -504,8 +509,10 @@ end
 %attr(755,root,root) %{_sbindir}/mkhomedir_helper
 %attr(755,root,root) %{_sbindir}/pam_console_apply
 %attr(755,root,root) %{_sbindir}/pam_namespace_helper
+%if %{with tally}
 %attr(755,root,root) %{_sbindir}/pam_tally
 %attr(755,root,root) %{_sbindir}/pam_tally2
+%endif
 %attr(755,root,root) %{_sbindir}/pam_timestamp_check
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
 %attr(4755,root,root) %{_sbindir}/unix_chkpwd
@@ -541,7 +548,9 @@ end
 %exclude %{_mandir}/man8/pam_sepermit.8*
 %endif
 %exclude %{_mandir}/man8/pam_userdb.8*
+%if %{with tally}
 %ghost %verify(not md5 mtime size) /var/log/tallylog
+%endif
 
 # PAM modules
 %attr(755,root,root) /%{_lib}/security/pam_access.so
@@ -581,8 +590,10 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_shells.so
 %attr(755,root,root) /%{_lib}/security/pam_stress.so
 %attr(755,root,root) /%{_lib}/security/pam_succeed_if.so
+%if %{with tally}
 %attr(755,root,root) /%{_lib}/security/pam_tally.so
 %attr(755,root,root) /%{_lib}/security/pam_tally2.so
+%endif
 %attr(755,root,root) /%{_lib}/security/pam_time.so
 %attr(755,root,root) /%{_lib}/security/pam_timestamp.so
 %{?with_audit:%attr(755,root,root) /%{_lib}/security/pam_tty_audit.so}
