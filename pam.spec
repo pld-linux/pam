@@ -324,7 +324,7 @@ danych GDBM.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/var/{log,run/sepermit}} \
+install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/usr/lib/pam.d,/var/{log,run/sepermit}} \
 	$RPM_BUILD_ROOT%{systemdtmpfilesdir}
 
 %{__make} install \
@@ -482,6 +482,7 @@ end
 %dir /etc/pam.d
 %dir /etc/security/console.apps
 %dir /etc/security/console.perms.d
+%dir /usr/lib/pam.d
 %dir /var/run/console
 %{systemdtmpfilesdir}/%{name}.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/environment
