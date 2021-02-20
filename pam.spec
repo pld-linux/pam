@@ -262,12 +262,18 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 
 %package pam_tally
 Summary:	PAM module to check login counts (tallying)
+Summary(pl.UTF-8):	Moduł PAM do sprawdzania liczby logowań
 Group:		Base
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 
 %description pam_tally
 This module maintains a count of attempted accesses, can reset count
 on success, can deny access if too many attempts fail.
+
+%description pam_tally -l pl.UTF-8
+Ten moduł utrzymuje licznik prób logowań, może zerować licznik przy
+udanym logowaniu, może też blokować dostęp przy zbyt wielu
+niepowodzeniach.
 
 %package pam_userdb
 Summary:	PAM module - authenticate against GDBM database
@@ -656,12 +662,6 @@ end
 %dir /var/run/sepermit
 %endif
 
-%files pam_userdb
-%defattr(644,root,root,755)
-%doc modules/pam_userdb/README
-%attr(755,root,root) /%{_lib}/security/pam_userdb.so
-%{_mandir}/man8/pam_userdb.8*
-
 %if %{with tally}
 %files pam_tally
 %defattr(644,root,root,755)
@@ -671,3 +671,9 @@ end
 %attr(755,root,root) /%{_lib}/security/pam_tally2.so
 %ghost %verify(not md5 mtime size) /var/log/tallylog
 %endif
+
+%files pam_userdb
+%defattr(644,root,root,755)
+%doc modules/pam_userdb/README
+%attr(755,root,root) /%{_lib}/security/pam_userdb.so
+%{_mandir}/man8/pam_userdb.8*
