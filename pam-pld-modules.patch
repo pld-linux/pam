@@ -1,17 +1,19 @@
---- Linux-PAM-0.99.5.0/configure.in.redhat-modules	2006-06-28 09:25:02.000000000 +0200
-+++ Linux-PAM-0.99.5.0/configure.ac	2006-06-30 10:24:35.000000000 +0200
-@@ -492,6 +492,8 @@
- 	libpam_misc/Makefile conf/Makefile conf/pam_conv1/Makefile \
+diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/configure.ac Linux-PAM-1.4.0/configure.ac
+--- Linux-PAM-1.4.0.org/configure.ac	2020-06-08 12:17:27.000000000 +0200
++++ Linux-PAM-1.4.0/configure.ac	2021-03-21 13:19:44.088594925 +0100
+@@ -712,6 +712,8 @@ AC_CONFIG_FILES([Makefile libpam/Makefil
  	po/Makefile.in \
+ 	Make.xml.rules \
  	modules/Makefile \
 +	modules/pam_console/Makefile modules/pam_pwexport/Makefile \
 +	modules/pam_pwgen/Makefile modules/pam_rps/Makefile \
  	modules/pam_access/Makefile modules/pam_cracklib/Makefile \
          modules/pam_debug/Makefile modules/pam_deny/Makefile \
  	modules/pam_echo/Makefile modules/pam_env/Makefile \
---- Linux-PAM-1.4.0/modules/Makefile.am.orig	2020-08-25 19:33:40.370451732 +0200
-+++ Linux-PAM-1.4.0/modules/Makefile.am	2020-08-25 19:35:12.873283934 +0200
-@@ -98,6 +98,10 @@
+diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/Makefile.am Linux-PAM-1.4.0/modules/Makefile.am
+--- Linux-PAM-1.4.0.org/modules/Makefile.am	2020-06-08 12:17:27.000000000 +0200
++++ Linux-PAM-1.4.0/modules/Makefile.am	2021-03-21 13:19:44.089594925 +0100
+@@ -98,6 +98,10 @@ SUBDIRS := \
  	pam_warn \
  	pam_wheel \
  	pam_xauth \

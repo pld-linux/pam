@@ -1,6 +1,7 @@
---- Linux-PAM-0.99.3.0/modules/pam_tally/pam_tally.c.fail-close	2005-09-21 15:35:29.000000000 +0200
-+++ Linux-PAM-0.99.3.0/modules/pam_tally/pam_tally.c	2006-05-04 13:31:59.000000000 +0200
-@@ -318,6 +318,7 @@
+diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/pam_tally/pam_tally.c Linux-PAM-1.4.0/modules/pam_tally/pam_tally.c
+--- Linux-PAM-1.4.0.org/modules/pam_tally/pam_tally.c	2020-06-08 12:17:27.000000000 +0200
++++ Linux-PAM-1.4.0/modules/pam_tally/pam_tally.c	2021-03-21 13:19:54.832594925 +0100
+@@ -320,6 +320,7 @@ get_tally(pam_handle_t *pamh, tally_t *t
        }
        lstat_ret = fstat(fileno(*TALLY),&fileinfo);
        fclose(*TALLY);
@@ -8,16 +9,16 @@
      }
  
      if ( lstat_ret ) {
-@@ -348,6 +349,7 @@
-     if ( fseek( *TALLY, uid * sizeof(struct faillog), SEEK_SET ) ) {
+@@ -350,6 +351,7 @@ get_tally(pam_handle_t *pamh, tally_t *t
+     if ( fseeko( *TALLY, (off_t) uid * sizeof(struct faillog), SEEK_SET ) ) {
            pam_syslog(pamh, LOG_ALERT, "fseek failed for %s", filename);
            fclose(*TALLY);
 +          *TALLY = NULL;
            return PAM_AUTH_ERR;
      }
  
-@@ -394,6 +396,7 @@
-       }
+@@ -398,6 +400,7 @@ set_tally(pam_handle_t *pamh, tally_t ta
+     }
  
      if ( fclose(*TALLY) ) {
 +      *TALLY = NULL;

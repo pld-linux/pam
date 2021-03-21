@@ -1,7 +1,8 @@
---- Linux-PAM-0.99.7.1/modules/pam_exec/pam_exec.8.xml~	2006-06-09 18:44:06.000000000 +0200
-+++ Linux-PAM-0.99.7.1/modules/pam_exec/pam_exec.8.xml	2007-02-09 22:35:07.000000000 +0100
-@@ -25,6 +25,9 @@
-         quiet
+diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.8.xml Linux-PAM-1.4.0/modules/pam_exec/pam_exec.8.xml
+--- Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.8.xml	2020-06-08 12:17:27.000000000 +0200
++++ Linux-PAM-1.4.0/modules/pam_exec/pam_exec.8.xml	2021-03-21 13:20:06.503594925 +0100
+@@ -34,6 +34,9 @@
+         stdout
        </arg>
        <arg choice="opt">
 +        failok
@@ -9,11 +10,12 @@
 +      <arg choice="opt">
          log=<replaceable>file</replaceable>
        </arg>
-       <arg choice="plain">
-@@ -90,6 +93,18 @@
+       <arg choice="opt">
+@@ -172,6 +175,18 @@
+             </para>
            </listitem>
          </varlistentry>
- 
++
 +        <varlistentry>
 +          <term>
 +            <option>failok</option>
@@ -25,21 +27,21 @@
 +            </para>
 +          </listitem>
 +        </varlistentry>
-+
+ 
        </variablelist>
  
-     </para>
---- Linux-PAM-0.99.7.1/modules/pam_exec/pam_exec.c.orig	2007-02-09 22:30:39.000000000 +0100
-+++ Linux-PAM-0.99.7.1/modules/pam_exec/pam_exec.c	2007-02-09 22:37:07.000000000 +0100
-@@ -64,6 +64,7 @@
+diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.c Linux-PAM-1.4.0/modules/pam_exec/pam_exec.c
+--- Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.c	2020-06-08 12:17:27.000000000 +0200
++++ Linux-PAM-1.4.0/modules/pam_exec/pam_exec.c	2021-03-21 13:20:06.504594925 +0100
+@@ -93,6 +93,7 @@ call_exec (const char *pam_type, pam_han
    int debug = 0;
    int call_setuid = 0;
    int quiet = 0;
 +  int fail_ok = 0;
    int expose_authtok = 0;
+   int use_stdout = 0;
    int optargc;
-   const char *logfile = NULL;
-@@ -85,6 +86,8 @@
+@@ -135,6 +136,8 @@ call_exec (const char *pam_type, pam_han
  	quiet = 1;
        else if (strcasecmp (argv[optargc], "expose_authtok") == 0)
  	expose_authtok = 1;
@@ -48,7 +50,7 @@
        else
  	break; /* Unknown option, assume program to execute. */
      }
-@@ -115,29 +118,32 @@
+@@ -271,7 +274,7 @@ call_exec (const char *pam_type, pam_han
  	    {
  	      pam_syslog (pamh, LOG_ERR, "%s failed: exit code %d",
  			  argv[optargc], WEXITSTATUS(status));
@@ -57,8 +59,7 @@
  	      pam_error (pamh, _("%s failed: exit code %d"),
  			 argv[optargc], WEXITSTATUS(status));
  	    }
- 	  else if (WIFSIGNALED(status))
- 	    {
+@@ -280,7 +283,7 @@ call_exec (const char *pam_type, pam_han
  	      pam_syslog (pamh, LOG_ERR, "%s failed: caught signal %d%s",
  			  argv[optargc], WTERMSIG(status),
  			  WCOREDUMP(status) ? " (core dumped)" : "");
@@ -67,8 +68,7 @@
  	      pam_error (pamh, _("%s failed: caught signal %d%s"),
  			 argv[optargc], WTERMSIG(status),
  			 WCOREDUMP(status) ? " (core dumped)" : "");
- 	    }
- 	  else
+@@ -289,11 +292,14 @@ call_exec (const char *pam_type, pam_han
  	    {
  	      pam_syslog (pamh, LOG_ERR, "%s failed: unknown status 0x%x",
  			  argv[optargc], status);
