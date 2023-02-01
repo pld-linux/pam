@@ -25,7 +25,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.4.0
-Release:	5
+Release:	6
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -417,6 +417,13 @@ done
 %{__rm} $RPM_BUILD_ROOT/%{_lib}/lib*.so
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/Linux-PAM
 
+rm -rf rpm-doc
+install -d rpm-doc
+cp -a doc/html rpm-doc/html
+cp -a doc/sag/html rpm-doc/sag-html
+cp -a doc/adg/html rpm-doc/adg-html
+cp -a doc/mwg/html rpm-doc/mwg-html
+
 %if %{without selinux}
 rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_check,%{_mandir}/man8/pam_selinux*.8*}
 %endif
@@ -483,7 +490,7 @@ end
 %defattr(644,root,root,755)
 %doc AUTHORS CHANGELOG ChangeLog Copyright NEWS doc/txts/README*
 %if %{with doc}
-%doc doc/specs/*.txt doc/sag/Linux-PAM_*.txt doc/{sag,}/html
+%doc doc/specs/*.txt doc/sag/Linux-PAM_*.txt rpm-doc/{html,sag-html}
 %endif
 %dir /etc/pam.d
 %dir /etc/security/console.apps
@@ -621,7 +628,7 @@ end
 %files devel
 %defattr(644,root,root,755)
 %if %{with doc}
-%doc doc/{adg,mwg}/Linux-PAM_*.txt doc/{adg,mwg,}/html
+%doc doc/{adg,mwg}/Linux-PAM_*.txt rpm-doc/{adg,mwg}-html
 %endif
 %attr(755,root,root) %{_libdir}/libpam.so
 %attr(755,root,root) %{_libdir}/libpam_misc.so
