@@ -418,12 +418,14 @@ done
 %{__rm} $RPM_BUILD_ROOT/%{_lib}/lib*.so
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/Linux-PAM
 
+%if %{with doc}
 rm -rf rpm-doc
 install -d rpm-doc
 cp -a doc/html rpm-doc/html
 cp -a doc/sag/html rpm-doc/sag-html
 cp -a doc/adg/html rpm-doc/adg-html
 cp -a doc/mwg/html rpm-doc/mwg-html
+%endif
 
 %if %{without selinux}
 rm -rf $RPM_BUILD_ROOT{/%{_lib}/security/pam_selinux.so,%{_sbindir}/pam_selinux_check,%{_mandir}/man8/pam_selinux*.8*}
