@@ -68,7 +68,7 @@ BuildRequires:	libnsl-devel
 BuildRequires:	libtirpc-devel
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libxcrypt-devel
-%{?with_audit:BuildRequires:	linux-libc-headers >= 2.6.23.1}
+%{?with_audit:BuildRequires:	linux-libc-headers >= 7:2.6.23.1}
 BuildRequires:	pkgconfig
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
