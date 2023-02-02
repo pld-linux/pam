@@ -317,6 +317,7 @@ danych GDBM.
 	%{!?with_audit:--disable-audit} \
 	%{?with_cracklib:--enable-cracklib} \
 	--enable-db=gdbm \
+	%{!?with_doc:--disable-regenerate-docu} \
 	--enable-isadir=../../%{_lib}/security \
 	%{!?with_prelude:--disable-prelude} \
 	%{!?with_selinux:--disable-selinux} \
