@@ -1,0 +1,11 @@
+--- Linux-PAM-1.4.0/modules/pam_unix/passverify.c~	2020-06-08 12:17:27.000000000 +0200
++++ Linux-PAM-1.4.0/modules/pam_unix/passverify.c	2023-03-09 13:12:17.643235815 +0100
+@@ -289,7 +289,7 @@ PAMH_ARG_DECL(int check_shadow_expiry,
+ 		D(("account expired"));
+ 		return PAM_ACCT_EXPIRED;
+ 	}
+-#if defined(CRYPT_CHECKSALT_AVAILABLE) && CRYPT_CHECKSALT_AVAILABLE
++#if 0 && defined(CRYPT_CHECKSALT_AVAILABLE) && CRYPT_CHECKSALT_AVAILABLE
+ 	if (spent->sp_lstchg == 0 ||
+ 	    crypt_checksalt(spent->sp_pwdp) == CRYPT_SALT_METHOD_LEGACY ||
+ 	    crypt_checksalt(spent->sp_pwdp) == CRYPT_SALT_TOO_CHEAP) {

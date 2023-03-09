@@ -25,7 +25,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.4.0
-Release:	8
+Release:	9
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -51,6 +51,7 @@ Patch3:		%{name}-mkhomedir-notfound.patch
 Patch4:		%{name}-db-gdbm.patch
 Patch5:		%{name}-exec-failok.patch
 Patch6:		pam_console_pam_tty.patch
+Patch7:         no-force-pass-change.patch
 URL:		http://www.linux-pam.org/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 BuildRequires:	autoconf >= 2.61
@@ -297,6 +298,7 @@ danych GDBM.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 %{__libtoolize}
