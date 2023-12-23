@@ -1,6 +1,5 @@
 # TODO
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
-# - replace pam_cracklib.so with pam_pwquality.so (backwards compatible with its options), comes with pam-pam_pwquality package
 # - pam_tally, pam_tally2 are deprecated in favor of pam_faillock
 # NOTE: https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}-docs.tar.xz
 #   is not needed here: it contains documentation in target formats (HTML, PDF) built from sources included in main tarball
@@ -87,14 +86,16 @@ Requires:	awk
 Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 2.1.9}
+Requires:	pam-pam_pwquality
 Suggests:	make
-Suggests:	pam-pam_pwquality
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Obsoletes:	pam-doc
+Obsoletes:	pam-pam_cracklib < 1:1.5.3
 Obsoletes:	pam-pam_opie
 Obsoletes:	pam-pam_pwdb
 Obsoletes:	pam-pam_radius
 Obsoletes:	pam-pam_skey
+Obsoletes:	pam-pam_tally < 1:1.5.3
 Obsoletes:	pam-pam_tcpd
 Obsoletes:	pam_make
 Obsoletes:	pamconfig
