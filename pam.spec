@@ -8,6 +8,7 @@
 %bcond_with	prelude		# Prelude IDS support (in libpam)
 %bcond_without	selinux		# SELinux support
 %bcond_without	audit		# Linux Auditing library support
+%bcond_without	static_libs	# static libraries
 %bcond_without	systemd		# logind support
 
 %define		pam_pld_version	1.1.2-1
@@ -272,7 +273,7 @@ danych GDBM.
 %{__automake}
 %configure \
 	ac_cv_path_FO2PDF= \
-	--enable-static \
+	%{__enable_disable static_libs static} \
 	--enable-shared \
 	--libdir=/%{_lib} \
 	--includedir=%{_includedir}/security \
@@ -322,7 +323,7 @@ echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-%{__mv} $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}
+%{?with_static_libs:%{__mv} $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}}
 %{__rm} $RPM_BUILD_ROOT/%{_lib}/lib*.la
 
 cd $RPM_BUILD_ROOT/%{_lib}
@@ -367,7 +368,8 @@ for module in $RPM_BUILD_ROOT/%{_lib}/security/pam*.so ; do
 done
 
 # useless - shut up check-files
-%{__rm} $RPM_BUILD_ROOT/%{_lib}/security/*.{la,a}
+%{__rm} $RPM_BUILD_ROOT/%{_lib}/security/*.la
+%{?with_static_libs:%{__rm} $RPM_BUILD_ROOT/%{_lib}/security/*.a}
 %{__rm} $RPM_BUILD_ROOT/%{_lib}/lib*.so
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/Linux-PAM
 
@@ -597,11 +599,13 @@ fi
 %{_mandir}/man3/misc_conv.3*
 %{_mandir}/man3/pam*.3*
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libpam.a
 %{_libdir}/libpamc.a
 %{_libdir}/libpam_misc.a
+%endif
 
 %if %{with selinux}
 %files pam_selinux
