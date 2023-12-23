@@ -8,8 +8,6 @@
 # Conditional build:
 %bcond_without	doc		# documentation
 %bcond_with	prelude		# Prelude IDS support (in libpam)
-%bcond_without	cracklib	# (deprecated) cracklib module
-%bcond_without	tally		# (deprecated) tally/tally2 modules
 %bcond_without	selinux		# SELinux support
 %bcond_without	audit		# Linux Auditing library support
 
@@ -24,8 +22,8 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.4.0
-Release:	10
+Version:	1.5.3
+Release:	0.1
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -33,7 +31,7 @@ Epoch:		1
 License:	BSD and GPL v2+
 Group:		Base
 Source0:	https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz
-# Source0-md5:	39fca0523bccec6af4b63b5322276c84
+# Source0-md5:	a913bd5fbf9edeafaacf3eb1eb86fd83
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	f9ec6fcafcf1801bf318e60040244f2e
 Source3:	other.pamd
@@ -46,18 +44,15 @@ Source9:	%{name}.tmpfiles
 Source10:	postlogin.pamd
 Patch0:		%{name}-pld-modules.patch
 Patch1:		%{name}_console-lex-static.patch
-Patch2:		%{name}-tally-fail-close.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
 Patch4:		%{name}-db-gdbm.patch
 Patch5:		%{name}-exec-failok.patch
 Patch6:		pam_console_pam_tty.patch
-Patch7:         no-force-pass-change.patch
 URL:		http://www.linux-pam.org/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake
 BuildRequires:	bison
-%{?with_cracklib:BuildRequires:	cracklib-devel >= 2.8.3}
 BuildRequires:	flex
 # gdbm due to db pulling libpthread
 BuildRequires:	gdbm-devel >= 1.8.3-7
@@ -78,6 +73,7 @@ BuildRequires:	zlib-devel
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-dtd43-xml
 BuildRequires:	docbook-dtd44-xml
+BuildRequires:	docbook-dtd50-xml
 BuildRequires:	docbook-style-xsl >= 1.69.1
 # For building PDFs
 #BuildRequires:	fop
@@ -91,8 +87,6 @@ Requires:	awk
 Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 2.1.9}
-%{?with_cracklib:Requires:	pam-pam_cracklib = %{epoch}:%{version}-%{release}}
-%{?with_tally:Requires:	pam-pam_tally = %{epoch}:%{version}-%{release}}
 Suggests:	make
 Suggests:	pam-pam_pwquality
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
@@ -233,20 +227,6 @@ Biblioteki statyczne PAM.
 %description static -l uk.UTF-8
 Цей пакет містить статичні бібліотеки програміста для PAM.
 
-%package pam_cracklib
-Summary:	PAM module to check the password against dictionary words
-Summary(pl.UTF-8):	Moduł PAM do sprawdzania haseł względem słów ze słownika
-Group:		Base
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	cracklib >= 2.8.3
-Requires:	cracklib-dicts >= 2.8.3
-
-%description pam_cracklib
-PAM module to check the password against dictionary words.
-
-%description pam_cracklib -l pl.UTF-8
-Moduł PAM do sprawdzania haseł względem słów ze słownika.
-
 %package pam_selinux
 Summary:	PAM module - SELinux support
 Summary(pl.UTF-8):	Moduł PAM pozwalający na zmianę kontekstów SELinuksa
@@ -259,21 +239,6 @@ PAM module - SELinux support.
 
 %description pam_selinux -l pl.UTF-8
 Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
-
-%package pam_tally
-Summary:	PAM module to check login counts (tallying)
-Summary(pl.UTF-8):	Moduł PAM do sprawdzania liczby logowań
-Group:		Base
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-
-%description pam_tally
-This module maintains a count of attempted accesses, can reset count
-on success, can deny access if too many attempts fail.
-
-%description pam_tally -l pl.UTF-8
-Ten moduł utrzymuje licznik prób logowań, może zerować licznik przy
-udanym logowaniu, może też blokować dostęp przy zbyt wielu
-niepowodzeniach.
 
 %package pam_userdb
 Summary:	PAM module - authenticate against GDBM database
@@ -293,12 +258,10 @@ danych GDBM.
 %setup -q -a2 -n Linux-PAM-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
 
 %build
 %{__libtoolize}
@@ -313,14 +276,12 @@ danych GDBM.
 	--libdir=/%{_lib} \
 	--includedir=%{_includedir}/security \
 	%{!?with_audit:--disable-audit} \
-	%{?with_cracklib:--enable-cracklib} \
 	--enable-db=gdbm \
 	%{!?with_doc:--disable-regenerate-docu} \
 	--enable-isadir=../../%{_lib}/security \
+	--enable-lastlog \
 	%{!?with_prelude:--disable-prelude} \
 	%{!?with_selinux:--disable-selinux} \
-	%{?with_tally:--enable-tally} \
-	%{?with_tally:--enable-tally2}
 
 # we must explicitely update-gmo as we patch a po file
 %{__make} -C po update-gmo
@@ -334,6 +295,7 @@ install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/usr/lib/pam.d,/var/{log,run/se
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
+	pkgconfigdir=%{_pkgconfigdir} \
 	servicedir=%{systemdunitdir}
 
 %if %{with selinux}
@@ -349,7 +311,6 @@ for r in modules/pam_*/README; do
 	cp -pf $r doc/txts/README.$(basename $(dirname $r))
 done
 %{__rm} doc/txts/README.pam_userdb
-%{__rm} doc/txts/README.pam_cracklib
 install -d doc/html
 cp -pf doc/index.html doc/html/
 
@@ -359,18 +320,10 @@ echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
 
-%if %{with tally}
-:> $RPM_BUILD_ROOT/var/log/tallylog
-%endif
-
 %{__mv} $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}
+%{__rm} $RPM_BUILD_ROOT/%{_lib}/lib*.la
 
 cd $RPM_BUILD_ROOT/%{_lib}
-for f in lib*.la ; do
-	%{__sed} -e 's|/%{_lib}/libpam|%{_libdir}/libpam|g' \
-		 -e "s|libdir='/%{_lib}|libdir='%{_libdir}|g" $f > $RPM_BUILD_ROOT%{_libdir}/$f
-	%{__rm} $f
-done
 ln -sf /%{_lib}/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
 ln -sf /%{_lib}/$(echo libpam_misc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam_misc.so
 ln -sf /%{_lib}/$(echo libpamc.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpamc.so
@@ -474,16 +427,6 @@ if ! grep -qs pam_systemd /etc/pam.d/system-auth; then
 	echo "-session	optional	pam_systemd.so" >>/etc/pam.d/system-auth
 fi
 
-%post pam_tally -p <lua>
-fh, error = io.open("/var/log/tallylog")
-if fh ~= nil then
-	io.close(fh)
-else
-	fh = io.open("/var/log/tallylog", "w+")
-	io.close(fh)
-	posix.chmod("/var/log/tallylog", "rw-------")
-end
-
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
 
@@ -515,6 +458,7 @@ end
 %config(noreplace) %verify(not md5 mtime size) /etc/security/namespace.conf
 %attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/namespace.init
 %config(noreplace) %verify(not md5 mtime size) /etc/security/pam_env.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/security/pwhistory.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/security/time.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram
 %config(noreplace) %verify(not md5 mtime size) /etc/security/trigram.en
@@ -535,6 +479,7 @@ end
 %attr(755,root,root) %{_sbindir}/pam_namespace_helper
 %attr(755,root,root) %{_sbindir}/pam_timestamp_check
 %attr(755,root,root) %{_sbindir}/pwgen_trigram
+%attr(755,root,root) %{_sbindir}/pwhistory_helper
 %attr(4755,root,root) %{_sbindir}/unix_chkpwd
 %attr(4755,root,root) %{_sbindir}/unix_update
 %{systemdunitdir}/pam_namespace.service
@@ -551,6 +496,7 @@ end
 %{_mandir}/man5/pam.conf.5*
 %{_mandir}/man5/pam.d.5*
 %{_mandir}/man5/pam_env.conf.5*
+%{_mandir}/man5/pwhistory.conf.5*
 %{_mandir}/man5/system-auth.5*
 %{_mandir}/man5/time.conf.5*
 %{_mandir}/man8/PAM.8*
@@ -558,11 +504,9 @@ end
 %{_mandir}/man8/mkhomedir_helper.8*
 %{_mandir}/man8/pam.8*
 %{_mandir}/man8/pam_*.8*
+%{_mandir}/man8/pwhistory_helper.8*
 %{_mandir}/man8/unix_chkpwd.8*
 %{_mandir}/man8/unix_update.8*
-%if %{with cracklib}
-%exclude %{_mandir}/man8/pam_cracklib.8*
-%endif
 %if %{with selinux}
 %exclude %{_mandir}/man8/pam_selinux*.8*
 %exclude %{_mandir}/man8/pam_sepermit.8*
@@ -635,9 +579,9 @@ end
 %attr(755,root,root) %{_libdir}/libpam.so
 %attr(755,root,root) %{_libdir}/libpam_misc.so
 %attr(755,root,root) %{_libdir}/libpamc.so
-%{_libdir}/libpam.la
-%{_libdir}/libpam_misc.la
-%{_libdir}/libpamc.la
+%{_pkgconfigdir}/pam.pc
+%{_pkgconfigdir}/pam_misc.pc
+%{_pkgconfigdir}/pamc.pc
 %{_includedir}/security/_pam_*.h
 %{_includedir}/security/pam*.h
 %{_mandir}/man3/misc_conv.3*
@@ -648,14 +592,6 @@ end
 %{_libdir}/libpam.a
 %{_libdir}/libpamc.a
 %{_libdir}/libpam_misc.a
-
-%if %{with cracklib}
-%files pam_cracklib
-%defattr(644,root,root,755)
-%doc modules/pam_cracklib/README
-%attr(755,root,root) /%{_lib}/security/pam_cracklib.so
-%{_mandir}/man8/pam_cracklib.8*
-%endif
 
 %if %{with selinux}
 %files pam_selinux
@@ -669,16 +605,6 @@ end
 %{_mandir}/man8/pam_selinux*.8*
 %{_mandir}/man8/pam_sepermit.8*
 %dir /var/run/sepermit
-%endif
-
-%if %{with tally}
-%files pam_tally
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_sbindir}/pam_tally
-%attr(755,root,root) %{_sbindir}/pam_tally2
-%attr(755,root,root) /%{_lib}/security/pam_tally.so
-%attr(755,root,root) /%{_lib}/security/pam_tally2.so
-%ghost %verify(not md5 mtime size) /var/log/tallylog
 %endif
 
 %files pam_userdb

@@ -4,13 +4,13 @@ diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.8.xml Linux
 @@ -34,6 +34,9 @@
          stdout
        </arg>
-       <arg choice="opt">
+       <arg choice="opt" rep="norepeat">
 +        failok
 +      </arg>
-+      <arg choice="opt">
++      <arg choice="opt" rep="norepeat">
          log=<replaceable>file</replaceable>
        </arg>
-       <arg choice="opt">
+       <arg choice="opt" rep="norepeat">
 @@ -172,6 +175,18 @@
              </para>
            </listitem>
@@ -34,15 +34,15 @@ diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.c Linux-PAM
 --- Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.c	2020-06-08 12:17:27.000000000 +0200
 +++ Linux-PAM-1.4.0/modules/pam_exec/pam_exec.c	2021-03-21 13:20:06.504594925 +0100
 @@ -93,6 +93,7 @@ call_exec (const char *pam_type, pam_han
-   int debug = 0;
    int call_setuid = 0;
    int quiet = 0;
+   int quiet_log = 0;
 +  int fail_ok = 0;
    int expose_authtok = 0;
    int use_stdout = 0;
    int optargc;
 @@ -135,6 +136,8 @@ call_exec (const char *pam_type, pam_han
- 	quiet = 1;
+ 	quiet_log = 1;
        else if (strcasecmp (argv[optargc], "expose_authtok") == 0)
  	expose_authtok = 1;
 +      else if (strcasecmp (argv[optargc], "failok") == 0)
@@ -51,7 +51,7 @@ diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.c Linux-PAM
  	break; /* Unknown option, assume program to execute. */
      }
 @@ -271,7 +274,7 @@ call_exec (const char *pam_type, pam_han
- 	    {
+ 		if (!quiet_log)
  	      pam_syslog (pamh, LOG_ERR, "%s failed: exit code %d",
  			  argv[optargc], WEXITSTATUS(status));
 -		if (!quiet)
@@ -69,7 +69,7 @@ diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/pam_exec/pam_exec.c Linux-PAM
  			 argv[optargc], WTERMSIG(status),
  			 WCOREDUMP(status) ? " (core dumped)" : "");
 @@ -289,11 +292,14 @@ call_exec (const char *pam_type, pam_han
- 	    {
+ 		if (!quiet_log)
  	      pam_syslog (pamh, LOG_ERR, "%s failed: unknown status 0x%x",
  			  argv[optargc], status);
 -		if (!quiet)

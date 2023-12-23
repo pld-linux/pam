@@ -7,7 +7,7 @@ diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/configure.ac Linux-PAM-1.4.0/configur
  	modules/Makefile \
 +	modules/pam_console/Makefile modules/pam_pwexport/Makefile \
 +	modules/pam_pwgen/Makefile modules/pam_rps/Makefile \
- 	modules/pam_access/Makefile modules/pam_cracklib/Makefile \
+ 	modules/pam_access/Makefile \
          modules/pam_debug/Makefile modules/pam_deny/Makefile \
  	modules/pam_echo/Makefile modules/pam_env/Makefile \
 diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/Makefile.am Linux-PAM-1.4.0/modules/Makefile.am
