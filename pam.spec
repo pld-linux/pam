@@ -419,7 +419,7 @@ if grep -qs pam_tally /etc/pam.d/system-auth; then
 	%{__sed} -i -e '/pam_tally/d' /etc/pam.d/system-auth
 fi
 if grep -qs pam_cracklib /etc/pam.d/system-auth; then
-	%{__sed} -i -e '/pam_cracklib/ s/pam_cracklib/pam_pwquality/; s/$/ use_authtok/' /etc/pam.d/system-auth
+	%{__sed} -i -e '/pam_cracklib/ { s/pam_cracklib/pam_pwquality/; s/$/ use_authtok/ }' /etc/pam.d/system-auth
 fi
 
 # removed in 1.1.4
