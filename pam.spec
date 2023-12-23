@@ -1,6 +1,5 @@
 # TODO
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
-# - pam_tally, pam_tally2 are deprecated in favor of pam_faillock
 # NOTE: https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}-docs.tar.xz
 #   is not needed here: it contains documentation in target formats (HTML, PDF) built from sources included in main tarball
 #
