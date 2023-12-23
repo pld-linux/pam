@@ -413,7 +413,15 @@ if [ "$1" != 1 ]; then
 fi
 exit 0
 
-%triggerpostun -- %{name} < 1:1.1.5-8
+%triggerpostun -- %{name} < 1:1.5.3
+# removed in 1.5.3
+if grep -qs pam_tally /etc/pam.d/system-auth; then
+	%{__sed} -i -e '/pam_tally/d' /etc/pam.d/system-auth
+fi
+if grep -qs pam_cracklib /etc/pam.d/system-auth; then
+	%{__sed} -i -e '/pam_cracklib/ s/pam_cracklib/pam_pwquality/; s/$/ use_authtok/' /etc/pam.d/system-auth
+fi
+
 # removed in 1.1.4
 if grep -qs change_uid /etc/pam.d/system-auth; then
 	%{__sed} -i -e '/session/ s/change_uid//' /etc/pam.d/system-auth
