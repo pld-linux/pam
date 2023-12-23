@@ -8,6 +8,7 @@
 %bcond_with	prelude		# Prelude IDS support (in libpam)
 %bcond_without	selinux		# SELinux support
 %bcond_without	audit		# Linux Auditing library support
+%bcond_without	systemd		# logind support
 
 %define		pam_pld_version	1.1.2-1
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
@@ -64,19 +65,18 @@ BuildRequires:	libtool >= 2:2
 BuildRequires:	libxcrypt-devel
 %{?with_audit:BuildRequires:	linux-libc-headers >= 7:2.6.23.1}
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.527
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 %if %{with doc}
-BuildRequires:	docbook-dtd412-xml
-BuildRequires:	docbook-dtd43-xml
-BuildRequires:	docbook-dtd44-xml
 BuildRequires:	docbook-dtd50-xml
 BuildRequires:	docbook-style-xsl >= 1.69.1
 # For building PDFs
 #BuildRequires:	fop
 BuildRequires:	libxml2-progs
 BuildRequires:	libxslt-progs
+%{?with_systemd:BuildRequires:	systemd-devel >= 1:254}
 BuildRequires:	w3m
 %endif
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
@@ -86,6 +86,7 @@ Requires:	crypt(blowfish)
 Requires:	glibc >= 6:2.5-0.5
 %{?with_selinux:Requires:	libselinux >= 2.1.9}
 Requires:	pam-pam_pwquality
+%{?with_systemd:Requires:	systemd-libs >= 1:254}
 Suggests:	make
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Obsoletes:	pam-doc
@@ -280,8 +281,10 @@ danych GDBM.
 	%{!?with_doc:--disable-regenerate-docu} \
 	--enable-isadir=../../%{_lib}/security \
 	--enable-lastlog \
+	%{__enable_disable systemd logind} \
 	%{!?with_prelude:--disable-prelude} \
 	%{!?with_selinux:--disable-selinux} \
+	--with-systemdunitdir="%{systemdunitdir}"
 
 # we must explicitely update-gmo as we patch a po file
 %{__make} -C po update-gmo
@@ -295,8 +298,7 @@ install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/usr/lib/pam.d,/var/{log,run/se
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	pkgconfigdir=%{_pkgconfigdir} \
-	servicedir=%{systemdunitdir}
+	pkgconfigdir=%{_pkgconfigdir}
 
 %if %{with selinux}
 install -p modules/pam_selinux/.libs/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
