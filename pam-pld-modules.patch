@@ -1,16 +1,14 @@
-diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/configure.ac Linux-PAM-1.4.0/configure.ac
---- Linux-PAM-1.4.0.org/configure.ac	2020-06-08 12:17:27.000000000 +0200
-+++ Linux-PAM-1.4.0/configure.ac	2021-03-21 13:19:44.088594925 +0100
-@@ -712,6 +712,8 @@ AC_CONFIG_FILES([Makefile libpam/Makefil
+--- Linux-PAM-1.6.0/configure.ac.orig	2024-03-22 18:58:45.064426280 +0100
++++ Linux-PAM-1.6.0/configure.ac	2024-03-22 18:59:27.857527783 +0100
+@@ -774,6 +774,8 @@ AC_CONFIG_FILES([Makefile libpam/Makefil
  	po/Makefile.in \
  	Make.xml.rules \
  	modules/Makefile \
 +	modules/pam_console/Makefile modules/pam_pwexport/Makefile \
 +	modules/pam_pwgen/Makefile modules/pam_rps/Makefile \
  	modules/pam_access/Makefile \
-         modules/pam_debug/Makefile modules/pam_deny/Makefile \
- 	modules/pam_echo/Makefile modules/pam_env/Makefile \
-diff -urNp -x '*.orig' Linux-PAM-1.4.0.org/modules/Makefile.am Linux-PAM-1.4.0/modules/Makefile.am
+ 	modules/pam_canonicalize_user/Makefile \
+ 	modules/pam_debug/Makefile modules/pam_deny/Makefile \
 --- Linux-PAM-1.4.0.org/modules/Makefile.am	2020-06-08 12:17:27.000000000 +0200
 +++ Linux-PAM-1.4.0/modules/Makefile.am	2021-03-21 13:19:44.089594925 +0100
 @@ -98,6 +98,10 @@ SUBDIRS := \

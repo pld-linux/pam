@@ -1,4 +1,5 @@
 # TODO
+# - libeconf >= 0.5.0 ?
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
 # NOTE: https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}-docs.tar.xz
 #   is not needed here: it contains documentation in target formats (HTML, PDF) built from sources included in main tarball
@@ -22,8 +23,8 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.5.3
-Release:	4
+Version:	1.6.0
+Release:	1
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -31,7 +32,7 @@ Epoch:		1
 License:	BSD and GPL v2+
 Group:		Base
 Source0:	https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz
-# Source0-md5:	a913bd5fbf9edeafaacf3eb1eb86fd83
+# Source0-md5:	41a10af5fc35a7be472ae9864338e64a
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	f9ec6fcafcf1801bf318e60040244f2e
 Source3:	other.pamd
@@ -45,7 +46,6 @@ Source10:	postlogin.pamd
 Patch0:		%{name}-pld-modules.patch
 Patch1:		%{name}_console-lex-static.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
-Patch4:		%{name}-db-gdbm.patch
 Patch5:		%{name}-exec-failok.patch
 Patch6:		pam_console_pam_tty.patch
 URL:		http://www.linux-pam.org/
@@ -262,7 +262,6 @@ danych GDBM.
 %patch0 -p1
 %patch1 -p1
 %patch3 -p1
-%patch4 -p1
 %patch5 -p1
 %patch6 -p1
 
@@ -532,6 +531,7 @@ fi
 
 # PAM modules
 %attr(755,root,root) /%{_lib}/security/pam_access.so
+%attr(755,root,root) /%{_lib}/security/pam_canonicalize_user.so
 %attr(755,root,root) /%{_lib}/security/pam_console.so
 %attr(755,root,root) /%{_lib}/security/pam_debug.so
 %attr(755,root,root) /%{_lib}/security/pam_deny.so
