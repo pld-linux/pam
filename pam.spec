@@ -91,13 +91,14 @@ Requires:	pam-pam_pwquality
 Suggests:	make
 Suggests:	pam-pam_userdb = %{epoch}:%{version}-%{release}
 Obsoletes:	pam-doc
+Obsoletes:	pam-pam_cap < 0.99
 Obsoletes:	pam-pam_cracklib < 1:1.5.3
-Obsoletes:	pam-pam_opie
-Obsoletes:	pam-pam_pwdb
-Obsoletes:	pam-pam_radius
-Obsoletes:	pam-pam_skey
+Obsoletes:	pam-pam_opie < 0.99
+Obsoletes:	pam-pam_pwdb < 0.99
+Obsoletes:	pam-pam_radius < 0.99
+Obsoletes:	pam-pam_skey < 0.99
 Obsoletes:	pam-pam_tally < 1:1.5.3
-Obsoletes:	pam-pam_tcpd
+Obsoletes:	pam-pam_tcpd < 0.99
 Obsoletes:	pam_make
 Obsoletes:	pamconfig
 Conflicts:	dev < 3.4-4
