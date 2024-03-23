@@ -1,11 +1,11 @@
 # TODO
-# - libeconf >= 0.5.0 ?
 # - fix pdf gen or disable it: No fo2pdf processor installed, skip PDF generation
 # NOTE: https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}-docs.tar.xz
 #   is not needed here: it contains documentation in target formats (HTML, PDF) built from sources included in main tarball
 #
 # Conditional build:
 %bcond_without	doc		# documentation
+%bcond_with	econf		# libeconf handled configuration
 %bcond_with	prelude		# Prelude IDS support (in libpam)
 %bcond_without	selinux		# SELinux support
 %bcond_without	audit		# Linux Auditing library support
@@ -58,6 +58,7 @@ BuildRequires:	flex
 BuildRequires:	gdbm-devel >= 1.8.3-7
 BuildRequires:	gettext-tools >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
+%{?with_econf:BuildRequires:	libeconf-devel >= 0.5.0}
 BuildRequires:	libnsl-devel
 %{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 2.1.9}
@@ -176,6 +177,7 @@ PAM (Pluggable Authentication Modules) - это мощная, гибкая,
 Summary:	PAM libraries
 Summary(pl.UTF-8):	Moduły PAM
 Group:		Libraries
+%{?with_econf:Requires:	libeconf >= 0.5.0}
 Requires:	sed >= 4.0
 
 %description libs
@@ -279,6 +281,7 @@ danych GDBM.
 	--includedir=%{_includedir}/security \
 	%{!?with_audit:--disable-audit} \
 	--enable-db=gdbm \
+	%{!?with_econf:--disable-econf} \
 	%{!?with_doc:--disable-regenerate-docu} \
 	--enable-isadir=../../%{_lib}/security \
 	--enable-lastlog \
