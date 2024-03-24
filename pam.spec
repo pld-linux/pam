@@ -68,6 +68,7 @@ BuildRequires:	libxcrypt-devel
 %{?with_audit:BuildRequires:	linux-libc-headers >= 7:2.6.23.1}
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.527
+%{?with_systemd:BuildRequires:	systemd-devel >= 1:254}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel
@@ -78,7 +79,6 @@ BuildRequires:	docbook-style-xsl >= 1.69.1
 #BuildRequires:	fop
 BuildRequires:	libxml2-progs
 BuildRequires:	libxslt-progs
-%{?with_systemd:BuildRequires:	systemd-devel >= 1:254}
 BuildRequires:	w3m
 %endif
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
