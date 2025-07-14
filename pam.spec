@@ -261,11 +261,11 @@ danych GDBM.
 
 %prep
 %setup -q -a2 -n Linux-PAM-%{version}
-%patch0 -p1
-%patch1 -p1
-%patch3 -p1
-%patch5 -p1
-%patch6 -p1
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P3 -p1
+%patch -P5 -p1
+%patch -P6 -p1
 
 %build
 %{__libtoolize}
