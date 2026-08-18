@@ -1,0 +1,11 @@
+--- Linux-PAM-1.6.0.orig/modules/pam_pwgen/pam_pwgen_app.c
++++ Linux-PAM-1.6.0/modules/pam_pwgen/pam_pwgen_app.c
+@@ -323,7 +323,7 @@ int main(int argc, const char **argv)
+ 	int genpw;
+ 	struct tris_data *tr;
+ 	struct stat st;
+-	char **av;
++	const char **av;
+ 
+ 	strcpy(tri_file, DEFAULT_TRIGRAM_FILE);
+ 

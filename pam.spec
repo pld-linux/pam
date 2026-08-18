@@ -24,7 +24,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.6.0
-Release:	1
+Release:	2
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -48,6 +48,9 @@ Patch1:		%{name}_console-lex-static.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
 Patch5:		%{name}-exec-failok.patch
 Patch6:		pam_console_pam_tty.patch
+Patch7:		pam_access-rework-hostname-tokens.patch
+Patch8:		pam-memset_explicit-args.patch
+Patch9:		pam_pwgen-const-argv.patch
 URL:		http://www.linux-pam.org/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 BuildRequires:	autoconf >= 2.61
@@ -266,6 +269,9 @@ danych GDBM.
 %patch -P3 -p1
 %patch -P5 -p1
 %patch -P6 -p1
+%patch -P7 -p1
+%patch -P8 -p1
+%patch -P9 -p1
 
 %build
 %{__libtoolize}
