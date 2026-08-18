@@ -6,10 +6,8 @@
 # Conditional build:
 %bcond_without	doc		# documentation
 %bcond_with	econf		# libeconf handled configuration
-%bcond_with	prelude		# Prelude IDS support (in libpam)
 %bcond_without	selinux		# SELinux support
 %bcond_without	audit		# Linux Auditing library support
-%bcond_without	static_libs	# static libraries
 %bcond_without	systemd		# logind support
 
 %define		pam_pld_version	1.1.2-1
@@ -23,8 +21,8 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.6.0
-Release:	2
+Version:	1.7.2
+Release:	1
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -32,7 +30,7 @@ Epoch:		1
 License:	BSD and GPL v2+
 Group:		Base
 Source0:	https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz
-# Source0-md5:	41a10af5fc35a7be472ae9864338e64a
+# Source0-md5:	934c26eca3fada956356a30489e86291
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	f9ec6fcafcf1801bf318e60040244f2e
 Source3:	other.pamd
@@ -48,13 +46,12 @@ Patch1:		%{name}_console-lex-static.patch
 Patch3:		%{name}-mkhomedir-notfound.patch
 Patch5:		%{name}-exec-failok.patch
 Patch6:		pam_console_pam_tty.patch
-Patch7:		pam_access-rework-hostname-tokens.patch
-Patch8:		pam-memset_explicit-args.patch
 Patch9:		pam_pwgen-const-argv.patch
+Patch10:	pam_pwgen-pam_i18n.patch
+# CVE-2026-54411, fixed upstream after 1.7.2
+Patch11:	pam_userdb-consttime-compare.patch
 URL:		http://www.linux-pam.org/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
-BuildRequires:	autoconf >= 2.61
-BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	flex
 # gdbm due to db pulling libpthread
@@ -63,14 +60,14 @@ BuildRequires:	gettext-tools >= 0.18.3
 BuildRequires:	glibc-devel >= 6:2.10.1
 %{?with_econf:BuildRequires:	libeconf-devel >= 0.5.0}
 BuildRequires:	libnsl-devel
-%{?with_prelude:BuildRequires:	libprelude-devel >= 0.9.0}
 %{?with_selinux:BuildRequires:	libselinux-devel >= 2.1.9}
 BuildRequires:	libtirpc-devel
-BuildRequires:	libtool >= 2:2
 BuildRequires:	libxcrypt-devel
 %{?with_audit:BuildRequires:	linux-libc-headers >= 7:2.6.23.1}
+BuildRequires:	meson >= 0.62.0
+BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.527
+BuildRequires:	rpmbuild(macros) >= 2.042
 %{?with_systemd:BuildRequires:	systemd-devel >= 1:254}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
@@ -199,6 +196,7 @@ Group:		Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_audit:Requires:	audit-libs-devel >= 1.0.8}
 Requires:	filesystem >= 3.0-11
+Obsoletes:	%{name}-static < %{epoch}:1.7.2
 
 %description devel
 Header files for developing PAM based applications.
@@ -214,26 +212,6 @@ Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 
 %description devel -l uk.UTF-8
 Цей пакет містить хедери та бібліотеки програміста для PAM.
-
-%package static
-Summary:	PAM static libraries
-Summary(pl.UTF-8):	Biblioteki statyczne PAM
-Summary(ru.UTF-8):	Статические библиотеки разработчика для PAM
-Summary(uk.UTF-8):	Статичні бібліотеки програміста для PAM
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
-
-%description static
-PAM static libraries.
-
-%description static -l pl.UTF-8
-Biblioteki statyczne PAM.
-
-%description static -l ru.UTF-8
-Этот пакет содержит статические библиотеки разработчика для PAM.
-
-%description static -l uk.UTF-8
-Цей пакет містить статичні бібліотеки програміста для PAM.
 
 %package pam_selinux
 Summary:	PAM module - SELinux support
@@ -269,60 +247,57 @@ danych GDBM.
 %patch -P3 -p1
 %patch -P5 -p1
 %patch -P6 -p1
-%patch -P7 -p1
-%patch -P8 -p1
 %patch -P9 -p1
+%patch -P10 -p1
+%patch -P11 -p1
 
 %build
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	ac_cv_path_FO2PDF= \
-	%{__enable_disable static_libs static} \
-	--enable-shared \
+# -Dvendordir= : 1.7.2 turned vendordir on by default, which would move the
+# shipped configs out of /etc/security into /usr/share/pam/security
+%meson \
 	--libdir=/%{_lib} \
-	--includedir=%{_includedir}/security \
-	%{!?with_audit:--disable-audit} \
-	--enable-db=gdbm \
-	%{!?with_econf:--disable-econf} \
-	%{!?with_doc:--disable-regenerate-docu} \
-	--enable-isadir=../../%{_lib}/security \
-	--enable-lastlog \
-	%{__enable_disable systemd logind} \
-	%{!?with_prelude:--disable-prelude} \
-	%{!?with_selinux:--disable-selinux} \
-	--with-systemdunitdir="%{systemdunitdir}"
+	-Daudit=%{__enabled_disabled audit} \
+	-Ddb=gdbm \
+	-Ddocs=%{__enabled_disabled doc} \
+	-Deconf=%{__enabled_disabled econf} \
+	-Delogind=disabled \
+	-Disadir=../../%{_lib}/security \
+	-Dlogind=%{__enabled_disabled systemd} \
+	-Dpam_lastlog=enabled \
+	-Dpwaccess=disabled \
+	-Dselinux=%{__enabled_disabled selinux} \
+	-Dsystemdunitdir=%{systemdunitdir} \
+	-Dvendordir=
 
-# we must explicitely update-gmo as we patch a po file
-%{__make} -C po update-gmo
-%{__make} \
-	DEFS="-DHAVE_CONFIG_H -D_GNU_SOURCE"
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},/etc/pam.d,/usr/lib/pam.d,/var/{log,run/sepermit}} \
 	$RPM_BUILD_ROOT%{systemdtmpfilesdir}
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	pkgconfigdir=%{_pkgconfigdir}
+%meson_install
+
+# meson installs these next to the libraries
+install -d $RPM_BUILD_ROOT%{_pkgconfigdir}
+%{__mv} $RPM_BUILD_ROOT/%{_lib}/pkgconfig/*.pc $RPM_BUILD_ROOT%{_pkgconfigdir}
+rmdir $RPM_BUILD_ROOT/%{_lib}/pkgconfig
 
 %if %{with selinux}
-install -p modules/pam_selinux/.libs/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
-cp -p modules/pam_selinux/pam_selinux_check.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install -p %{_vpath_builddir}/modules/pam_selinux/pam_selinux_check $RPM_BUILD_ROOT%{_sbindir}
 cp -p %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/pam_selinux_check
 %endif
 
 cp -p %{SOURCE9} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
-install -d doc/txts
+%if %{with doc}
+install -d doc/txts doc/txts-userdb
+cp -p $RPM_BUILD_ROOT%{_docdir}/Linux-PAM/modules/*.txt doc/txts
 for r in modules/pam_*/README; do
-	cp -pf $r doc/txts/README.$(basename $(dirname $r))
+	cp -pf $r doc/txts/$(basename $(dirname $r)).txt
 done
-%{__rm} doc/txts/README.pam_userdb
+%{__mv} doc/txts/pam_userdb.txt doc/txts-userdb
+%endif
 install -d doc/html
 cp -pf doc/index.html doc/html/
 
@@ -331,9 +306,6 @@ echo ".so PAM.8" > $RPM_BUILD_ROOT%{_mandir}/man8/pam.8
 
 :> $RPM_BUILD_ROOT/etc/security/opasswd
 :> $RPM_BUILD_ROOT/etc/security/blacklist
-
-%{?with_static_libs:%{__mv} $RPM_BUILD_ROOT/%{_lib}/lib*.a $RPM_BUILD_ROOT%{_libdir}}
-%{__rm} $RPM_BUILD_ROOT/%{_lib}/lib*.la
 
 cd $RPM_BUILD_ROOT/%{_lib}
 ln -sf /%{_lib}/$(echo libpam.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libpam.so
@@ -377,8 +349,6 @@ for module in $RPM_BUILD_ROOT/%{_lib}/security/pam*.so ; do
 done
 
 # useless - shut up check-files
-%{__rm} $RPM_BUILD_ROOT/%{_lib}/security/*.la
-%{?with_static_libs:%{__rm} $RPM_BUILD_ROOT/%{_lib}/security/*.a}
 %{__rm} $RPM_BUILD_ROOT/%{_lib}/lib*.so
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/Linux-PAM
 
@@ -386,9 +356,9 @@ done
 rm -rf rpm-doc
 install -d rpm-doc
 cp -a doc/html rpm-doc/html
-cp -a doc/sag/html rpm-doc/sag-html
-cp -a doc/adg/html rpm-doc/adg-html
-cp -a doc/mwg/html rpm-doc/mwg-html
+cp -a %{_vpath_builddir}/doc/sag/html rpm-doc/sag-html
+cp -a %{_vpath_builddir}/doc/adg/html rpm-doc/adg-html
+cp -a %{_vpath_builddir}/doc/mwg/html rpm-doc/mwg-html
 %endif
 
 %if %{without selinux}
@@ -457,9 +427,11 @@ fi
 
 %files -f Linux-PAM.lang
 %defattr(644,root,root,755)
-%doc AUTHORS CHANGELOG ChangeLog Copyright NEWS doc/txts/README*
+%doc AUTHORS Copyright NEWS
 %if %{with doc}
-%doc doc/specs/*.txt doc/sag/Linux-PAM_*.txt rpm-doc/{html,sag-html}
+%doc doc/txts/*.txt
+%doc doc/specs/*.txt %{_vpath_builddir}/doc/specs/*.txt
+%doc %{_vpath_builddir}/doc/sag/Linux-PAM_*.txt rpm-doc/{html,sag-html}
 %endif
 %dir /etc/pam.d
 %dir /etc/security/console.apps
@@ -600,7 +572,7 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %if %{with doc}
-%doc doc/{adg,mwg}/Linux-PAM_*.txt rpm-doc/{adg,mwg}-html
+%doc %{_vpath_builddir}/doc/{adg,mwg}/Linux-PAM_*.txt rpm-doc/{adg,mwg}-html
 %endif
 %attr(755,root,root) %{_libdir}/libpam.so
 %attr(755,root,root) %{_libdir}/libpam_misc.so
@@ -612,14 +584,6 @@ fi
 %{_includedir}/security/pam*.h
 %{_mandir}/man3/misc_conv.3*
 %{_mandir}/man3/pam*.3*
-
-%if %{with static_libs}
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/libpam.a
-%{_libdir}/libpamc.a
-%{_libdir}/libpam_misc.a
-%endif
 
 %if %{with selinux}
 %files pam_selinux
@@ -637,6 +601,6 @@ fi
 
 %files pam_userdb
 %defattr(644,root,root,755)
-%doc modules/pam_userdb/README
+%{?with_doc:%doc doc/txts-userdb/pam_userdb.txt}
 %attr(755,root,root) /%{_lib}/security/pam_userdb.so
 %{_mandir}/man8/pam_userdb.8*

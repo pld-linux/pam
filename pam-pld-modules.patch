@@ -1,24 +1,239 @@
---- Linux-PAM-1.6.0/configure.ac.orig	2024-03-22 18:58:45.064426280 +0100
-+++ Linux-PAM-1.6.0/configure.ac	2024-03-22 18:59:27.857527783 +0100
-@@ -774,6 +774,8 @@ AC_CONFIG_FILES([Makefile libpam/Makefil
- 	po/Makefile.in \
- 	Make.xml.rules \
- 	modules/Makefile \
-+	modules/pam_console/Makefile modules/pam_pwexport/Makefile \
-+	modules/pam_pwgen/Makefile modules/pam_rps/Makefile \
- 	modules/pam_access/Makefile \
- 	modules/pam_canonicalize_user/Makefile \
- 	modules/pam_debug/Makefile modules/pam_deny/Makefile \
---- Linux-PAM-1.4.0.org/modules/Makefile.am	2020-06-08 12:17:27.000000000 +0200
-+++ Linux-PAM-1.4.0/modules/Makefile.am	2021-03-21 13:19:44.089594925 +0100
-@@ -98,6 +98,10 @@ SUBDIRS := \
- 	pam_warn \
- 	pam_wheel \
- 	pam_xauth \
-+	pam_console \
-+	pam_pwexport \
-+	pam_pwgen \
-+	pam_rps \
- 	#
- 
- CLEANFILES = *~
+--- Linux-PAM-1.7.2.orig/modules/meson.build	2026-01-22 09:00:00.000000000 +0100
++++ Linux-PAM-1.7.2/modules/meson.build	2026-08-18 12:15:36.703326906 +0200
+@@ -43,3 +43,9 @@
+ subdir('pam_warn')
+ subdir('pam_wheel')
+ subdir('pam_xauth')
++
++# PLD-specific modules, shipped in pam-pld-*.tar.gz
++subdir('pam_console')
++subdir('pam_pwexport')
++subdir('pam_pwgen')
++subdir('pam_rps')
+--- Linux-PAM-1.7.2.orig/modules/maps/modules-auth-password.map	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.7.2/modules/maps/modules-auth-password.map	1970-01-01 01:00:00.000000000 +0100
+@@ -0,0 +1,7 @@
++{
++  global:
++    pam_sm_authenticate;
++    pam_sm_chauthtok;
++    pam_sm_setcred;
++  local: *;
++};
+--- Linux-PAM-1.7.2.orig/modules/pam_console/meson.build	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.7.2/modules/pam_console/meson.build	1970-01-01 01:00:00.000000000 +0100
+@@ -0,0 +1,87 @@
++# -*- mode: meson -*-
++# PLD-specific module, not part of upstream Linux-PAM.
++
++pam_console_lockdir = localstatedir / 'run' / 'console'
++pam_console_c_args = ['-DLOCKDIR="@0@"'.format(pam_console_lockdir)]
++
++pam_module_map_path = meson.current_source_dir() / '..' / 'maps' / 'modules-auth-session.map'
++
++shared_module(
++  'pam_console',
++  name_prefix: '',
++  sources: ['pam_console.c', 'regerr.c', 'handlers.c'],
++  c_args: pam_console_c_args,
++  dependencies: [libpam_internal_dep, libpam_dep],
++  link_depends: [pam_module_map_path],
++  link_args: ['-Wl,--version-script=' + pam_module_map_path],
++  install: true,
++  install_dir: securedir,
++)
++
++configfile_gen = custom_target(
++  'configfile-gen',
++  output: ['configfile.tab.c', 'configfile.tab.h', 'configfile.lex.c'],
++  command: [
++    find_program('sh'),
++    files('gen-configfile.sh'),
++    meson.current_source_dir(),
++    prog_yacc,
++    prog_flex,
++    '@OUTPUT0@',
++    '@OUTPUT2@',
++  ],
++)
++
++executable(
++  'pam_console_apply',
++  sources: [
++    'pam_console_apply.c',
++    'chmod.c',
++    'modechange.c',
++    'regerr.c',
++    'configfile.c',
++    'hashtable.c',
++    # configfile.c #includes the generated sources; naming the header here is
++    # what orders the generator before this target is compiled
++    configfile_gen[1],
++  ],
++  c_args: pam_console_c_args,
++  link_args: exe_link_args,
++  dependencies: [libpam_internal_dep, libpam_dep],
++  install: true,
++  install_dir: sbindir,
++)
++
++install_data(
++  ['console.apps.5', 'console.handlers.5', 'console.perms.5'],
++  install_dir: mandir / 'man5',
++  install_tag: 'man',
++)
++
++install_data(
++  ['pam_console.8', 'pam_console_apply.8'],
++  install_dir: mandir / 'man8',
++  install_tag: 'man',
++)
++
++install_data(
++  ['console.handlers', 'console.perms'],
++  install_dir: sconfigdir,
++  install_tag: 'config',
++)
++
++install_data(
++  '50-default.perms',
++  install_dir: sconfigdir / 'console.perms.d',
++  install_tag: 'config',
++)
++
++install_emptydir(
++  sconfigdir / 'console.apps',
++  install_tag: 'config',
++)
++
++install_emptydir(
++  pam_console_lockdir,
++  install_tag: 'config',
++)
+--- Linux-PAM-1.7.2.orig/modules/pam_pwexport/meson.build	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.7.2/modules/pam_pwexport/meson.build	1970-01-01 01:00:00.000000000 +0100
+@@ -0,0 +1,21 @@
++# -*- mode: meson -*-
++# PLD-specific module, not part of upstream Linux-PAM.
++
++pam_module_map_path = meson.current_source_dir() / '..' / 'maps' / 'modules-auth-password.map'
++
++shared_module(
++  'pam_pwexport',
++  name_prefix: '',
++  sources: ['pam_pwexport.c'],
++  dependencies: [libpam_internal_dep, libpam_dep],
++  link_depends: [pam_module_map_path],
++  link_args: ['-Wl,--version-script=' + pam_module_map_path],
++  install: true,
++  install_dir: securedir,
++)
++
++install_data(
++  'pam_pwexport.8',
++  install_dir: mandir / 'man8',
++  install_tag: 'man',
++)
+--- Linux-PAM-1.7.2.orig/modules/pam_pwgen/meson.build	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.7.2/modules/pam_pwgen/meson.build	1970-01-01 01:00:00.000000000 +0100
+@@ -0,0 +1,56 @@
++# -*- mode: meson -*-
++# PLD-specific module, not part of upstream Linux-PAM.
++
++pam_module_map_path = meson.current_source_dir() / '..' / 'maps' / 'modules-password.map'
++
++shared_module(
++  'pam_pwgen',
++  name_prefix: '',
++  sources: ['pam_pwgen.c'],
++  dependencies: [libpam_internal_dep, libpam_dep, libcrypt, libaudit],
++  link_depends: [pam_module_map_path],
++  link_args: ['-Wl,--version-script=' + pam_module_map_path],
++  install: true,
++  install_dir: securedir,
++)
++
++executable(
++  'pam_pwgen',
++  sources: ['pam_pwgen_app.c'],
++  link_args: exe_link_args,
++  dependencies: [libpam_internal_dep, libpam_dep, libaudit],
++  install: true,
++  install_dir: prefixdir / get_option('bindir'),
++)
++
++executable(
++  'pwgen_trigram',
++  sources: ['pwgen_trigram.c'],
++  link_args: exe_link_args,
++  dependencies: [libpam_internal_dep, libpam_dep, libaudit],
++  install: true,
++  install_dir: sbindir,
++)
++
++install_data(
++  [
++    'trigram.de',
++    'trigram.dk',
++    'trigram.en',
++    'trigram.es',
++    'trigram.fi',
++    'trigram.it',
++    'trigram.ja',
++    'trigram.no',
++    'trigram.pl',
++  ],
++  install_dir: sconfigdir,
++  install_tag: 'config',
++)
++
++install_symlink(
++  'trigram',
++  pointing_to: 'trigram.en',
++  install_dir: sconfigdir,
++  install_tag: 'config',
++)
+--- Linux-PAM-1.7.2.orig/modules/pam_rps/meson.build	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.7.2/modules/pam_rps/meson.build	1970-01-01 01:00:00.000000000 +0100
+@@ -0,0 +1,21 @@
++# -*- mode: meson -*-
++# PLD-specific module, not part of upstream Linux-PAM.
++
++pam_module_map_path = meson.current_source_dir() / '..' / 'maps' / 'modules-auth.map'
++
++shared_module(
++  'pam_rps',
++  name_prefix: '',
++  sources: ['pam_rps.c'],
++  dependencies: [libpam_internal_dep, libpam_dep],
++  link_depends: [pam_module_map_path],
++  link_args: ['-Wl,--version-script=' + pam_module_map_path],
++  install: true,
++  install_dir: securedir,
++)
++
++install_data(
++  'pam_rps.8',
++  install_dir: mandir / 'man8',
++  install_tag: 'man',
++)
+--- Linux-PAM-1.7.2.orig/modules/pam_console/gen-configfile.sh	1970-01-01 01:00:00.000000000 +0100
++++ Linux-PAM-1.7.2/modules/pam_console/gen-configfile.sh	1970-01-01 01:00:00.000000000 +0100
+@@ -0,0 +1,17 @@
++#!/bin/sh
++# configfile.c #includes the generated parser and lexer, so their internals
++# have to become static; sed-static does that rewriting.
++set -e
++
++srcdir=$1
++yacc=$2
++lex=$3
++tab_c=$4
++lex_c=$5
++
++# -d makes bison derive the header name from the -o argument
++"$yacc" -d -o "$tab_c" -p _pc_yy "$srcdir/configfile.y"
++sh "$srcdir/sed-static" "$tab_c"
++
++"$lex" -Cr -o"$lex_c" -P_pc_yy "$srcdir/configfile.l"
++sh "$srcdir/sed-static" "$lex_c"

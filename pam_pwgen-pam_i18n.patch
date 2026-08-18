@@ -1,0 +1,11 @@
+--- Linux-PAM-1.7.2.orig/modules/pam_pwgen/pam_pwgen.c	2007-02-05 15:50:40.000000000 +0100
++++ Linux-PAM-1.7.2/modules/pam_pwgen/pam_pwgen.c	2026-08-18 12:17:51.700819525 +0200
+@@ -63,6 +63,8 @@
+ #include <security/_pam_macros.h>
+ #include <security/pam_ext.h>
+ 
++#include "pam_i18n.h"
++
+ #ifndef LINUX_PAM
+ #include <security/pam_appl.h>
+ #endif				/* LINUX_PAM */
