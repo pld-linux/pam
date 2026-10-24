@@ -22,7 +22,7 @@ Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
 Version:	1.7.2
-Release:	1
+Release:	2
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -81,7 +81,7 @@ BuildRequires:	libxml2-progs
 BuildRequires:	libxslt-progs
 BuildRequires:	w3m
 %endif
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 %{?with_audit:Requires:	audit-libs >= 1.0.8}
 Requires:	awk
 Requires:	crypt(blowfish)
@@ -193,7 +193,7 @@ Summary(pt_BR.UTF-8):	Bibliotecas e arquivos de inclusão para desenvolvimento c
 Summary(ru.UTF-8):	Библиотеки разработчика для PAM
 Summary(uk.UTF-8):	Бібліотеки програміста для PAM
 Group:		Development/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 %{?with_audit:Requires:	audit-libs-devel >= 1.0.8}
 Requires:	filesystem >= 3.0-11
 Obsoletes:	pam-static < 1:1.7.2
@@ -217,7 +217,7 @@ Bibliotecas e arquivos de inclusão para desenvolvimento com PAM
 Summary:	PAM module - SELinux support
 Summary(pl.UTF-8):	Moduł PAM pozwalający na zmianę kontekstów SELinuksa
 Group:		Base
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:	libselinux >= 2.1.9
 
 %description pam_selinux
@@ -230,7 +230,7 @@ Moduł PAM pozwalający na zmianę kontekstów SELinuksa.
 Summary:	PAM module - authenticate against GDBM database
 Summary(pl.UTF-8):	Moduł PAM do uwierzytelniania względem bazy danych GDBM
 Group:		Base
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 Requires:	gdbm >= 1.8.3-7
 
 %description pam_userdb
