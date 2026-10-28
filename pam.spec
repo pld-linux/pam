@@ -21,8 +21,8 @@ Summary(ru.UTF-8):	Интструмент, обеспечивающий ауте
 Summary(tr.UTF-8):	Modüler, artımsal doğrulama birimleri
 Summary(uk.UTF-8):	Інструмент, що забезпечує аутентифікацію для програм
 Name:		pam
-Version:	1.7.2
-Release:	2
+Version:	1.7.3
+Release:	1
 Epoch:		1
 # The library is BSD licensed with option to relicense as GPLv2+
 # - this option is redundant as the BSD license allows that anyway.
@@ -30,7 +30,7 @@ Epoch:		1
 License:	BSD and GPL v2+
 Group:		Base
 Source0:	https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz
-# Source0-md5:	934c26eca3fada956356a30489e86291
+# Source0-md5:	0880bc3b28cfd8e415ee3d5a7378ebe0
 Source2:	ftp://ftp.pld-linux.org/software/pam/%{name}-pld-%{pam_pld_version}.tar.gz
 # Source2-md5:	f9ec6fcafcf1801bf318e60040244f2e
 Source3:	other.pamd
@@ -48,8 +48,6 @@ Patch5:		%{name}-exec-failok.patch
 Patch6:		pam_console_pam_tty.patch
 Patch9:		pam_pwgen-const-argv.patch
 Patch10:	pam_pwgen-pam_i18n.patch
-# CVE-2026-54411, fixed upstream after 1.7.2
-Patch11:	pam_userdb-consttime-compare.patch
 URL:		http://www.linux-pam.org/
 %{?with_audit:BuildRequires:	audit-libs-devel >= 1.6.9}
 BuildRequires:	bison
@@ -249,7 +247,6 @@ danych GDBM.
 %patch -P6 -p1
 %patch -P9 -p1
 %patch -P10 -p1
-%patch -P11 -p1
 
 %build
 # -Dvendordir= : 1.7.2 turned vendordir on by default, which would move the
